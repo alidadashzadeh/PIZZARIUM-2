@@ -1,14 +1,22 @@
-import SignaturePizzaList from "@/components/signature_pizzas/SignaturePizzaList";
-import { H1 } from "@/components/ui/Typography";
+import { H2 } from "@/components/ui/Typography";
+import SignaturePizzasList from "@/components/signature_pizzas/SignaturePizzasList";
 import { fetchSignaturePizzas } from "@/lib/queries/signaturePizza";
 
-function page() {
-  return (
-    <div className="pt-8 flex flex-col gap-4">
-      <H1>Discover Signature Pizzas</H1>
-      <SignaturePizzaList />
-    </div>
-  );
-}
+// ISR: regenerate page every hour if data changes
+export const revalidate = 60 * 60; // 1 hour
 
-export default page;
+export default async function Page() {
+	// Server-side fetch
+	// Optimal because signature pizzas rarely change
+	const pizzas = await fetchSignaturePizzas();
+
+	return (
+		<div className="pt-8 flex flex-col gap-4">
+			<H2>Discover Signature Pizzas</H2>
+
+			{/* Client component handles: - Sorting ,filtering, etc... - Instant UI
+			updates without network requests */}
+			<SignaturePizzasList pizzas={pizzas} />
+		</div>
+	);
+}

@@ -1,49 +1,73 @@
+import { CustomPizzaState, SignaturePizza } from "@/types/pizzaType";
 import { create } from "zustand";
-
-type CartItem = {
-  id: string; // unique id for this cart item
-  type: "signature" | "custom" | "drink";
-  name: string;
-  size: string;
-  toppings: string[];
-  price: number;
-};
-
-type CustomPizzaState = {
-  size: string | null;
-  crust: string | null;
-  toppings: string[];
-  price: number;
-};
-
-type SignaturePizzaState = {
-  signatureId: string | null;
-  size: string | null;
-  extraToppings: string[];
-  price: number;
-};
+import { persist } from "zustand/middleware";
 
 type PizzaStore = {
-  cart: CartItem[];
+	customPizza: CustomPizzaState;
+	// signaturePizza: SignaturePizza;
 
-  customPizza: CustomPizzaState;
-  signaturePizza: SignaturePizzaState;
+	// actions
+	setCustomPizzaItem: (
+		category: keyof CustomPizzaState,
+		value: string | string[]
+	) => void;
 };
 
-export const usePizzaStore = create<PizzaStore>(() => ({
-  cart: [],
+export const usePizzaStore = create<PizzaStore>()(
+	persist(
+		(set) => ({
+			cart: [],
 
-  customPizza: {
-    size: null,
-    crust: null,
-    toppings: [],
-    price: 0,
-  },
+			customPizza: {
+				size: "small",
+				dough: "regular",
+				crust: "regular",
+				cheese: "Diary Free",
+				sauce: "creamy garlic",
+				cook: "regular",
+				toppings: [],
+				price: 0,
+			},
 
-  signaturePizza: {
-    signatureId: null,
-    size: null,
-    extraToppings: [],
-    price: 0,
-  },
-}));
+			// signaturePizza: {
+			// 	signatureId: null,
+			// 	size: null,
+			// 	extraToppings: [],
+			// 	price: 0,
+			// },
+
+			// action
+			setCustomPizzaItem: (category, value) =>
+				set((state) => ({
+					customPizza: {
+						...state.customPizza,
+						[category]: value,
+					},
+				})),
+			setCustomField: (field, value) =>
+				set((state) => ({
+					customPizza: {
+						...state.customPizza,
+						[field]: value,
+					},
+				})),
+
+			toggleTopping: (topping) =>
+				set((state) => {
+					const exists = state.customPizza.toppings.includes(topping);
+
+					return {
+						customPizza: {
+							...state.customPizza,
+							toppings: exists
+								? state.customPizza.toppings.filter((t) => t !== topping)
+								: [...state.customPizza.toppings, topping],
+						},
+					};
+				}),
+		}),
+		{
+			name: "pizza-store", // localStorage key
+		}
+	)
+);
