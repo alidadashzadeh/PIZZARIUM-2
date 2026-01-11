@@ -5,10 +5,10 @@ import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { CheckCheckIcon, Minus, Plus } from "lucide-react";
 import { Items } from "./CustomPizzaList";
-import { usePizzaStore } from "@/store/usePizzaStore";
+import { MultiSelectKeys, usePizzaStore } from "@/store/usePizzaStore";
 
 type MultuChoiceListProps = {
-  name: string;
+  name: MultiSelectKeys;
   options: Items[];
 };
 

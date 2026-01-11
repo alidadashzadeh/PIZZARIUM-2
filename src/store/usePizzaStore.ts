@@ -7,7 +7,7 @@ import {
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type MultiSelectKeys = {
+export type MultiSelectKeys = {
   [K in keyof CustomPizzaType]: CustomPizzaType[K] extends any[] ? K : never;
 }[keyof CustomPizzaType];
 
