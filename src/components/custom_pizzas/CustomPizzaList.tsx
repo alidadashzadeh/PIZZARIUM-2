@@ -64,21 +64,11 @@ export default function CustomPizzaList({
         {categories.map((cat) => (
           <TabsContent key={cat.value} value={cat.value}>
             {cat.type === "single" && (
-              <SingleChoiceList
-                name={cat.value}
-                options={dataMap[cat.value]}
-                // value={/* single state */}
-                // onChange={/* setter */}
-              />
+              <SingleChoiceList name={cat.value} options={dataMap[cat.value]} />
             )}
 
             {cat.type === "multi" && (
-              <MultiChoiceList
-                name={cat.value}
-                options={dataMap[cat.value]}
-                // value={/* toppings state */}
-                // onChange={/* setter */}
-              />
+              <MultiChoiceList name={cat.value} options={dataMap[cat.value]} />
             )}
           </TabsContent>
         ))}

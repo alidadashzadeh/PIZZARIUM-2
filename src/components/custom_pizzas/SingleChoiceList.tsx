@@ -34,7 +34,7 @@ export default function SingleChoiceList({
         <Card
           key={item.id}
           className={`relative cursor-pointer border transition-all hover:shadow-lg ${
-            isSelected(item) && "bg-primary-foreground"
+            isSelected(item) && "bg-background-selected"
           }`}
           onClick={() => {
             manageSingle(name, item);

@@ -16,6 +16,7 @@
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-background-selected: var(--background-selected);
 
   --color-gray-100: var(--gray-100);
   --color-gray-200: var(--gray-200);
@@ -82,6 +83,8 @@
   --background: #fdfbf9;
   --foreground: #1b1a18;
 
+  --background-selected: #f8e9e4;
+
   --header-bg: #f0eae4;
 
   --gray-100: #f3f4f6;
@@ -140,6 +143,7 @@
 
   --background: #1b1a18;
   --foreground: #fdfbf9;
+  --background-selected: #2c1804;
 
   --header-bg: #2c2823;
 

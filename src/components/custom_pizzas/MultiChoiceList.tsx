@@ -28,7 +28,7 @@ export default function MultiChoiceList({
         <Card
           key={item.id}
           className={`relative cursor-pointer border transition-all hover:shadow-lg ${
-            toppingExist(item) && "bg-primary-foreground"
+            toppingExist(item) && "bg-background-selected"
           }`}
           onClick={() => {
             manageMulti(name, item);

@@ -9,7 +9,7 @@ import { usePizzaStore } from "@/store/usePizzaStore";
 import { Separator } from "@/components/ui/separator";
 import { estimateCustomPizzaCost } from "@/lib/utils";
 import { CustomPizzaType } from "@/types/pizzaType";
-import { RefreshCcw } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 
 export default function CustomPizzaSummary() {
   const customPizza = usePizzaStore((state) => state.customPizza);
@@ -39,7 +39,7 @@ export default function CustomPizzaSummary() {
         onClick={resetCustomPizza}
       >
         Clear
-        <RefreshCcw />
+        <RefreshCw />
       </Button>
       {/* <H3>Symmary</H3> */}
       <div className="relative h-76 aspect-square mx-auto">
