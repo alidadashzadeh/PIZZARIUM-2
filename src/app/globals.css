@@ -183,7 +183,7 @@
 /* Hide scrollbar for all browsers */
 html,
 body {
-  overflow-y: scroll; /* Keep layout shift-free */
+  /* overflow-y: scroll; Keep layout shift-free */
   scrollbar-width: none; /* Firefox */
 }
 

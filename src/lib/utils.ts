@@ -1,58 +1,108 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { SignaturePizzaCard } from "@/types/pizzaType";
 import {
-	Category,
-	SortField,
-	SortOrder,
+  CustomPizzaOption,
+  CustomPizzaType,
+  SignaturePizzaCard,
+} from "@/types/pizzaType";
+import {
+  Category,
+  SortField,
+  SortOrder,
 } from "./../components/signature_pizzas/SignaturePizzasList";
 
 interface FiltersState {
-	category: Category;
-	sortBy: SortField;
-	sortOrder: SortOrder;
+  category: Category;
+  sortBy: SortField;
+  sortOrder: SortOrder;
 }
 export function cn(...inputs: ClassValue[]) {
-	return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs));
 }
 
 export function applyFiltersAndSort(
-	list: SignaturePizzaCard[],
-	filters: FiltersState
+  list: SignaturePizzaCard[],
+  filters: FiltersState
 ): SignaturePizzaCard[] {
-	let result = [...list];
+  let result = [...list];
 
-	// Filter
-	if (filters.category !== "all") {
-		result = result.filter((pizza) => pizza.category === filters.category);
-	}
+  // Filter
+  if (filters.category !== "all") {
+    result = result.filter((pizza) => pizza.category === filters.category);
+  }
 
-	// Sort
-	if (filters.sortBy !== "") {
-		result.sort((a, b) => {
-			let aVal = 0;
-			let bVal = 0;
+  // Sort
+  if (filters.sortBy !== "") {
+    result.sort((a, b) => {
+      let aVal = 0;
+      let bVal = 0;
 
-			switch (filters.sortBy) {
-				case "price":
-					aVal = a.prices.small;
-					bVal = b.prices.small;
-					break;
-				case "prep_time":
-					aVal = a.prep_time_minutes ?? 0;
-					bVal = b.prep_time_minutes ?? 0;
-					break;
-				case "popularity":
-					aVal = a.avg_rating;
-					bVal = b.avg_rating;
-					break;
-				default:
-					return 0;
-			}
+      switch (filters.sortBy) {
+        case "price":
+          aVal = a.prices.small;
+          bVal = b.prices.small;
+          break;
+        case "prep_time":
+          aVal = a.prep_time_minutes ?? 0;
+          bVal = b.prep_time_minutes ?? 0;
+          break;
+        case "popularity":
+          aVal = a.avg_rating;
+          bVal = b.avg_rating;
+          break;
+        default:
+          return 0;
+      }
 
-			return filters.sortOrder === "asc" ? aVal - bVal : bVal - aVal;
-		});
-	}
+      return filters.sortOrder === "asc" ? aVal - bVal : bVal - aVal;
+    });
+  }
 
-	return result;
+  return result;
 }
+
+// export const estimateCustomPizzaCost = (
+//   customPizza: CustomPizzaType
+// ): number => {
+//   let total = 10;
+
+//   (Object.keys(customPizza) as (keyof CustomPizzaType)[]).forEach((key) => {
+//     // Skip price and size
+//     if (key === "price" || key === "size") return;
+
+//     const value = customPizza[key];
+
+//     // If array (toppings)
+//     if (Array.isArray(value)) {
+//       total += value.reduce((sum, item) => sum + item.price, 0);
+//     }
+//     // If object with price
+//     else if (value && typeof value === "object" && "price" in value) {
+//       total += (value as CustomPizzaOption).price;
+//     }
+//   });
+
+//   return Number(total);
+// };
+export const estimateCustomPizzaCost = (
+  customPizza: CustomPizzaType
+): number => {
+  let total = 11; // ✅ base cost
+
+  (Object.keys(customPizza) as (keyof CustomPizzaType)[]).forEach((key) => {
+    if (key === "price" || key === "size") return;
+
+    const value = customPizza[key];
+
+    // toppings
+    if (Array.isArray(value)) {
+      total += value.reduce((sum, item) => sum + item.price, 0);
+    }
+    // single options
+    else if (value && typeof value === "object" && "price" in value) {
+      total += (value as CustomPizzaOption).price;
+    }
+  });
+
+  return Number(total.toFixed(2));
+};

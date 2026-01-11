@@ -38,4 +38,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 **_ comments _**
 
 - signaturePizzas fetched on server for better SEO
-- filter, sort and order using URL
+- filter, sort and order signaturePizzas using URL
