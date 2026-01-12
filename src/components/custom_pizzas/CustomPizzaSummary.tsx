@@ -40,14 +40,14 @@ export default function CustomPizzaSummary({ onAddToCart }: Props) {
     <div className="w-100 sticky top-4 self-start flex flex-col gap-1">
       <Button
         variant="outline"
-        className="absolute top-0 right-0 cursor-pointer"
+        className="absolute top-0 right-0 cursor-pointer z-100"
         onClick={resetCustomPizza}
       >
-        Clear
+        <div>Clear</div>
         <RefreshCw />
       </Button>
-      {/* <H3>Symmary</H3> */}
-      <div className="relative h-76 aspect-square mx-auto">
+
+      <div className="relative h-76 aspect-square mx-auto ">
         <Image
           src="/base-pizza.png"
           alt="pizza-base"
