@@ -11,11 +11,16 @@ import { estimateCustomPizzaCost } from "@/lib/utils";
 import { CustomPizzaType } from "@/types/pizzaType";
 import { RefreshCw } from "lucide-react";
 
-export default function CustomPizzaSummary() {
+type Props = {
+  onAddToCart: () => void;
+};
+export default function CustomPizzaSummary({ onAddToCart }: Props) {
   const customPizza = usePizzaStore((state) => state.customPizza);
   const selectSize = usePizzaStore((state) => state.selectSize);
   const setPrice = usePizzaStore((state) => state.setPrice);
   const resetCustomPizza = usePizzaStore((state) => state.resetCustomPizza);
+  const increaseQuantity = usePizzaStore((state) => state.increaseQuantity);
+  const decreaseQuantity = usePizzaStore((state) => state.decreaseQuantity);
 
   useEffect(() => {
     const basePrice = estimateCustomPizzaCost(customPizza);
@@ -32,10 +37,10 @@ export default function CustomPizzaSummary() {
   console.log(customPizza);
 
   return (
-    <div className="w-112 sticky top-4 self-start">
+    <div className="w-100 sticky top-4 self-start flex flex-col gap-1">
       <Button
         variant="outline"
-        className="absolute top-0 right-0"
+        className="absolute top-0 right-0 cursor-pointer"
         onClick={resetCustomPizza}
       >
         Clear
@@ -98,30 +103,53 @@ export default function CustomPizzaSummary() {
             selectSize(value as CustomPizzaType["size"]);
           }}
         >
-          <ToggleGroupItem value="small" className="p-4">
+          <ToggleGroupItem value="small" className="p-4 cursor-pointer">
             Small - ${customPizza?.price?.small}
           </ToggleGroupItem>
-          <ToggleGroupItem value="medium" className="p-4">
+          <ToggleGroupItem value="medium" className="p-4 cursor-pointer">
             Medium - ${customPizza?.price?.medium}
           </ToggleGroupItem>
-          <ToggleGroupItem value="large" className="p-4">
+          <ToggleGroupItem value="large" className="p-4 cursor-pointer">
             Large - ${customPizza?.price?.large}
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
-      <H4>Quantity</H4>
-      <div className="flex items-center gap-2">
-        <Button variant="outline" size="icon">
-          -
-        </Button>
-        <span className="w-8 text-center">{4}</span>
-        <Button variant="outline" size="icon">
-          +
-        </Button>
+      <div className="flex items-end gap-8">
+        <div>
+          <H4>Quantity</H4>
+          <div className="flex items-center gap-2">
+            <Button
+              className="cursor-pointer"
+              variant="outline"
+              size="icon"
+              onClick={decreaseQuantity}
+            >
+              -
+            </Button>
+            <span className="w-8 text-center">{customPizza?.quantity}</span>
+            <Button
+              className="cursor-pointer"
+              variant="outline"
+              size="icon"
+              onClick={increaseQuantity}
+            >
+              +
+            </Button>
+          </div>
+        </div>
+        <div>
+          <Button className="cursor-pointer" onClick={onAddToCart}>
+            <Large>
+              $
+              {(
+                (customPizza?.price?.[customPizza?.size] ?? 0) *
+                customPizza?.quantity
+              ).toFixed(2)}
+            </Large>
+            <Large>- Add to Cart</Large>
+          </Button>
+        </div>
       </div>
-      <Button>
-        <Large>Add to Cart</Large>
-      </Button>
     </div>
   );
 }

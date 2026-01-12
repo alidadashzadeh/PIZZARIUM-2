@@ -1,8 +1,12 @@
+"use client";
+
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import CustomPizzaTabsTriggers from "./CustomPizzaTabsTriggers";
 import MultiChoiceList from "./MultiChoiceList";
 import SingleChoiceList from "./SingleChoiceList";
 import CustomPizzaSummary from "./CustomPizzaSummary";
+import ConfirmPizzaModal from "./ConfirmPizzaModal";
+import { useState } from "react";
 
 type Category = {
   name: string;
@@ -42,6 +46,7 @@ export default function CustomPizzaList({
   cheeses,
   toppings,
 }: CustomPizzaClientProps) {
+  const [confirmCustomOpen, setConfirmCustomOpen] = useState(false);
   if (!categories.length) return null;
 
   const dataMap: Record<string, Items[]> = {
@@ -73,7 +78,11 @@ export default function CustomPizzaList({
           </TabsContent>
         ))}
       </Tabs>
-      <CustomPizzaSummary />
+      <CustomPizzaSummary onAddToCart={() => setConfirmCustomOpen(true)} />
+      <ConfirmPizzaModal
+        open={confirmCustomOpen}
+        onOpenChange={setConfirmCustomOpen}
+      />
     </div>
   );
 }

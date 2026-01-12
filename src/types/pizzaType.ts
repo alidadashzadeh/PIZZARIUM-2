@@ -67,4 +67,5 @@ export type CustomPizzaType = {
   cook: CustomPizzaOption;
   toppings: CustomPizzaToppingOption[];
   price: { small: number; medium: number; large: number } | null;
+  quantity: number;
 };

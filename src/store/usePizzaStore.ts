@@ -1,3 +1,4 @@
+import CustomPizzaList from "@/components/custom_pizzas/CustomPizzaList";
 import {
   CartItem,
   CustomPizzaOption,
@@ -18,7 +19,6 @@ type PizzaStore = {
   // actions
 
   resetCustomPizza: () => void;
-
   manageSingle: (category: string, value: CustomPizzaOption) => void;
   manageMulti: (
     category: MultiSelectKeys,
@@ -26,6 +26,8 @@ type PizzaStore = {
   ) => void;
   selectSize: (size: CustomPizzaType["size"]) => void;
   setPrice: (price: number) => void;
+  increaseQuantity: () => void;
+  decreaseQuantity: () => void;
 };
 export const usePizzaStore = create<PizzaStore>()(
   persist(
@@ -40,6 +42,7 @@ export const usePizzaStore = create<PizzaStore>()(
         cook: { name: "regular", id: 2, price: 0 },
         toppings: [],
         price: null,
+        quantity: 1,
       },
 
       cartItems: [],
@@ -105,6 +108,28 @@ export const usePizzaStore = create<PizzaStore>()(
           };
         }),
 
+      increaseQuantity: () => {
+        set((state) => ({
+          customPizza: {
+            ...state.customPizza,
+            quantity: state.customPizza.quantity + 1,
+          },
+        }));
+      },
+
+      decreaseQuantity: () => {
+        set((state) => {
+          if (state.customPizza.quantity <= 1) return state;
+
+          return {
+            customPizza: {
+              ...state.customPizza,
+              quantity: state.customPizza.quantity - 1,
+            },
+          };
+        });
+      },
+
       resetCustomPizza: () =>
         set({
           customPizza: {
@@ -116,6 +141,7 @@ export const usePizzaStore = create<PizzaStore>()(
             cook: { name: "regular", id: 2, price: 0 },
             toppings: [],
             price: null,
+            quantity: 1,
           },
         }),
     }),
