@@ -1,73 +1,152 @@
-import { CustomPizzaState, SignaturePizza } from "@/types/pizzaType";
+import CustomPizzaList from "@/components/custom_pizzas/CustomPizzaList";
+import {
+  CartItem,
+  CustomPizzaOption,
+  CustomPizzaToppingOption,
+  CustomPizzaType,
+} from "@/types/pizzaType";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+export type MultiSelectKeys = {
+  [K in keyof CustomPizzaType]: CustomPizzaType[K] extends any[] ? K : never;
+}[keyof CustomPizzaType];
+
 type PizzaStore = {
-	customPizza: CustomPizzaState;
-	// signaturePizza: SignaturePizza;
+  customPizza: CustomPizzaType;
+  cartItems: CartItem[];
 
-	// actions
-	setCustomPizzaItem: (
-		category: keyof CustomPizzaState,
-		value: string | string[]
-	) => void;
+  // actions
+
+  resetCustomPizza: () => void;
+  manageSingle: (category: string, value: CustomPizzaOption) => void;
+  manageMulti: (
+    category: MultiSelectKeys,
+    value: CustomPizzaToppingOption
+  ) => void;
+  selectSize: (size: CustomPizzaType["size"]) => void;
+  setPrice: (price: number) => void;
+  increaseQuantity: () => void;
+  decreaseQuantity: () => void;
 };
-
 export const usePizzaStore = create<PizzaStore>()(
-	persist(
-		(set) => ({
-			cart: [],
+  persist(
+    (set) => ({
+      // STATE
+      customPizza: {
+        size: "small",
+        dough: { name: "regular", id: 2, price: 0 },
+        crust: { name: "regular", id: 1, price: 0 },
+        cheese: { name: "Dairy Free", id: 1, price: 0.99 },
+        sauce: { name: "creamy garlic", id: 4, price: 0.99 },
+        cook: { name: "regular", id: 2, price: 0 },
+        toppings: [],
+        price: null,
+        quantity: 1,
+      },
 
-			customPizza: {
-				size: "small",
-				dough: "regular",
-				crust: "regular",
-				cheese: "Diary Free",
-				sauce: "creamy garlic",
-				cook: "regular",
-				toppings: [],
-				price: 0,
-			},
+      cartItems: [],
 
-			// signaturePizza: {
-			// 	signatureId: null,
-			// 	size: null,
-			// 	extraToppings: [],
-			// 	price: 0,
-			// },
+      // ACTIONS
+      manageSingle: (category, value) =>
+        set((state) => ({
+          customPizza: {
+            ...state.customPizza,
+            [category]: {
+              id: value.id,
+              name: value.name,
+              price: value.price,
+            },
+          },
+        })),
 
-			// action
-			setCustomPizzaItem: (category, value) =>
-				set((state) => ({
-					customPizza: {
-						...state.customPizza,
-						[category]: value,
-					},
-				})),
-			setCustomField: (field, value) =>
-				set((state) => ({
-					customPizza: {
-						...state.customPizza,
-						[field]: value,
-					},
-				})),
+      manageMulti: (category, item) =>
+        set((state) => {
+          const array = state.customPizza[category];
 
-			toggleTopping: (topping) =>
-				set((state) => {
-					const exists = state.customPizza.toppings.includes(topping);
+          const cleanItem = {
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            image_raw: item.image_raw,
+          };
+          const exists = array.some((i) => i.id === item.id);
 
-					return {
-						customPizza: {
-							...state.customPizza,
-							toppings: exists
-								? state.customPizza.toppings.filter((t) => t !== topping)
-								: [...state.customPizza.toppings, topping],
-						},
-					};
-				}),
-		}),
-		{
-			name: "pizza-store", // localStorage key
-		}
-	)
+          return {
+            customPizza: {
+              ...state.customPizza,
+              [category]: exists
+                ? array.filter((i) => i.id !== item.id) // remove
+                : [...array, cleanItem], // add
+            },
+          };
+        }),
+
+      selectSize: (size) =>
+        set((state) => ({
+          customPizza: {
+            ...state.customPizza,
+            size,
+          },
+        })),
+
+      setPrice: (basePrice) =>
+        set((state) => {
+          const small = Number(basePrice.toFixed(2));
+          const medium = Number((basePrice * 1.2).toFixed(2));
+          const large = Number((basePrice * 1.3).toFixed(2));
+
+          return {
+            customPizza: {
+              ...state.customPizza,
+              price: {
+                small,
+                medium,
+                large,
+              },
+            },
+          };
+        }),
+
+      increaseQuantity: () => {
+        set((state) => ({
+          customPizza: {
+            ...state.customPizza,
+            quantity: state.customPizza.quantity + 1,
+          },
+        }));
+      },
+
+      decreaseQuantity: () => {
+        set((state) => {
+          if (state.customPizza.quantity <= 1) return state;
+
+          return {
+            customPizza: {
+              ...state.customPizza,
+              quantity: state.customPizza.quantity - 1,
+            },
+          };
+        });
+      },
+
+      resetCustomPizza: () =>
+        set({
+          customPizza: {
+            size: "small",
+            dough: { name: "regular", id: 2, price: 0 },
+            crust: { name: "regular", id: 1, price: 0 },
+            cheese: { name: "Dairy Free", id: 1, price: 0.99 },
+            sauce: { name: "creamy garlic", id: 4, price: 0.99 },
+            cook: { name: "regular", id: 2, price: 0 },
+            toppings: [],
+            price: null,
+            quantity: 1,
+          },
+        }),
+    }),
+    {
+      name: "pizza-store", // localStorage key
+    }
+  )
 );

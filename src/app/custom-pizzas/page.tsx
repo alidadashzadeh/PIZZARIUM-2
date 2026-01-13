@@ -1,9 +1,15 @@
-import CustomPizzaClient from "./CustomPizzaClient";
+import { H2 } from "@/components/ui/Typography";
 
 import { getCustomPizzaData } from "@/lib/queries/customPizzas";
+import CustomPizzaList from "../../components/custom_pizzas/CustomPizzaList";
 
 export default async function Page() {
-	const pizzaData = await getCustomPizzaData();
+  const customPizzaData = await getCustomPizzaData();
 
-	return <CustomPizzaClient {...pizzaData} />;
+  return (
+    <>
+      <H2>Create your Pizza</H2>
+      <CustomPizzaList {...customPizzaData} />
+    </>
+  );
 }
