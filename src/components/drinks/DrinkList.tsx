@@ -1,17 +1,14 @@
-"use client";
-
-import { useGetDrinks } from "@/hooks/drinks/useGetDrinks";
 import DrinkCard from "./DrinkCard";
+import { Drink } from "@/types/pizzaType";
 
-export default function DrinkList() {
-  const { data: drinks, isLoading, error } = useGetDrinks();
+type DrinkListProps = {
+  drinks: Drink[];
+};
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error happened</div>;
-
+export default function DrinkList({ drinks }: DrinkListProps) {
   return (
     <div className="grid grid-cols-5 gap-8 ">
-      {drinks?.map((drink) => {
+      {drinks?.map((drink: Drink) => {
         return <DrinkCard key={drink.id} drink={drink} />;
       })}
     </div>

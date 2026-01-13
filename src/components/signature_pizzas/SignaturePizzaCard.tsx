@@ -3,20 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import RatingStars from "../ui/RatingStars";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 import { H3, Muted, P, Small } from "../ui/Typography";
+import { SignaturePizza } from "@/types/pizzaType";
 
 type SignaturePizzaCardProps = {
-  pizza: Pizza;
+  pizza: SignaturePizza;
 };
 
 export default function SignaturePizzasCard({

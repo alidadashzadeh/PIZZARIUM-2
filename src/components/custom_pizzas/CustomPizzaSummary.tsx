@@ -19,7 +19,7 @@ export default function CustomPizzaSummary({ onAddToCart }: Props) {
   const customPizza = usePizzaStore((state) => state.customPizza);
   const setPrice = usePizzaStore((state) => state.setPrice);
   const resetCustomPizza = usePizzaStore((state) => state.resetCustomPizza);
-
+  // fix - try to get only fields needed and do not subscribe to whole custompizza - minimize re-render
   useEffect(() => {
     const basePrice = estimateCustomPizzaCost(customPizza);
     setPrice(basePrice);

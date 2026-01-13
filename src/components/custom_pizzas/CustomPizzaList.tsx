@@ -57,6 +57,7 @@ export default function CustomPizzaList({
     cheese: cheeses,
     toppings: toppings,
   };
+  console.log("rerendered");
 
   return (
     <div className="flex justify-between gap-4 relative">

@@ -55,9 +55,11 @@ export type CustomPizzaOption = {
   name: string;
   price: number;
 };
+
 export type CustomPizzaToppingOption = CustomPizzaOption & {
   image_raw: string;
 };
+
 export type CustomPizzaType = {
   size: "small" | "medium" | "large";
   dough: CustomPizzaOption;
@@ -68,4 +70,12 @@ export type CustomPizzaType = {
   toppings: CustomPizzaToppingOption[];
   price: { small: number; medium: number; large: number } | null;
   quantity: number;
+};
+
+export type Drink = {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+  isAvailable: boolean;
 };
