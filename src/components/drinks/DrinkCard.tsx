@@ -22,7 +22,7 @@ export default function DrinkCard({ drink }: DrinkCardProps) {
           <H4>{drink.name}</H4>
           <div className="flex gap-2">{drink?.price} $</div>
           <Button
-            className="z-1000 cursor-pointer"
+            className="cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
