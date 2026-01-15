@@ -57,6 +57,7 @@ export default function CustomPizzaList({
     cheese: cheeses,
     toppings: toppings,
   };
+  console.log("rerendered");
 
   return (
     <div className="flex justify-between gap-4 relative">
@@ -64,7 +65,9 @@ export default function CustomPizzaList({
         defaultValue={categories[0].value}
         className="flex flex-col gap-4 flex-1"
       >
-        <CustomPizzaTabsTriggers categories={categories} />
+        <div className="pt-4">
+          <CustomPizzaTabsTriggers categories={categories} />
+        </div>
 
         {categories.map((cat) => (
           <TabsContent key={cat.value} value={cat.value}>
