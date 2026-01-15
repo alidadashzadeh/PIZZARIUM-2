@@ -41,15 +41,6 @@ export type SignaturePizzaCard = Pick<
   | "calorie"
 >;
 
-export type CartItem = {
-  id: string; // unique id for this cart item
-  type: "signature" | "custom" | "drink";
-  name: string;
-  size: string;
-  toppings: string[];
-  price: number;
-};
-
 export type CustomPizzaOption = {
   id: string | number;
   name: string;
@@ -79,3 +70,23 @@ export type Drink = {
   price: number;
   isAvailable: boolean;
 };
+
+export interface CartItem {
+  cartItemId: string;
+  type: "signature" | "custom" | "drink";
+  id?: string;
+
+  recipe?: {
+    crust: "Thin" | "Regular" | "CheeseBurst";
+    sauce: "Tomato" | "BBQ";
+    toppings: string[];
+    extraCheese: boolean;
+  };
+  size?: "small" | "medium" | "large";
+  quantity?: number;
+  name: string;
+  image?: string;
+  price: number;
+  lineTotal: number;
+  addedAt: number;
+}

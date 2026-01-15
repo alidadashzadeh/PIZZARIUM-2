@@ -3,9 +3,7 @@ import Logo from "./Logo";
 import Nav from "./Nav";
 import UserProfile from "./UserProfile";
 import { Switch as DarkModeSwitch } from "@/components/ui/DarkModeSwitch";
-import { ShoppingCart } from "lucide-react";
-import { Button } from "../ui/button";
-import CartSheet from "./CartSheet";
+import ItemCartSheet from "./ItemCartSheet";
 
 const Header = () => {
   return (
@@ -14,7 +12,7 @@ const Header = () => {
       <Nav />
       <div className="flex gap-4">
         <UserProfile />
-        <CartSheet />
+        <ItemCartSheet />
         <DarkModeSwitch />
       </div>
     </div>

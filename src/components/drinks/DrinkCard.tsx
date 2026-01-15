@@ -5,12 +5,15 @@ import Image from "next/image";
 import { H4, Large, P, Small } from "../ui/Typography";
 import { Button } from "../ui/button";
 import { Drink } from "@/types/pizzaType";
+import { useCartStore } from "@/store/useCartStore";
 
 type DrinkCardProps = {
   drink: Drink;
 };
 
 export default function DrinkCard({ drink }: DrinkCardProps) {
+  const addItem = useCartStore((s) => s.addItem);
+
   return (
     <Card className="relative items-center">
       <CardContent>
@@ -27,6 +30,7 @@ export default function DrinkCard({ drink }: DrinkCardProps) {
               e.preventDefault();
               e.stopPropagation();
               console.log("clicked");
+              addItem(drink);
             }}
             variant="default"
             size="sm"

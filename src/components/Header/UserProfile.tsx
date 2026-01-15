@@ -22,8 +22,6 @@ function UserProfile() {
   const [authOpen, setAuthOpen] = useState(false);
   const user = useAuthStore((s) => s.user);
 
-  console.log(user);
-
   return (
     <div className="flex gap-4">
       <div className="fixed inset-x-0 top-20 z-[9999]">
