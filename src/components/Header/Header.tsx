@@ -3,7 +3,7 @@ import Logo from "./Logo";
 import Nav from "./Nav";
 import UserProfile from "./UserProfile";
 import { Switch as DarkModeSwitch } from "@/components/ui/DarkModeSwitch";
-import ItemCartSheet from "./ItemCartSheet";
+import CartSheet from "./CartSheet";
 
 const Header = () => {
   return (
@@ -12,7 +12,7 @@ const Header = () => {
       <Nav />
       <div className="flex gap-4">
         <UserProfile />
-        <ItemCartSheet />
+        <CartSheet />
         <DarkModeSwitch />
       </div>
     </div>

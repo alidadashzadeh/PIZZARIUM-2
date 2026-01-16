@@ -1,10 +1,10 @@
 "use client";
 
-import { SheetTrigger } from "./sheet";
-import { Button } from "./button";
+import { SheetTrigger } from "../ui/sheet";
+import { Button } from "../ui/button";
 import { ShoppingCart } from "lucide-react";
 
-export default function ItemCartSheetTrigger() {
+export default function CartSheetTrigger() {
   return (
     <SheetTrigger asChild>
       <Button

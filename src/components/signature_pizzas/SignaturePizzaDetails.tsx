@@ -25,7 +25,7 @@ function SignaturePizzaDetails() {
   if (isLoading) return <div>Loading...</div>;
   if (error || !pizza) return <div>Pizza not found.</div>;
 
-  const pricePerPizza = pizza.prices[size] ?? 0;
+  const pricePerPizza = pizza.price[size] ?? 0;
   const totalPrice = (pricePerPizza * quantity).toFixed(2);
 
   return (

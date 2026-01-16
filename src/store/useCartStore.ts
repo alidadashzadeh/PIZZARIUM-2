@@ -7,18 +7,20 @@ import { toast } from "sonner";
 interface CartState {
   items: CartItem[];
 
-  /** ---------- Actions ---------- */
+  // actions
   addItem: (
     item: Omit<CartItem, "cartItemId" | "lineTotal" | "addedAt">
   ) => void;
-  updateQty: (cartItemId: string, qty: number) => void;
   removeItem: (cartItemId: string) => void;
-  updateNotes: (cartItemId: string, notes: string) => void;
-  clearCart: () => void;
 
-  /** ---------- Derived ---------- */
-  //   totalQty: () => number;
-  //   subtotal: () => number;
+  increaseCartItemQty: (cartItemId: string) => void;
+  decreaseCartItemQty: (cartItemId: string) => void;
+  changeSize: (
+    cartItemId: string,
+    newSize: "small" | "medium" | "large"
+  ) => void;
+
+  clearCart: () => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -29,60 +31,111 @@ export const useCartStore = create<CartState>()(
       // actions
       addItem: (item) =>
         set((state) => {
-          // default quantity to 1 if missing
           const quantity = item.quantity ?? 1;
 
-          const existingItem = state.items.some(
-            (i) => i.id === item.id
-            // (i) => i.refId === item.refId && i.type === item.type
-          );
+          const existingItem = state.items.some((i) => {
+            // custom items are always unique
+            if (item.type === "custom") return false;
+
+            // drinks & signature pizzas have id
+            return i.id === item.id && i.type === item.type;
+          });
 
           if (existingItem) {
             toast.error(`${item.name} is already in the cart!`);
             return state;
           }
 
+          let lineTotal = 0;
+
+          if (item.size && typeof item.price === "object") {
+            // pizza
+            lineTotal = item.price[item.size] * quantity;
+          } else {
+            // drink
+            lineTotal = item.price * quantity;
+          }
           const newItem: CartItem = {
             ...item,
             cartItemId: nanoid(),
             quantity,
-            lineTotal: item.price * quantity,
+            lineTotal,
             addedAt: Date.now(),
           };
 
-          //   console.log(newItem);
           return { items: [...state.items, newItem] };
         }),
-
-      /* ---------- Derived ---------- */
-      //   totalQty: () => get().items.reduce((sum, item) => sum + item.qty, 0),
-
-      //   subtotal: () =>
-      //     get().items.reduce((sum, item) => sum + item.lineTotal, 0),
-
-      updateQty: (cartItemId, qty) =>
-        set((state) => ({
-          items: state.items.map((item) =>
-            item.cartItemId === cartItemId
-              ? {
-                  ...item,
-                  qty: Math.max(1, qty),
-                  lineTotal: item.unitPrice * Math.max(1, qty),
-                }
-              : item
-          ),
-        })),
-
-      updateNotes: (cartItemId, notes) =>
-        set((state) => ({
-          items: state.items.map((item) =>
-            item.cartItemId === cartItemId ? { ...item, notes } : item
-          ),
-        })),
 
       removeItem: (cartItemId) =>
         set((state) => ({
           items: state.items.filter((item) => item.cartItemId !== cartItemId),
+        })),
+
+      increaseCartItemQty: (cartItemId) =>
+        set((state) => ({
+          items: state.items.map((item) => {
+            if (item.cartItemId !== cartItemId) return item;
+
+            const newQty = (item.quantity ?? 1) + 1;
+
+            let newLineTotal;
+            if (item.size && typeof item.price === "object") {
+              // pizza
+              newLineTotal = item.price[item.size] * newQty;
+            } else {
+              // drink
+              newLineTotal = item.price * newQty;
+            }
+            return {
+              ...item,
+              quantity: newQty,
+              lineTotal: newLineTotal,
+            };
+          }),
+        })),
+
+      decreaseCartItemQty: (cartItemId) =>
+        set((state) => ({
+          items: state.items.map((item) => {
+            if (item.cartItemId !== cartItemId) return item;
+
+            const newQty = Math.max(1, (item.quantity ?? 1) - 1);
+            let newLineTotal;
+            if (item.size && typeof item.price === "object") {
+              // pizza
+              newLineTotal = item.price[item.size] * newQty;
+            } else {
+              // drink
+              newLineTotal = item.price * newQty;
+            }
+            return {
+              ...item,
+              quantity: newQty,
+              lineTotal: newLineTotal,
+              // lineTotal: item.price * newQty,
+            };
+          }),
+        })),
+
+      changeSize: (cartItemId, newSize) =>
+        set((state) => ({
+          items: state.items.map((item) => {
+            if (item.cartItemId !== cartItemId) return item;
+            if (item.type === "drink") return item;
+            if (item.size === newSize) return item;
+
+            let newLineTotal = item.lineTotal;
+            if (item.size && typeof item.price === "object") {
+              // pizza
+              newLineTotal = item.price[newSize] * item.quantity;
+            }
+
+            return {
+              ...item,
+              size: newSize,
+              lineTotal: newLineTotal,
+            };
+          }),
         })),
 
       clearCart: () => set({ items: [] }),

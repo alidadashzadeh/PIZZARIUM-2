@@ -3,7 +3,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface SizeProps {
   pizza: {
-    prices: {
+    price: {
       small: number;
       medium: number;
       large: number;
@@ -24,13 +24,13 @@ export default function Size({ pizza, size, setSize }: SizeProps) {
       }}
     >
       <ToggleGroupItem value="small" className="p-4">
-        Small for ${pizza?.prices.small ?? "-"}
+        Small for ${pizza?.price.small ?? "-"}
       </ToggleGroupItem>
       <ToggleGroupItem value="medium" className="p-4">
-        Medium for ${pizza?.prices.medium ?? "-"}
+        Medium for ${pizza?.price.medium ?? "-"}
       </ToggleGroupItem>
       <ToggleGroupItem value="large" className="p-4">
-        Large for ${pizza?.prices.large ?? "-"}
+        Large for ${pizza?.price.large ?? "-"}
       </ToggleGroupItem>
     </ToggleGroup>
   );

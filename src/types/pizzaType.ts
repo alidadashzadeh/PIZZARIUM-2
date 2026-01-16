@@ -3,7 +3,7 @@ export type SignaturePizza = {
   name: string;
   description: string;
   image: string;
-  prices: {
+  price: {
     small: number;
     medium: number;
     large: number;
@@ -35,7 +35,7 @@ export type SignaturePizzaCard = Pick<
   | "avg_rating"
   | "rating_count"
   | "description"
-  | "prices"
+  | "price"
   | "prep_time_minutes"
   | "category"
   | "calorie"
@@ -60,7 +60,7 @@ export type CustomPizzaType = {
   cook: CustomPizzaOption;
   toppings: CustomPizzaToppingOption[];
   price: { small: number; medium: number; large: number } | null;
-  quantity: number;
+  // quantity: number;
 };
 
 export type Drink = {
@@ -83,7 +83,7 @@ export interface CartItem {
     extraCheese: boolean;
   };
   size?: "small" | "medium" | "large";
-  quantity?: number;
+  quantity: number;
   name: string;
   image?: string;
   price: number;

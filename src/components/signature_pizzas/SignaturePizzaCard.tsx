@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import { H3, Muted, P, Small } from "../ui/Typography";
 import { SignaturePizza } from "@/types/pizzaType";
+import { useCartStore } from "@/store/useCartStore";
 
 type SignaturePizzaCardProps = {
   pizza: SignaturePizza;
@@ -15,6 +16,8 @@ type SignaturePizzaCardProps = {
 export default function SignaturePizzasCard({
   pizza,
 }: SignaturePizzaCardProps) {
+  const addItem = useCartStore((s) => s.addItem);
+
   return (
     <>
       <Card>
@@ -35,7 +38,7 @@ export default function SignaturePizzasCard({
           <div className="flex justify-between">
             <P className="flex gap-2">
               Starting from
-              <span className="text-lg">{pizza?.prices?.small} $</span>
+              <span className="text-lg">{pizza?.price?.small} $</span>
             </P>
             <Link href={`/signature-pizzas/${pizza.id}`}>
               <Button className="cursor-pointer" variant="outline" size="sm">
@@ -48,7 +51,8 @@ export default function SignaturePizzasCard({
                 e.preventDefault();
 
                 // add to cart logic here
-                console.log("clicked");
+                addItem({ ...pizza, type: "signature", size: "small" });
+                // console.log({ ...pizza, type: "signature" });
               }}
               variant="default"
               size="sm"

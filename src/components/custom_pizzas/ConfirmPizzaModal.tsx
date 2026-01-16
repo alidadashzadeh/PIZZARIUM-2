@@ -14,6 +14,7 @@ import CustomPizzaaRecipe from "./CustomPizzaaRecipe";
 import CustomPizzaToppings from "./CustomPizzaToppings";
 import CustomPizzaSizeSelector from "./CustomPizzaSizeSelector";
 import CustomPizzaQuantity from "./CustomPizzaQuantity";
+import { useCartStore } from "@/store/useCartStore";
 
 type ConfirmPizzaModalProps = {
   open: boolean;
@@ -25,6 +26,7 @@ export default function ConfirmPizzaModal({
   onOpenChange,
 }: ConfirmPizzaModalProps) {
   const customPizza = usePizzaStore((s) => s.customPizza);
+  const addItem = useCartStore((s) => s.addItem);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -42,18 +44,20 @@ export default function ConfirmPizzaModal({
 
         <CustomPizzaSizeSelector />
 
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <CustomPizzaQuantity />
-        </div>
+        </div> */}
 
-        <Button className="cursor-pointer">
+        <Button
+          className="cursor-pointer"
+          onClick={() => {
+            addItem({ ...customPizza, name: "custom pizza", type: "custom" });
+            // console.log({ ...customPizza, type: "custom" });
+          }}
+        >
           <Large>
-            $
-            {(
-              (customPizza?.price?.[customPizza?.size] ?? 0) *
-              customPizza?.quantity
-            ).toFixed(2)}
-            - Add to Cart
+            ${(customPizza?.price?.[customPizza?.size] ?? 0).toFixed(2)}- Add to
+            Cart
           </Large>
         </Button>
       </DialogContent>

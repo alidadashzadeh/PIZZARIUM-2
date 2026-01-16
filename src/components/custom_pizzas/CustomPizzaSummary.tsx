@@ -15,6 +15,7 @@ import CustomPizzaQuantity from "./CustomPizzaQuantity";
 type Props = {
   onAddToCart: () => void;
 };
+
 export default function CustomPizzaSummary({ onAddToCart }: Props) {
   const customPizza = usePizzaStore((state) => state.customPizza);
   const setPrice = usePizzaStore((state) => state.setPrice);
@@ -54,17 +55,13 @@ export default function CustomPizzaSummary({ onAddToCart }: Props) {
 
       <CustomPizzaSizeSelector />
 
-      <CustomPizzaQuantity />
+      {/* <CustomPizzaQuantity /> */}
 
       <div>
         <Button className="cursor-pointer w-full" onClick={onAddToCart}>
           <Large>
-            $
-            {(
-              (customPizza?.price?.[customPizza?.size] ?? 0) *
-              customPizza?.quantity
-            ).toFixed(2)}{" "}
-            - Confirm & Add to Cart
+            ${(customPizza?.price?.[customPizza?.size] ?? 0).toFixed(2)} -
+            Confirm & Add to Cart
           </Large>
         </Button>
       </div>

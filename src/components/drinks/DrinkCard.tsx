@@ -28,9 +28,7 @@ export default function DrinkCard({ drink }: DrinkCardProps) {
             className="cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
-              e.stopPropagation();
-              console.log("clicked");
-              addItem(drink);
+              addItem({ ...drink, type: "drink" });
             }}
             variant="default"
             size="sm"
