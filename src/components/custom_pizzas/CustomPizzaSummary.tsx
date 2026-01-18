@@ -12,58 +12,58 @@ import CustomPizzaToppings from "./CustomPizzaToppings";
 import CustomPizzaSizeSelector from "./CustomPizzaSizeSelector";
 
 type Props = {
-	onAddToCart: () => void;
+  onAddToCart: () => void;
 };
 
 export default function CustomPizzaSummary({ onAddToCart }: Props) {
-	const customPizza = usePizzaStore((state) => state.customPizza);
-	const setPrice = usePizzaStore((state) => state.setPrice);
-	const resetCustomPizza = usePizzaStore((state) => state.resetCustomPizza);
-	// fix - try to get only fields needed and do not subscribe to whole custompizza - minimize re-render
-	useEffect(() => {
-		const basePrice = estimateCustomPizzaCost(customPizza);
-		setPrice(basePrice);
-	}, [
-		customPizza.size,
-		customPizza.dough,
-		customPizza.crust,
-		customPizza.sauce,
-		customPizza.cheese,
-		customPizza.cook,
-		customPizza.toppings,
-	]);
+  const customPizza = usePizzaStore((state) => state.customPizza);
+  const setPrice = usePizzaStore((state) => state.setPrice);
+  const resetCustomPizza = usePizzaStore((state) => state.resetCustomPizza);
 
-	return (
-		<div className="w-100 sticky top-4 self-start flex flex-col gap-2">
-			<Button
-				variant="outline"
-				className="absolute top-0 right-0 cursor-pointer z-100"
-				onClick={resetCustomPizza}
-			>
-				<div>Clear</div>
-				<RefreshCw />
-			</Button>
+  useEffect(() => {
+    const basePrice = estimateCustomPizzaCost(customPizza);
+    setPrice(basePrice);
+  }, [
+    customPizza.size,
+    customPizza.dough,
+    customPizza.crust,
+    customPizza.sauce,
+    customPizza.cheese,
+    customPizza.cook,
+    customPizza.toppings,
+  ]);
 
-			<div className="relative h-76 aspect-square mx-auto ">
-				<CustomPizzaImage />
-			</div>
+  return (
+    <div className="w-100 sticky top-4 self-start flex flex-col gap-2">
+      <Button
+        variant="outline"
+        className="absolute top-0 right-0 cursor-pointer z-100"
+        onClick={resetCustomPizza}
+      >
+        <div>Clear</div>
+        <RefreshCw />
+      </Button>
 
-			<CustomPizzaaRecipe />
+      <div className="relative h-76 aspect-square mx-auto ">
+        <CustomPizzaImage />
+      </div>
 
-			<CustomPizzaToppings />
+      <CustomPizzaaRecipe />
 
-			<CustomPizzaSizeSelector />
+      <CustomPizzaToppings />
 
-			{/* <CustomPizzaQuantity /> */}
+      <CustomPizzaSizeSelector />
 
-			<div>
-				<Button className="cursor-pointer w-full" onClick={onAddToCart}>
-					<Large>
-						${(customPizza?.price?.[customPizza?.size] ?? 0).toFixed(2)} -
-						Confirm & Add to Cart
-					</Large>
-				</Button>
-			</div>
-		</div>
-	);
+      {/* <CustomPizzaQuantity /> */}
+
+      <div>
+        <Button className="cursor-pointer w-full" onClick={onAddToCart}>
+          <Large>
+            ${(customPizza?.price?.[customPizza?.size] ?? 0).toFixed(2)} -
+            Confirm & Add to Cart
+          </Large>
+        </Button>
+      </div>
+    </div>
+  );
 }

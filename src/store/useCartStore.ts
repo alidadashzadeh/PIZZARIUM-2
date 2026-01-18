@@ -63,6 +63,7 @@ export const useCartStore = create<CartState>()(
             addedAt: Date.now(),
           };
 
+          toast.success(`${item.name} successfully added to cart.`);
           return { items: [...state.items, newItem] };
         }),
 

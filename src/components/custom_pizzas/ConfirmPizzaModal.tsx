@@ -26,6 +26,7 @@ export default function ConfirmPizzaModal({
   onOpenChange,
 }: ConfirmPizzaModalProps) {
   const customPizza = usePizzaStore((s) => s.customPizza);
+  const resetCustomPizza = usePizzaStore((s) => s.resetCustomPizza);
   const addItem = useCartStore((s) => s.addItem);
 
   return (
@@ -51,8 +52,14 @@ export default function ConfirmPizzaModal({
         <Button
           className="cursor-pointer"
           onClick={() => {
-            addItem({ ...customPizza, name: "custom pizza", type: "custom" });
-            // console.log({ ...customPizza, type: "custom" });
+            addItem({
+              ...customPizza,
+              name: "custom pizza",
+              type: "custom",
+              quantity: 1,
+            });
+            onOpenChange(false);
+            resetCustomPizza();
           }}
         >
           <Large>
