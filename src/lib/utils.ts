@@ -109,3 +109,48 @@ export function sortCartItems(items: CartItem[]) {
 export const totalPay = (cart: CartItem[]): number => {
   return cart.reduce((total, item) => total + item.lineTotal, 0);
 };
+
+export function flyToCart(sourceEl: HTMLElement) {
+  const target = document.querySelector("[data-cart-target]");
+  if (!target) return;
+
+  const sourceRect = sourceEl.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+
+  const clone = sourceEl.cloneNode(true) as HTMLElement;
+
+  Object.assign(clone.style, {
+    position: "fixed",
+    top: `${sourceRect.top}px`,
+    left: `${sourceRect.left}px`,
+    width: `${sourceRect.width}px`,
+    height: `${sourceRect.height}px`,
+    zIndex: 9999,
+    pointerEvents: "none",
+    transition:
+      "transform 700ms cubic-bezier(.22,1,.36,1), opacity 5000ms ease",
+  });
+
+  document.body.appendChild(clone);
+
+  const dx =
+    targetRect.left +
+    targetRect.width / 2 -
+    (sourceRect.left + sourceRect.width / 2);
+  const dy =
+    targetRect.top +
+    targetRect.height / 2 -
+    (sourceRect.top + sourceRect.height / 2);
+
+  requestAnimationFrame(() => {
+    clone.style.transform = `
+      translate(${dx}px, ${dy}px)
+      scale(0.2)
+    `;
+    clone.style.opacity = "0";
+  });
+
+  clone.addEventListener("transitionend", () => {
+    clone.remove();
+  });
+}

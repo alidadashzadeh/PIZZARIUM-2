@@ -15,11 +15,10 @@ export default function CartSheetTrigger() {
 
     setBump(false);
     requestAnimationFrame(() => setBump(true));
-    console.log("change");
   }, [items.length]);
 
   return (
-    <div className="relative">
+    <div className="relative" data-cart-target>
       {items.length > 0 && (
         <span
           className={`

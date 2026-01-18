@@ -15,6 +15,8 @@ import CustomPizzaToppings from "./CustomPizzaToppings";
 import CustomPizzaSizeSelector from "./CustomPizzaSizeSelector";
 import CustomPizzaQuantity from "./CustomPizzaQuantity";
 import { useCartStore } from "@/store/useCartStore";
+import { flyToCart } from "@/lib/utils";
+import { toast } from "sonner";
 
 type ConfirmPizzaModalProps = {
   open: boolean;
@@ -52,6 +54,10 @@ export default function ConfirmPizzaModal({
         <Button
           className="cursor-pointer"
           onClick={() => {
+            if (customPizza?.toppings.length === 0) {
+              toast.error("no toppings selected!");
+              return;
+            }
             addItem({
               ...customPizza,
               name: "custom pizza",

@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { H3, Muted, P, Small } from "../ui/Typography";
 import { SignaturePizza } from "@/types/pizzaType";
 import { useCartStore } from "@/store/useCartStore";
+import { flyToCart } from "@/lib/utils";
 
 type SignaturePizzaCardProps = {
   pizza: SignaturePizza;
@@ -17,6 +18,7 @@ export default function SignaturePizzasCard({
   pizza,
 }: SignaturePizzaCardProps) {
   const addItem = useCartStore((s) => s.addItem);
+  const items = useCartStore((s) => s.items);
 
   return (
     <>
@@ -49,10 +51,19 @@ export default function SignaturePizzasCard({
               className="cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
+                const added = addItem({
+                  ...pizza,
+                  type: "signature",
+                  size: "small",
+                });
 
-                // add to cart logic here
-                addItem({ ...pizza, type: "signature", size: "small" });
-                // console.log({ ...pizza, type: "signature" });
+                if (!added) return;
+                const card =
+                  (e.currentTarget.closest(
+                    "[data-product-card]"
+                  ) as HTMLElement) ?? e.currentTarget;
+
+                flyToCart(card);
               }}
               variant="default"
               size="sm"
