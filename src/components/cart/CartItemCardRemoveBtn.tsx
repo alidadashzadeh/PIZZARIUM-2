@@ -5,17 +5,18 @@ import { CartItemCardProps } from "./CartItemCard";
 import { Trash } from "lucide-react";
 
 export default function CartItemCardRemoveBtn({ item }: CartItemCardProps) {
-  const removeItem = useCartStore((s) => s.removeItem);
+	const removeItem = useCartStore((s) => s.removeItem);
 
-  return (
-    <Button
-      variant="outline"
-      className="cursor-pointer"
-      onClick={() => {
-        removeItem(item?.cartItemId);
-      }}
-    >
-      <Trash />
-    </Button>
-  );
+	return (
+		<Button
+			variant="outline"
+			size={"sm"}
+			className="cursor-pointer"
+			onClick={() => {
+				removeItem(item?.cartItemId);
+			}}
+		>
+			<Trash />
+		</Button>
+	);
 }
