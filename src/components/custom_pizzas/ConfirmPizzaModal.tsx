@@ -14,6 +14,9 @@ import CustomPizzaaRecipe from "./CustomPizzaaRecipe";
 import CustomPizzaToppings from "./CustomPizzaToppings";
 import CustomPizzaSizeSelector from "./CustomPizzaSizeSelector";
 import CustomPizzaQuantity from "./CustomPizzaQuantity";
+import { useCartStore } from "@/store/useCartStore";
+import { flyToCart } from "@/lib/utils";
+import { toast } from "sonner";
 
 type ConfirmPizzaModalProps = {
   open: boolean;
@@ -25,6 +28,8 @@ export default function ConfirmPizzaModal({
   onOpenChange,
 }: ConfirmPizzaModalProps) {
   const customPizza = usePizzaStore((s) => s.customPizza);
+  const resetCustomPizza = usePizzaStore((s) => s.resetCustomPizza);
+  const addItem = useCartStore((s) => s.addItem);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -42,18 +47,30 @@ export default function ConfirmPizzaModal({
 
         <CustomPizzaSizeSelector />
 
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <CustomPizzaQuantity />
-        </div>
+        </div> */}
 
-        <Button className="cursor-pointer">
+        <Button
+          className="cursor-pointer"
+          onClick={() => {
+            if (customPizza?.toppings.length === 0) {
+              toast.error("no toppings selected!");
+              return;
+            }
+            addItem({
+              ...customPizza,
+              name: "custom pizza",
+              type: "custom",
+              quantity: 1,
+            });
+            onOpenChange(false);
+            resetCustomPizza();
+          }}
+        >
           <Large>
-            $
-            {(
-              (customPizza?.price?.[customPizza?.size] ?? 0) *
-              customPizza?.quantity
-            ).toFixed(2)}
-            - Add to Cart
+            ${(customPizza?.price?.[customPizza?.size] ?? 0).toFixed(2)}- Add to
+            Cart
           </Large>
         </Button>
       </DialogContent>

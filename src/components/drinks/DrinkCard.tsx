@@ -2,15 +2,19 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import { H4, Large, P, Small } from "../ui/Typography";
+import { H4, Large } from "../ui/Typography";
 import { Button } from "../ui/button";
 import { Drink } from "@/types/pizzaType";
+import { useCartStore } from "@/store/useCartStore";
+import { flyToCart } from "@/lib/utils";
 
 type DrinkCardProps = {
   drink: Drink;
 };
 
 export default function DrinkCard({ drink }: DrinkCardProps) {
+  const addItem = useCartStore((s) => s.addItem);
+
   return (
     <Card className="relative items-center">
       <CardContent>
@@ -25,8 +29,15 @@ export default function DrinkCard({ drink }: DrinkCardProps) {
             className="cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
-              e.stopPropagation();
-              console.log("clicked");
+              const added = addItem({ ...drink, type: "drink" });
+
+              if (!added) return;
+
+              const card =
+                (e.currentTarget.closest(
+                  "[data-product-card]"
+                ) as HTMLElement) ?? e.currentTarget;
+              flyToCart(card);
             }}
             variant="default"
             size="sm"

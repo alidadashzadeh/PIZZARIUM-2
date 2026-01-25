@@ -3,8 +3,6 @@ import Logo from "./Logo";
 import Nav from "./Nav";
 import UserProfile from "./UserProfile";
 import { Switch as DarkModeSwitch } from "@/components/ui/DarkModeSwitch";
-import { ShoppingCart } from "lucide-react";
-import { Button } from "../ui/button";
 import CartSheet from "./CartSheet";
 
 const Header = () => {

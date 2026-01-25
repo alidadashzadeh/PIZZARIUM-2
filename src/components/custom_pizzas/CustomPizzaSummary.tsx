@@ -10,16 +10,16 @@ import CustomPizzaImage from "./CustomPizzaImage";
 import CustomPizzaaRecipe from "./CustomPizzaaRecipe";
 import CustomPizzaToppings from "./CustomPizzaToppings";
 import CustomPizzaSizeSelector from "./CustomPizzaSizeSelector";
-import CustomPizzaQuantity from "./CustomPizzaQuantity";
 
 type Props = {
   onAddToCart: () => void;
 };
+
 export default function CustomPizzaSummary({ onAddToCart }: Props) {
   const customPizza = usePizzaStore((state) => state.customPizza);
   const setPrice = usePizzaStore((state) => state.setPrice);
   const resetCustomPizza = usePizzaStore((state) => state.resetCustomPizza);
-  // fix - try to get only fields needed and do not subscribe to whole custompizza - minimize re-render
+
   useEffect(() => {
     const basePrice = estimateCustomPizzaCost(customPizza);
     setPrice(basePrice);
@@ -54,17 +54,13 @@ export default function CustomPizzaSummary({ onAddToCart }: Props) {
 
       <CustomPizzaSizeSelector />
 
-      <CustomPizzaQuantity />
+      {/* <CustomPizzaQuantity /> */}
 
       <div>
         <Button className="cursor-pointer w-full" onClick={onAddToCart}>
           <Large>
-            $
-            {(
-              (customPizza?.price?.[customPizza?.size] ?? 0) *
-              customPizza?.quantity
-            ).toFixed(2)}{" "}
-            - Confirm & Add to Cart
+            ${(customPizza?.price?.[customPizza?.size] ?? 0).toFixed(2)} -
+            Confirm & Add to Cart
           </Large>
         </Button>
       </div>

@@ -1,12 +1,12 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchSignaturePizza } from "@/lib/queries/signaturePizza";
+import { fetchSignaturePizzaDetails } from "@/lib/queries/signaturePizza";
 
-export const useGetSignaturePizza = (id: string) => {
-	return useQuery({
-		queryKey: ["signature_pizza", id],
-		queryFn: () => fetchSignaturePizza(id),
-		enabled: !!id,
-	});
+export const useGetSignaturePizzaDetails = (id: string) => {
+  return useQuery({
+    queryKey: ["signature_pizza_details", id],
+    queryFn: () => fetchSignaturePizzaDetails(id),
+    enabled: !!id,
+  });
 };

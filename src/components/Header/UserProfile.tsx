@@ -22,24 +22,25 @@ function UserProfile() {
   const [authOpen, setAuthOpen] = useState(false);
   const user = useAuthStore((s) => s.user);
 
-  console.log(user);
-
   return (
     <div className="flex gap-4">
-      <div className="fixed inset-x-0 top-20 z-[9999]">
+      <div className="fixed inset-x-0 z-[9999]">
         <Toaster
-          position="top-right"
+          position="top-center"
           closeButton
+          richColors
           toastOptions={{
-            duration: 4000,
-            style: { fontSize: "14px" },
+            duration: 2000,
+            style: { fontSize: "14px", marginTop: "60px" },
           }}
         />
       </div>
 
       {!user && (
         <>
-          <Button onClick={() => setAuthOpen(true)}>Sign In / Sign Up</Button>
+          <Button onClick={() => setAuthOpen(true)} className="cursor-pointer">
+            Sign In / Sign Up
+          </Button>
           <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
         </>
       )}

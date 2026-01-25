@@ -1,47 +1,13 @@
-"use client";
+import { Sheet } from "@/components/ui/sheet";
 
-import { Button } from "../ui/button";
-import { ShoppingCart } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import CartSheetTrigger from "../cart/CartSheetTrigger";
+import CartSheetContent from "../cart/CartSheetContent";
 
 export default function CartSheet() {
   return (
-    <>
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            aria-label="Toggle theme"
-            className="cursor-pointer"
-          >
-            <ShoppingCart className="h-6 w-6 cursor-pointer" />
-          </Button>
-        </SheetTrigger>
-
-        <SheetContent side="right" className="w-[400px] sm:w-[450px]">
-          {/* <CartContent /> */}
-          <SheetHeader>
-            <SheetTitle>Your Cart</SheetTitle>
-            <SheetDescription>
-              Make changes to your Cart here. Click Checkout when you&apos;re
-              done.
-            </SheetDescription>
-          </SheetHeader>
-          <div>test</div>
-          <SheetFooter>
-            <Button type="submit">Checkout</Button>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
-    </>
+    <Sheet>
+      <CartSheetTrigger />
+      <CartSheetContent />
+    </Sheet>
   );
 }
