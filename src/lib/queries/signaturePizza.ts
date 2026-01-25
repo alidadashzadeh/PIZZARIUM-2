@@ -5,7 +5,7 @@ export const fetchSignaturePizzas = async () => {
   const { data, error } = await supabase
     .from("signature_pizzas")
     .select(
-      "id,name,image,avg_rating,rating_count,description,price,prep_time_minutes,category,calorie"
+      "id,name,image,avg_rating,rating_count,description,price,prep_time_minutes,category,calorie,slug"
     );
 
   if (error) throw error;
@@ -23,9 +23,9 @@ export const fetchFeaturedPizzas = async () => {
   return data;
 };
 
-export async function fetchSignaturePizza(id: string) {
+export async function fetchSignaturePizzaDetails(id: string) {
   const { data, error } = await supabase
-    .from("pizza_with_last_two_reviews")
+    .from("signature_pizza_details")
     .select("*")
     .eq("id", id)
     .single();

@@ -24,13 +24,16 @@ export default function Size({ pizza, size, setSize }: SizeProps) {
       }}
     >
       <ToggleGroupItem value="small" className="p-4">
-        Small for ${pizza?.price.small ?? "-"}
+        {/* Small for ${pizza?.price.small ?? "-"} */}
+        Small
       </ToggleGroupItem>
       <ToggleGroupItem value="medium" className="p-4">
-        Medium for ${pizza?.price.medium ?? "-"}
+        {/* Medium for ${pizza?.price.medium ?? "-"} */}
+        Medium
       </ToggleGroupItem>
       <ToggleGroupItem value="large" className="p-4">
-        Large for ${pizza?.price.large ?? "-"}
+        {/* Large for ${pizza?.price.large ?? "-"} */}
+        Large
       </ToggleGroupItem>
     </ToggleGroup>
   );

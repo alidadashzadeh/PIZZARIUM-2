@@ -38,7 +38,9 @@ function UserProfile() {
 
       {!user && (
         <>
-          <Button onClick={() => setAuthOpen(true)}>Sign In / Sign Up</Button>
+          <Button onClick={() => setAuthOpen(true)} className="cursor-pointer">
+            Sign In / Sign Up
+          </Button>
           <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
         </>
       )}

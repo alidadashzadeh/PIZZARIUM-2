@@ -42,7 +42,7 @@ export default function SignaturePizzasCard({
               Starting from
               <span className="text-lg">{pizza?.price?.small} $</span>
             </P>
-            <Link href={`/signature-pizzas/${pizza.id}`}>
+            <Link href={`/signature-pizzas/${pizza.id}/${pizza.slug}`}>
               <Button className="cursor-pointer" variant="outline" size="sm">
                 <Small>Customize</Small>
               </Button>
