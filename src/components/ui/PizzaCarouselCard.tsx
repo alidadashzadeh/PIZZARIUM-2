@@ -13,6 +13,7 @@ interface SignaturePizzaCardProps {
     rating_count: number;
     price: { small: number; medium?: number; large?: number };
     description?: string;
+    slug: string;
   };
 }
 
@@ -47,7 +48,7 @@ export default function PizzaCarouselCard({ pizza }: SignaturePizzaCardProps) {
         )}
       </div>
 
-      <Link href={`/signature-pizzas/${pizza?.id}`}>
+      <Link href={`/signature-pizzas/${pizza?.id}/${pizza?.slug}`}>
         <Button
           variant="outline"
           size="sm"

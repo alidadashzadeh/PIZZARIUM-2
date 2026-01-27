@@ -4,7 +4,9 @@ export interface Profile {
   id: string;
   username: string | null;
   avatar: string | null;
+  phone_number: string;
   created_at: string;
+  address: string;
 }
 
 /**
@@ -44,31 +46,45 @@ export async function createProfile(profile: {
 /**
  * Update current user's profile
  */
-export async function updateProfile(
-  userId: string,
-  updates: Partial<Pick<Profile, "username" | "avatar">>
-) {
+// export async function updateProfile(
+//   userId: string,
+//   updates: Partial<Pick<Profile, "username" | "avatar">>
+// ) {
+//   const { error } = await supabase
+//     .from("profiles")
+//     .update(updates)
+//     .eq("id", userId);
+
+//   if (error) throw error;
+// }
+type UpdateProfileInput = {
+  username?: string;
+  phone_number?: string;
+  address?: string;
+};
+
+export async function updateProfile(data: UpdateProfileInput) {
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    throw new Error("Not authenticated");
+  }
+
+  const cleanData = Object.fromEntries(
+    Object.entries(data).filter(([_, v]) => v !== undefined && v !== "")
+  );
+
+  if (Object.keys(cleanData).length === 0) {
+    throw new Error("Nothing to update");
+  }
+
   const { error } = await supabase
     .from("profiles")
-    .update(updates)
-    .eq("id", userId);
+    .update(cleanData)
+    .eq("id", user.id);
 
   if (error) throw error;
-}
-
-/**
- * Fetch profile if it exists, otherwise return null
- */
-export async function fetchProfileSafe(
-  userId: string
-): Promise<Profile | null> {
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .maybeSingle();
-
-  if (error) throw error;
-
-  return data;
 }

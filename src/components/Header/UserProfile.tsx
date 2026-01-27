@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -14,13 +15,16 @@ import { Small } from "../ui/Typography";
 import AuthModal from "../ui/AuthModal";
 import { useAuthStore } from "@/store/useAuthStore";
 import { signOut } from "@/lib/queries/auth";
-import { AvatarImage } from "@radix-ui/react-avatar";
 import { Toaster } from "../ui/sonner";
 import { toast } from "sonner";
+import Link from "next/link";
+import { useProfile } from "@/hooks/profile/useProfile";
 
 function UserProfile() {
   const [authOpen, setAuthOpen] = useState(false);
+
   const user = useAuthStore((s) => s.user);
+  const { data: profile } = useProfile();
 
   return (
     <div className="flex gap-4">
@@ -36,22 +40,22 @@ function UserProfile() {
         />
       </div>
 
+      {/* 🔑 AUTH STATE CONTROLS UI */}
       {!user && (
         <>
-          <Button onClick={() => setAuthOpen(true)} className="cursor-pointer">
-            Sign In / Sign Up
-          </Button>
+          <Button onClick={() => setAuthOpen(true)}>Sign In / Sign Up</Button>
           <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
         </>
       )}
+
       {user && (
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-2">
             <Avatar className="w-8 h-8">
-              {user?.avatar ? (
+              {profile?.avatar ? (
                 <AvatarImage
-                  src={user.avatar}
-                  alt={user.username}
+                  src={profile.avatar}
+                  alt={profile.username}
                   className="w-full h-full object-cover rounded-full"
                 />
               ) : (
@@ -60,23 +64,24 @@ function UserProfile() {
                 </AvatarFallback>
               )}
             </Avatar>
+
             <Small className="pr-2 line-clamp-1 max-w-[6ch]">
-              {user?.username || user?.email?.split("@")[0]}
+              {profile?.username ?? user.email?.split("@")[0]}
             </Small>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="w-48 mt-2">
             <DropdownMenuItem asChild>
-              <a href="/profile" className="flex items-center gap-2">
+              <Link href="/profile" className="flex items-center gap-2">
                 <UserIcon className="w-4 h-4" />
                 Profile
-              </a>
+              </Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem
-              onClick={() => {
-                signOut();
-                toast("Signed out Successfully!");
+              onClick={async () => {
+                await signOut();
+                toast("Signed out successfully!");
               }}
               className="flex items-center gap-2 text-red-600"
             >
