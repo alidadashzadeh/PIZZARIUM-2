@@ -46,45 +46,34 @@ export async function createProfile(profile: {
 /**
  * Update current user's profile
  */
-// export async function updateProfile(
-//   userId: string,
-//   updates: Partial<Pick<Profile, "username" | "avatar">>
-// ) {
-//   const { error } = await supabase
-//     .from("profiles")
-//     .update(updates)
-//     .eq("id", userId);
 
-//   if (error) throw error;
-// }
 type UpdateProfileInput = {
   username?: string;
   phone_number?: string;
   address?: string;
 };
 
-export async function updateProfile(data: UpdateProfileInput) {
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
+export type UpdateProfileVars = {
+  user_id: string;
+  username?: string;
+  phone_number?: string;
+  address?: string;
+};
 
-  if (authError || !user) {
-    throw new Error("Not authenticated");
-  }
-
-  const cleanData = Object.fromEntries(
-    Object.entries(data).filter(([_, v]) => v !== undefined && v !== "")
-  );
-
-  if (Object.keys(cleanData).length === 0) {
-    throw new Error("Nothing to update");
-  }
-
-  const { error } = await supabase
+export async function updateProfile({
+  user_id,
+  ...updates
+}: UpdateProfileVars) {
+  const { data, error } = await supabase
     .from("profiles")
-    .update(cleanData)
-    .eq("id", user.id);
+    .update(updates)
+    .eq("id", user_id)
+    .select("*")
+    .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
+
+  return data;
 }

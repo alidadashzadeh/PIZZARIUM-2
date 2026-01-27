@@ -21,14 +21,14 @@ export default function ProfileSettings() {
     address: profile?.address ?? "",
   });
 
-  const { mutate: updateProfile, isPending } = useUpdateProfile();
+  const { mutate, isPending } = useUpdateProfile(user.id!);
 
-  // console.log(profile);
-
-  const onSubmit = async () => {
-    await updateProfile(form);
+  const handleSave = () => {
+    mutate({
+      user_id: user.id,
+      ...form,
+    });
   };
-
   return (
     <div className="max-w-3xl mx-auto flex flex-col gap-6">
       <H2>Profile</H2>
@@ -112,8 +112,8 @@ export default function ProfileSettings() {
         <Button
           size="lg"
           className="w-auto"
-          onClick={onSubmit}
-          // disabled={loading}
+          onClick={handleSave}
+          disabled={isPending}
         >
           Save Changes
         </Button>
