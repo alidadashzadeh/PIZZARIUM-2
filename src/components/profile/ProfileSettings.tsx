@@ -10,10 +10,12 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useState } from "react";
 import { useUpdateProfile } from "@/hooks/profile/useUpdateProfile";
 import { useProfile } from "@/hooks/profile/useProfile";
+import { useUpdateAvatar } from "@/hooks/profile/useUpdateAvatar";
 
 export default function ProfileSettings() {
   const user = useAuthStore((s) => s.user);
   const { data: profile } = useProfile();
+  const userId = user.id;
 
   const [form, setForm] = useState({
     username: profile?.username ?? "",
@@ -22,6 +24,9 @@ export default function ProfileSettings() {
   });
 
   const { mutate, isPending } = useUpdateProfile(user.id!);
+  const { mutate: mutateVatar, isPending: pendingAvatar } = useUpdateAvatar(
+    user.id!
+  );
 
   const handleSave = () => {
     mutate({
@@ -29,6 +34,7 @@ export default function ProfileSettings() {
       ...form,
     });
   };
+
   return (
     <div className="max-w-3xl mx-auto flex flex-col gap-6">
       <H2>Profile</H2>
@@ -46,9 +52,16 @@ export default function ProfileSettings() {
           />
           <div className="flex flex-col gap-2">
             <P>Profile Picture</P>
-            <Button variant="outline" size="sm">
-              Change Avatar
-            </Button>
+            <Input
+              type="file"
+              accept="image/*"
+              disabled={isPending}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                mutateVatar({ userId, file });
+              }}
+            />
           </div>
         </CardContent>
       </Card>
