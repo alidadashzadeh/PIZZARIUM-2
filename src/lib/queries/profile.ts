@@ -4,7 +4,9 @@ export interface Profile {
   id: string;
   username: string | null;
   avatar: string | null;
+  phone_number: string;
   created_at: string;
+  address: string;
 }
 
 /**
@@ -44,31 +46,67 @@ export async function createProfile(profile: {
 /**
  * Update current user's profile
  */
-export async function updateProfile(
-  userId: string,
-  updates: Partial<Pick<Profile, "username" | "avatar">>
-) {
-  const { error } = await supabase
-    .from("profiles")
-    .update(updates)
-    .eq("id", userId);
 
-  if (error) throw error;
-}
+export type UpdateProfileVars = {
+  user_id: string;
+  username?: string;
+  phone_number?: string;
+  address?: string;
+};
 
-/**
- * Fetch profile if it exists, otherwise return null
- */
-export async function fetchProfileSafe(
-  userId: string
-): Promise<Profile | null> {
+export async function updateProfile({
+  user_id,
+  ...updates
+}: UpdateProfileVars) {
   const { data, error } = await supabase
     .from("profiles")
+    .update(updates)
+    .eq("id", user_id)
     .select("*")
-    .eq("id", userId)
-    .maybeSingle();
+    .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+// lib/queries/profile.ts
+export async function uploadAvatar({
+  userId,
+  file,
+}: {
+  userId: string;
+  file: File;
+}) {
+  const filePath = `${userId}-${Date.now()}.jpg`;
+
+  // 1️⃣ upload / overwrite image
+  const { error: uploadError } = await supabase.storage
+    .from("avatars")
+    .upload(filePath, file, {
+      upsert: true,
+      contentType: file.type,
+    });
+
+  if (uploadError) {
+    throw uploadError;
+  }
+
+  // 2️⃣ build public URL (known format)
+  const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${filePath}`;
+
+  // 3️⃣ update profile row
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ avatar: publicUrl })
+    .eq("id", userId)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw error;
+  }
 
   return data;
 }

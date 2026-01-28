@@ -33,7 +33,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       // Merge profile into user
       set({
         session,
-        user: { ...user, username: profile.username, avatar: profile.avatar },
+        user: session.user,
+        // user: {
+        //   ...user,
+        //   username: profile.username,
+        //   avatar: profile.avatar,
+        //   phone_number: profile.phone_number,
+        // },
         loading: false,
       });
     } catch (err) {
@@ -48,23 +54,6 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ session: null, user: null });
   },
 }));
-// export const useAuthStore = create<AuthState>((set) => ({
-//   user: null,
-//   session: null,
-//   loading: true,
-
-//   setSession: (session) =>
-//     set({
-//       session,
-//       user: session?.user ?? null,
-//       loading: false,
-//     }),
-
-//   signOut: async () => {
-//     await supabase.auth.signOut();
-//     set({ session: null, user: null });
-//   },
-// }));
 
 // Initialize store on app start
 (async () => {
