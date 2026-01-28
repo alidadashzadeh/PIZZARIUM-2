@@ -1,5 +1,3 @@
-// "use client";
-
 import { updateProfile } from "@/lib/queries/profile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -10,6 +8,7 @@ export function useUpdateProfile(userId: string) {
   return useMutation({
     mutationFn: updateProfile,
 
+    // OPTIMISTIC UPDATE
     onMutate: async (variables) => {
       await queryClient.cancelQueries({
         queryKey: ["profile", userId],
@@ -17,15 +16,20 @@ export function useUpdateProfile(userId: string) {
 
       const previousProfile = queryClient.getQueryData(["profile", userId]);
 
+      // remove user_id so it doesn't pollute cache
       const { user_id, ...optimisticFields } = variables as any;
 
-      queryClient.setQueryData(["profile", userId], (old: any) => ({
-        ...old,
-        ...optimisticFields,
-      }));
+      queryClient.setQueryData(["profile", userId], (old: any) =>
+        old
+          ? {
+              ...old,
+              ...optimisticFields,
+            }
+          : old
+      );
 
       return { previousProfile };
-    }, // ✅ comma, not semicolon
+    },
 
     onError: (_error, _variables, context) => {
       if (context?.previousProfile) {
@@ -35,13 +39,11 @@ export function useUpdateProfile(userId: string) {
       toast.error("Update failed, changes reverted");
     },
 
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["profile", userId],
-      });
-    },
+    // ✅ commit real server truth directly into cache
+    // ✅ remove invalidate and extra fetch
+    onSuccess: (serverProfile) => {
+      queryClient.setQueryData(["profile", userId], serverProfile);
 
-    onSuccess: () => {
       toast.success("Profile updated");
     },
   });

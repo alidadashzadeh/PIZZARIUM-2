@@ -48,7 +48,7 @@ export default function ProfileSettings() {
             alt="Avatar"
             width={80}
             height={80}
-            className="rounded-full object-cover"
+            className="h-20 w-20 rounded-full object-cover"
           />
           <div className="flex flex-col gap-2">
             <P>Profile Picture</P>
@@ -80,7 +80,7 @@ export default function ProfileSettings() {
           </CardContent>
         </Card>
 
-        {/* Phone */}
+        {/* Phone_number */}
         <Card>
           <CardContent className="p-6 flex flex-col gap-2">
             <Label>Phone Number</Label>
@@ -105,6 +105,8 @@ export default function ProfileSettings() {
             />
           </CardContent>
         </Card>
+
+        {/* member since */}
         <Card>
           <CardContent className="p-6 flex flex-col gap-2">
             <Label>Loyal member since</Label>
