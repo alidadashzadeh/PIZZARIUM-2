@@ -23,14 +23,13 @@ export default function ProfileSettings() {
     address: profile?.address ?? "",
   });
 
-  const { mutate, isPending } = useUpdateProfile(user.id!);
+  const { mutate: updateProfile, isPending } = useUpdateProfile();
   const { mutate: mutateVatar, isPending: pendingAvatar } = useUpdateAvatar(
     user.id!
   );
 
   const handleSave = () => {
-    mutate({
-      user_id: user.id,
+    updateProfile({
       ...form,
     });
   };

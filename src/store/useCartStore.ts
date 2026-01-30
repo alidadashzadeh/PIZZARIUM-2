@@ -28,45 +28,6 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       items: [],
 
-      // actions
-      // addItem: (item) =>
-      //   set((state) => {
-      //     const quantity = item.quantity ?? 1;
-
-      //     const existingItem = state.items.some((i) => {
-      //       // custom items are always unique
-      //       if (item.type === "custom") return false;
-
-      //       // drinks & signature pizzas have id
-      //       return i.id === item.id && i.type === item.type;
-      //     });
-
-      //     if (existingItem) {
-      //       toast.error(`${item.name} is already in the cart!`);
-      //       return state;
-      //     }
-
-      //     let lineTotal = 0;
-
-      //     if (item.size && typeof item.price === "object") {
-      //       // pizza
-      //       lineTotal = item.price[item.size] * quantity;
-      //     } else {
-      //       // drink
-      //       lineTotal = item.price * quantity;
-      //     }
-      //     const newItem: CartItem = {
-      //       ...item,
-      //       cartItemId: nanoid(),
-      //       quantity,
-      //       lineTotal,
-      //       addedAt: Date.now(),
-      //     };
-
-      //     toast.success(`${item.name} successfully added to cart.`);
-      //     return { items: [...state.items, newItem] };
-      //   }),
-
       addItem: (item): boolean => {
         const quantity = item.quantity ?? 1;
 

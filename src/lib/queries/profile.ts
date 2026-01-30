@@ -1,4 +1,5 @@
 import { supabase } from "../supabase";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export interface Profile {
   id: string;
@@ -54,23 +55,48 @@ export type UpdateProfileVars = {
   address?: string;
 };
 
-export async function updateProfile({
-  user_id,
-  ...updates
-}: UpdateProfileVars) {
+// export async function updateProfile({
+//   user_id,
+//   ...updates
+// }: UpdateProfileVars) {
+//   const { data, error } = await supabase
+//     .from("profiles")
+//     .update(updates)
+//     .eq("id", user_id)
+//     .select("*")
+//     .single();
+
+//   if (error) {
+//     throw error;
+//   }
+
+//   return data;
+// }
+
+export async function updateProfile(updates: {
+  username?: string;
+  phone_number?: string;
+  address?: string;
+}) {
+  // ✅ Always grab current user inside query
+  const user = useAuthStore.getState().user;
+
+  if (!user?.id) {
+    throw new Error("Not logged in");
+  }
+
   const { data, error } = await supabase
     .from("profiles")
     .update(updates)
-    .eq("id", user_id)
+    .eq("id", user.id)
     .select("*")
     .single();
 
-  if (error) {
-    throw error;
-  }
+  if (error) throw error;
 
   return data;
 }
+
 // lib/queries/profile.ts
 export async function uploadAvatar({
   userId,

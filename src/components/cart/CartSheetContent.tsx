@@ -1,6 +1,5 @@
 "use client";
 
-import { totalPay } from "@/lib/utils";
 import { Button } from "../ui/button";
 import {
   SheetContent,
@@ -9,14 +8,23 @@ import {
   SheetHeader,
   SheetTitle,
 } from "../ui/sheet";
+import { Spinner } from "@/components/ui/spinner";
 import { Large, Muted } from "../ui/Typography";
+
 import CartItemList from "./CartItemList";
+
 import { useCartStore } from "@/store/useCartStore";
 
-export default function CartSheetContent() {
-  const items = useCartStore((s) => s.items);
+import { sortCartItems, totalPay } from "@/lib/utils";
+import { useStripeCheckout } from "@/hooks/checkout/useStripeCheckout";
+import Link from "next/link";
 
+export default function CartSheetContent() {
+  const items = sortCartItems(useCartStore((s) => s.items));
   const total = totalPay(items);
+
+  const { checkout, stripeLoading, stripeError } = useStripeCheckout();
+
   return (
     <SheetContent
       side="right"
@@ -28,13 +36,16 @@ export default function CartSheetContent() {
           Make changes to your Cart here. Click Checkout when you&apos;re done.
         </SheetDescription>
       </SheetHeader>
+
       <div className="flex justify-between px-4 border-b">
         <Muted>Items</Muted>
         <Muted>Price</Muted>
       </div>
-      <div className=" overflow-y-auto scrollbar-hide">
+
+      <div className="overflow-y-auto scrollbar-hide">
         <CartItemList />
       </div>
+
       <SheetFooter className="mt-auto border-t pt-4">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-4">
@@ -42,10 +53,26 @@ export default function CartSheetContent() {
             <Large>${total.toFixed(2)}</Large>
           </div>
 
-          <Button size="lg" className="px-8" disabled={!items.length}>
-            Checkout
-          </Button>
+          <Link href={"/checkout"}>
+            <Button
+              size="lg"
+              className="px-8 flex items-center justify-center gap-2"
+              disabled={!items.length || stripeLoading}
+              // onClick={() => checkout(items)}
+            >
+              {stripeLoading ? (
+                <>
+                  <Spinner className="w-5 h-5 animate-spin text-white" />
+                  Processing
+                </>
+              ) : (
+                "Checkout"
+              )}
+            </Button>
+          </Link>
         </div>
+
+        {stripeError && <p className="text-red-500 mt-2">{stripeError}</p>}
       </SheetFooter>
     </SheetContent>
   );

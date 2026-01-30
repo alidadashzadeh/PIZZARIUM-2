@@ -1,48 +1,49 @@
 import { updateProfile } from "@/lib/queries/profile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useAuthStore } from "@/store/useAuthStore";
 
-export function useUpdateProfile(userId: string) {
+export function useUpdateProfile() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: updateProfile,
 
-    // OPTIMISTIC UPDATE
     onMutate: async (variables) => {
+      const user = useAuthStore.getState().user;
+      if (!user?.id) return;
+
+      const userId = user.id;
+
       await queryClient.cancelQueries({
         queryKey: ["profile", userId],
       });
 
       const previousProfile = queryClient.getQueryData(["profile", userId]);
 
-      // remove user_id so it doesn't pollute cache
-      const { user_id, ...optimisticFields } = variables as any;
-
       queryClient.setQueryData(["profile", userId], (old: any) =>
-        old
-          ? {
-              ...old,
-              ...optimisticFields,
-            }
-          : old
+        old ? { ...old, ...variables } : old
       );
 
       return { previousProfile };
     },
 
-    onError: (_error, _variables, context) => {
+    onError: (_err, _vars, context) => {
+      const user = useAuthStore.getState().user;
+      if (!user?.id) return;
+
       if (context?.previousProfile) {
-        queryClient.setQueryData(["profile", userId], context.previousProfile);
+        queryClient.setQueryData(["profile", user.id], context.previousProfile);
       }
 
-      toast.error("Update failed, changes reverted");
+      toast.error("Update failed, reverted");
     },
 
-    // ✅ commit real server truth directly into cache
-    // ✅ remove invalidate and extra fetch
     onSuccess: (serverProfile) => {
-      queryClient.setQueryData(["profile", userId], serverProfile);
+      const user = useAuthStore.getState().user;
+      if (!user?.id) return;
+
+      queryClient.setQueryData(["profile", user.id], serverProfile);
 
       toast.success("Profile updated");
     },
