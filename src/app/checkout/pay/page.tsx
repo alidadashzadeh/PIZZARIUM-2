@@ -7,7 +7,7 @@ import { useStripeCheckout } from "@/hooks/checkout/useStripeCheckout";
 
 export default function PayPage() {
   const cartItems = useCartStore((s) => s.items);
-  const shipping = useDeliveryStore((s) => s.shipping);
+  const delivery = useDeliveryStore((s) => s.delivery);
   const { checkout, stripeLoading, stripeError } = useStripeCheckout();
 
   const hasCheckedOut = useRef(false); // ✅ prevents multiple calls
@@ -17,8 +17,8 @@ export default function PayPage() {
     if (!cartItems.length) return;
 
     hasCheckedOut.current = true;
-    checkout(cartItems, shipping);
-  }, [cartItems, shipping, checkout]);
+    checkout(cartItems, delivery);
+  }, [cartItems, delivery, checkout]);
 
   return (
     <div className="max-w-xl mx-auto py-20 text-center">

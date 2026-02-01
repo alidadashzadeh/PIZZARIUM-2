@@ -15,7 +15,7 @@ export function useStripeCheckout() {
 
   const checkout = async (
     items: CartItem[],
-    shipping: { address: string; phone_number: string }
+    delivery: { address: string; phone_number: string }
   ) => {
     if (!items.length) return;
 
@@ -30,8 +30,8 @@ export function useStripeCheckout() {
         user_id: user?.id,
         items,
         total,
-        delivery_address: shipping.address,
-        delivery_phone: shipping.phone_number,
+        delivery_address: delivery.address,
+        delivery_phone: delivery.phone_number,
       });
 
       if (!order) throw new Error("Order creation failed");

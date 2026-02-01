@@ -5,12 +5,12 @@ export function useDeliveryFields(
   field: "address" | "phone_number",
   defaultValue?: string
 ) {
-  const shipping = useDeliveryStore((s) => s.shipping);
+  const delivery = useDeliveryStore((s) => s.delivery);
   const setShipping = useDeliveryStore((s) => s.setShipping);
 
   const [useDefault, setUseDefault] = useState(false);
 
-  // Update shipping field whenever checkbox or default value changes
+  // Update delivery field whenever checkbox or default value changes
   useEffect(() => {
     if (useDefault) {
       setShipping({ [field]: defaultValue ?? "" });
@@ -25,7 +25,7 @@ export function useDeliveryFields(
   };
 
   // Current value in store
-  const value = shipping[field] ?? "";
+  const value = delivery[field] ?? "";
 
   return { useDefault, setUseDefault, value, onChange };
 }

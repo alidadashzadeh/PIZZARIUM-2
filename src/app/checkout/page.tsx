@@ -16,11 +16,11 @@ export default function CheckoutPage() {
 
   const cartItems = sortCartItems(useCartStore((s) => s.items));
   const total = totalPay(cartItems);
-  const shipping = useDeliveryStore((s) => s.shipping);
+  const delivery = useDeliveryStore((s) => s.delivery);
   const [loading, setLoading] = useState(false);
 
   const handlePayNow = () => {
-    if (!shipping?.address?.trim() || !shipping?.phone_number?.trim()) {
+    if (!delivery?.address?.trim() || !delivery?.phone_number?.trim()) {
       toast.error("Delivery Info required");
       return;
     }
