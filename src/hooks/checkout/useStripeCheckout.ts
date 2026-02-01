@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useOrder } from "@/hooks/orders/useOrder";
 import { useAuthStore } from "@/store/useAuthStore";
 import { CartItem } from "@/types/pizzaType";
-import { totalPay } from "@/lib/utils";
+import { sortCartItems, totalPay } from "@/lib/utils";
 
 export function useStripeCheckout() {
   const { createOrder } = useOrder();
@@ -15,7 +15,12 @@ export function useStripeCheckout() {
 
   const checkout = async (
     items: CartItem[],
-    delivery: { address: string; phone_number: string }
+    delivery: {
+      full_name: string;
+      address: string;
+      phone_number: string;
+      delivery_instructions?: string;
+    }
   ) => {
     if (!items.length) return;
 
@@ -30,14 +35,20 @@ export function useStripeCheckout() {
         user_id: user?.id,
         items,
         total,
+
+        // delivery info
+        customer_name: delivery.full_name,
         delivery_address: delivery.address,
         delivery_phone: delivery.phone_number,
+        delivery_instructions: delivery.delivery_instructions || "",
       });
 
       if (!order) throw new Error("Order creation failed");
 
+      const sortedItems = sortCartItems(items);
+
       // 2️⃣ Build Stripe line_items directly
-      const line_items = items.map((item) => {
+      const line_items = sortedItems.map((item) => {
         let finalPrice: number;
 
         // Drinks already have numeric price
