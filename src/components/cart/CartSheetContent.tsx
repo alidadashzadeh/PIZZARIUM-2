@@ -51,15 +51,24 @@ export default function CartSheetContent() {
           </div>
 
           <SheetClose asChild>
-            <Link href={"/checkout"}>
+            {items.length ? (
+              <Link href="/checkout">
+                <Button
+                  size="lg"
+                  className="px-16 flex items-center justify-center gap-2"
+                >
+                  Checkout
+                </Button>
+              </Link>
+            ) : (
               <Button
                 size="lg"
                 className="px-16 flex items-center justify-center gap-2"
-                disabled={!items.length}
+                disabled
               >
                 Checkout
               </Button>
-            </Link>
+            )}
           </SheetClose>
         </div>
       </SheetFooter>

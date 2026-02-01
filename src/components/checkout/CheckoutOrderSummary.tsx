@@ -54,7 +54,7 @@ export default function CheckoutOrderSummary() {
       <Button
         size="lg"
         className="w-full mt-auto"
-        disabled={loading}
+        disabled={loading || !cartItems.length}
         onClick={handlePayNow}
       >
         {loading ? (
