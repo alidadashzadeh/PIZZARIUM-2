@@ -1,11 +1,9 @@
 import SignaturePizzaDetails from "@/components/signature_pizzas/SignaturePizzaDetails";
 
-function page() {
+export default function page() {
   return (
     <div>
       <SignaturePizzaDetails />
     </div>
   );
 }
-
-export default page;

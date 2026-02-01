@@ -9,7 +9,6 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { SignInForm } from "./SignInForm";
 import { SignUpForm } from "./SignUpForm";
-import Logo from "../Header/Logo";
 
 interface AuthModalProps {
   open: boolean;

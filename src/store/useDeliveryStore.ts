@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-export type ShippingInfo = {
+export type DeliveryInfo = {
   address: string;
   phone_number: string;
 };
 
 export type CheckoutStore = {
-  shipping: ShippingInfo;
-  setShipping: (data: Partial<ShippingInfo>) => void;
+  shipping: DeliveryInfo;
+  setShipping: (data: Partial<DeliveryInfo>) => void;
   clearShipping: () => void;
 };
 
@@ -17,7 +17,7 @@ export const useDeliveryStore = create<CheckoutStore>((set) => ({
     phone_number: "",
   },
 
-  setShipping: (data: Partial<ShippingInfo>) =>
+  setShipping: (data: Partial<DeliveryInfo>) =>
     set((state) => ({
       shipping: { ...state.shipping, ...data },
     })),

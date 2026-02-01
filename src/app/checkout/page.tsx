@@ -2,15 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
 import { useDeliveryStore } from "@/store/useDeliveryStore";
 import { useCartStore } from "@/store/useCartStore";
-
-import { useProfile } from "@/hooks/profile/useProfile";
 import { totalPay, sortCartItems } from "@/lib/utils";
-
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -22,7 +17,6 @@ export default function CheckoutPage() {
   const cartItems = sortCartItems(useCartStore((s) => s.items));
   const total = totalPay(cartItems);
   const shipping = useDeliveryStore((s) => s.shipping);
-  // const { data: profile } = useProfile();
   const [loading, setLoading] = useState(false);
 
   const handlePayNow = () => {
@@ -30,9 +24,7 @@ export default function CheckoutPage() {
       toast.error("Delivery Info required");
       return;
     }
-
     setLoading(true);
-    // ✅ Go to pay page
     router.push("/checkout/pay");
   };
 
@@ -79,7 +71,7 @@ export default function CheckoutPage() {
                 Processing...
               </>
             ) : (
-              "Pay Now"
+              "Continue to Payment"
             )}
           </Button>
         </Card>

@@ -16,7 +16,7 @@ export function useSignUp(onClose?: () => void) {
     }
 
     try {
-      const { user, session } = await signUp(data.email, data.password);
+      const { user } = await signUp(data.email, data.password);
 
       if (!user) {
         setErrorMsg("Failed to sign up. Please try again.");
@@ -32,9 +32,14 @@ export function useSignUp(onClose?: () => void) {
       toast("Check your Email for verification");
 
       onClose?.();
-    } catch (err: any) {
-      setErrorMsg(err?.message || "An unexpected error occurred");
-    } finally {
+    } catch (err: unknown) {
+      let message = "An unexpected error occurred";
+
+      if (err instanceof Error) {
+        message = err.message;
+      }
+
+      setErrorMsg(message);
     }
   };
 

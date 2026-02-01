@@ -31,6 +31,7 @@ export default function CustomPizzaSummary({ onAddToCart }: Props) {
     customPizza.cheese,
     customPizza.cook,
     customPizza.toppings,
+    setPrice,
   ]);
 
   return (

@@ -13,9 +13,7 @@ import CustomPizzaImage from "./CustomPizzaImage";
 import CustomPizzaaRecipe from "./CustomPizzaaRecipe";
 import CustomPizzaToppings from "./CustomPizzaToppings";
 import CustomPizzaSizeSelector from "./CustomPizzaSizeSelector";
-import CustomPizzaQuantity from "./CustomPizzaQuantity";
 import { useCartStore } from "@/store/useCartStore";
-import { flyToCart } from "@/lib/utils";
 import { toast } from "sonner";
 
 type ConfirmPizzaModalProps = {

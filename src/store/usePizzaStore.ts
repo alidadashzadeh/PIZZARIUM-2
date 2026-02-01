@@ -1,4 +1,3 @@
-import CustomPizzaList from "@/components/custom_pizzas/CustomPizzaList";
 import {
   CartItem,
   CustomPizzaOption,
@@ -9,7 +8,9 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type MultiSelectKeys = {
-  [K in keyof CustomPizzaType]: CustomPizzaType[K] extends any[] ? K : never;
+  [K in keyof CustomPizzaType]: CustomPizzaType[K] extends unknown[]
+    ? K
+    : never;
 }[keyof CustomPizzaType];
 
 type PizzaStore = {

@@ -1,7 +1,7 @@
 import { Sheet } from "@/components/ui/sheet";
 
-import CartSheetTrigger from "../cart/CartSheetTrigger";
-import CartSheetContent from "../cart/CartSheetContent";
+import CartSheetTrigger from "./CartSheetTrigger";
+import CartSheetContent from "./CartSheetContent";
 
 export default function CartSheet() {
   return (

@@ -12,7 +12,6 @@ import Size from "../ui/Size";
 import ReviewDetails from "./ReviewDetails";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
-import { Textarea } from "../ui/textarea";
 import { H2, H4, Large, Muted, P, Small } from "../ui/Typography";
 
 import { useCartStore } from "@/store/useCartStore";
@@ -67,7 +66,7 @@ function SignaturePizzaDetails() {
   const handleAddToCart = useCallback(() => {
     addItem(cartItem);
     console.log(cartItem);
-  }, [cartItem]);
+  }, [cartItem, addItem]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error || !pizza) return <div>Pizza not found.</div>;

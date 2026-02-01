@@ -30,8 +30,8 @@ export function useStripeCheckout() {
         user_id: user?.id,
         items,
         total,
-        shipping_address: shipping.address,
-        shipping_phone: shipping.phone_number,
+        delivery_address: shipping.address,
+        delivery_phone: shipping.phone_number,
       });
 
       if (!order) throw new Error("Order creation failed");
@@ -87,10 +87,16 @@ export function useStripeCheckout() {
 
       // ✅ Redirect user to Stripe
       window.location.href = data.url;
-    } catch (err: any) {
-      console.error("Stripe Checkout Error:", err.message || err);
+    } catch (err: unknown) {
+      let message = "Stripe checkout failed";
 
-      setStripeError(err.message);
+      if (err instanceof Error) {
+        message = err.message;
+      }
+
+      console.error("Stripe Checkout Error:", message);
+
+      setStripeError(message);
       setStripeLoading(false);
     }
   };

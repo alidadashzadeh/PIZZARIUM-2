@@ -30,9 +30,15 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (err: any) {
-    console.error("Stripe Checkout Error:", err.message);
+  } catch (err: unknown) {
+    let message = "Something went wrong";
 
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    if (err instanceof Error) {
+      message = err.message;
+    }
+
+    console.error("Stripe Checkout Error:", message);
+
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

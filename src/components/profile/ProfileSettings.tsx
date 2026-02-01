@@ -24,9 +24,7 @@ export default function ProfileSettings() {
   });
 
   const { mutate: updateProfile, isPending } = useUpdateProfile();
-  const { mutate: mutateVatar, isPending: pendingAvatar } = useUpdateAvatar(
-    user.id!
-  );
+  const { mutate: mutateVatar } = useUpdateAvatar(user.id!);
 
   const handleSave = () => {
     updateProfile({
@@ -82,7 +80,7 @@ export default function ProfileSettings() {
         {/* Phone_number */}
         <Card>
           <CardContent className="p-6 flex flex-col gap-2">
-            <Label>Phone Number</Label>
+            <Label>Default Phone Number</Label>
             <Input
               placeholder={profile?.phone_number ?? "+1 555 123 4567"}
               value={form.phone_number}
@@ -96,7 +94,7 @@ export default function ProfileSettings() {
         {/* Address */}
         <Card>
           <CardContent className="p-6 flex flex-col gap-2">
-            <Label>Address</Label>
+            <Label>Default Address</Label>
             <Input
               placeholder={profile?.address ?? "123 Main St, New York, NY"}
               value={form.address}

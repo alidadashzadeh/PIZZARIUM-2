@@ -18,7 +18,6 @@ export default function SignaturePizzasCard({
   pizza,
 }: SignaturePizzaCardProps) {
   const addItem = useCartStore((s) => s.addItem);
-  const items = useCartStore((s) => s.items);
 
   return (
     <>
@@ -44,7 +43,7 @@ export default function SignaturePizzasCard({
             </P>
             <Link href={`/signature-pizzas/${pizza.id}/${pizza.slug}`}>
               <Button className="cursor-pointer" variant="outline" size="sm">
-                <Small>Customize</Small>
+                <Small>Details</Small>
               </Button>
             </Link>
             <Button
