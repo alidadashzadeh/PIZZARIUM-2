@@ -1,42 +1,68 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import { markOrderPaid } from "@/lib/server/orders";
+import { markOrderPaid, deleteOrder } from "@/lib/server/orders";
 
 export async function POST(req: Request) {
-  const body = await req.text();
-  const signature = req.headers.get("stripe-signature");
+	const body = await req.text();
+	const signature = req.headers.get("stripe-signature");
 
-  let event;
+	let event;
 
-  try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      signature!,
-      process.env.STRIPE_WEBHOOK_SECRET!
-    );
-  } catch (err) {
-    console.error("❌ Stripe webhook signature verification failed:", err);
-    return NextResponse.json(
-      { error: "Webhook signature verification failed" },
-      { status: 400 }
-    );
-  }
+	try {
+		event = stripe.webhooks.constructEvent(
+			body,
+			signature!,
+			process.env.STRIPE_WEBHOOK_SECRET!,
+		);
+	} catch (err) {
+		console.error("Stripe webhook signature verification failed:", err);
+		return NextResponse.json(
+			{ error: "Webhook signature verification failed" },
+			{ status: 400 },
+		);
+	}
 
-  console.log("✅ Stripe Event Received:", event.type);
+	console.log("Stripe Event Received:", event.type);
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
+	// Checkout Session Completed
+	if (event.type === "checkout.session.completed") {
+		const session = event.data.object as any;
 
-    const orderId = session.metadata?.orderId;
-    const paymentStatus = session.payment_status;
+		const orderId = session.metadata?.orderId;
+		const paymentStatus = session.payment_status;
 
-    console.log("Order ID:", orderId);
-    console.log("Payment Status:", paymentStatus);
+		console.log("Order ID:", orderId);
+		console.log("Payment Status:", paymentStatus);
 
-    if (orderId && paymentStatus === "paid") {
-      await markOrderPaid(orderId, session.id);
-    }
-  }
+		if (orderId && paymentStatus === "paid") {
+			await markOrderPaid(orderId, session.id);
+		}
+	}
 
-  return NextResponse.json({ received: true });
+	// Checkout Session Expired
+	if (event.type === "checkout.session.expired") {
+		const session = event.data.object as any;
+		const orderId = session.metadata?.orderId;
+
+		console.log("⚠️ Checkout expired, deleting pending order:", orderId);
+
+		if (orderId) {
+			await deleteOrder(orderId);
+		}
+	}
+
+	// Payment Failed (Card Declined)
+	if (event.type === "payment_intent.payment_failed") {
+		const intent = event.data.object as any;
+
+		const orderId = intent.metadata?.orderId;
+
+		console.log("❌ Payment failed, deleting order:", orderId);
+
+		if (orderId) {
+			await deleteOrder(orderId);
+		}
+	}
+
+	return NextResponse.json({ received: true });
 }

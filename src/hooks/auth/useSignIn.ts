@@ -5,29 +5,28 @@ import { LoginFormInputs } from "@/components/ui/SignInForm";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export function useSignin(onClose?: () => void) {
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const setSession = useAuthStore((s) => s.setSession);
+	const [errorMsg, setErrorMsg] = useState<string | null>(null);
+	const setSession = useAuthStore((s) => s.setSession);
 
-  const login = async (values: LoginFormInputs) => {
-    setErrorMsg(null);
+	const login = async (values: LoginFormInputs) => {
+		setErrorMsg(null);
 
-    try {
-      const { session, user } = await signIn(values.email, values.password);
+		try {
+			const { session, user } = await signIn(values.email, values.password);
 
-      if (!session || !user) {
-        throw new Error("Invalid credentials");
-      }
+			if (!session || !user) {
+				throw new Error("Invalid credentials");
+			}
 
-      setSession(session);
+			setSession(session);
 
-      toast("Welcome Back!");
+			toast("Welcome Back!");
 
-      onClose?.();
-    } catch (err) {
-      setErrorMsg("Invalid email or password");
-    } finally {
-    }
-  };
+			onClose?.();
+		} catch (err) {
+			setErrorMsg("Invalid email or password");
+		}
+	};
 
-  return { login, errorMsg };
+	return { login, errorMsg };
 }
