@@ -7,7 +7,11 @@ import { toast } from "sonner";
 interface CartState {
 	items: CartItem[];
 
+	pendingOrderId: string | null;
+
 	// actions
+	setPendingOrderId: (id: string) => void;
+	clearPendingOrderId: () => void;
 	addItem: (
 		item: Omit<CartItem, "cartItemId" | "lineTotal" | "addedAt">,
 	) => boolean;
@@ -27,6 +31,18 @@ export const useCartStore = create<CartState>()(
 	persist(
 		(set, get) => ({
 			items: [],
+			pendingOrderId: null,
+
+			// actions
+			setPendingOrderId: (id) =>
+				set(() => ({
+					pendingOrderId: id,
+				})),
+
+			clearPendingOrderId: () =>
+				set(() => ({
+					pendingOrderId: null,
+				})),
 
 			addItem: (item): boolean => {
 				const quantity = item.quantity ?? 1;

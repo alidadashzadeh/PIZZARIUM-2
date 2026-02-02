@@ -6,40 +6,42 @@ import Header from "@/components/Header/Header";
 import { QueryProvider } from "@/lib/reactQuery";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ThemeProviderWrapper from "@/components/ui/ThemeProviderWrapper"; // client component
+import { CartSyncClient } from "@/components/CartSyncClient";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+	variable: "--font-geist-mono",
+	subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "PIZZARIUM",
-  description: "Best pizza in town",
-  icons: { icon: "/logo.png" },
+	title: "PIZZARIUM",
+	description: "Best pizza in town",
+	icons: { icon: "/logo.png" },
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProviderWrapper>
-          <QueryProvider>
-            <TooltipProvider>
-              <div className="px-4">
-                <Header />
-                <div className="pt-8">{children}</div>
-              </div>
-            </TooltipProvider>
-          </QueryProvider>
-        </ThemeProviderWrapper>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body
+				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+			>
+				<ThemeProviderWrapper>
+					<QueryProvider>
+						<TooltipProvider>
+							<div className="px-4">
+								<Header />
+								<div className="pt-8">{children}</div>
+								<CartSyncClient />
+							</div>
+						</TooltipProvider>
+					</QueryProvider>
+				</ThemeProviderWrapper>
+			</body>
+		</html>
+	);
 }

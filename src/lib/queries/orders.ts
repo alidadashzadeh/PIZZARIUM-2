@@ -32,6 +32,21 @@ export async function insertOrder(order: OrderInsert) {
 	return data;
 }
 
+export async function getOrderStatusClient(orderId: string) {
+	const { data, error } = await supabase
+		.from("orders")
+		.select("id, paid")
+		.eq("id", orderId)
+		.single();
+
+	if (error) {
+		console.error("Supabase getOrderStatusClient error:", error.message);
+		return null;
+	}
+
+	return data;
+}
+
 export async function fetchOrderBySession(sessionId: string, userId: string) {
 	const { data, error } = await supabase
 		.from("orders")
