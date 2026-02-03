@@ -35,7 +35,22 @@ export async function POST(req: Request) {
 		console.log("Payment Status:", paymentStatus);
 
 		if (orderId && paymentStatus === "paid") {
-			await markOrderPaid(orderId, session.id);
+			// Retrieve PaymentIntent to get card details
+			const paymentIntent = await stripe.paymentIntents.retrieve(
+				session.payment_intent,
+				{
+					expand: ["payment_method"],
+				},
+			);
+
+			const paymentMethod = paymentIntent.payment_method as any;
+
+			const cardBrand = paymentMethod?.card?.brand; // visa, mastercard
+			const cardLast4 = paymentMethod?.card?.last4; // 4242
+
+			console.log("Card Brand:", cardBrand);
+			console.log("Card Last4:", cardLast4);
+			await markOrderPaid(orderId, session.id, cardBrand, cardLast4);
 		}
 	}
 

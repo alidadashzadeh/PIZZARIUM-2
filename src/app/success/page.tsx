@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Muted } from "@/components/ui/Typography";
+import Image from "next/image";
 
 export default function SuccessPage() {
 	const searchParams = useSearchParams();
@@ -23,7 +24,7 @@ export default function SuccessPage() {
 		error,
 	} = useOrderBySession(sessionId, user?.id);
 
-	if (isLoading)
+	if (isLoading || !order)
 		return (
 			<div className="flex justify-center py-20 text-muted-foreground">
 				Loading your order...
@@ -65,17 +66,43 @@ export default function SuccessPage() {
 
 					<Separator />
 
-					{/* Total + Status */}
-					<div className="flex items-center justify-between">
-						<p className="text-lg font-semibold">Total</p>
-						<p className="text-lg font-bold">${order?.total}</p>
-					</div>
+					<div className="space-y-4">
+						{/* Total + Status */}
+						<div className="flex items-center justify-between">
+							<p className="text-lg font-semibold">Total</p>
+							<p className="text-lg font-bold">${order?.total}</p>
+						</div>
 
-					<div className="flex items-center justify-between">
-						<p className="font-medium">Status</p>
-						<Badge variant="outline" className="p-2">
-							{order?.status}
-						</Badge>
+						<div className="flex items-center justify-between">
+							<p className="font-medium">Status</p>
+							<Badge variant="outline" className="p-2">
+								{order?.status}
+							</Badge>
+						</div>
+						{order?.card_last4 && (
+							<div className="flex items-center justify-between">
+								<p className="font-medium">Payment Method</p>
+
+								<div className="flex items-center gap-2">
+									{/* Card Logo */}
+									<Image
+										src={
+											order?.card_brand === "visa"
+												? "/cards/visa_logo.png"
+												: "/cards/mastercard_logo.png"
+										}
+										alt={order?.card_brand || "Card"}
+										width={60}
+										height={36}
+									/>
+
+									{/* Card Brand + Last4 */}
+									<span className="text-sm font-semibold capitalize">
+										{order?.card_brand} •••• •••• •••• {order?.card_last4}
+									</span>
+								</div>
+							</div>
+						)}
 					</div>
 
 					<Separator />

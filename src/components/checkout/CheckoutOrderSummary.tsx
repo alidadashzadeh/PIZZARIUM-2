@@ -37,19 +37,10 @@ export default function CheckoutOrderSummary() {
 		<Card className="p-6">
 			<h2 className="text-xl font-semibold">Your Order</h2>
 
-			{/* {cartItems.map((item) => (
-        <div key={item.cartItemId} className="flex justify-between text-sm ">
-          <span>
-            {item.name} {item.size && `(${item.size})`} × {item.quantity}
-          </span>
-          <span>${item.lineTotal.toFixed(2)}</span>
-        </div>
-      ))} */}
-
 			<ItemsSummaryList items={cartItems} />
 			<div className="border-t pt-4 flex justify-between font-bold">
 				<span>Total</span>
-				<span>${total.toFixed(2)}</span>
+				<span>${total}</span>
 			</div>
 
 			{/* Pay Button */}

@@ -6,7 +6,7 @@ import Header from "@/components/Header/Header";
 import { QueryProvider } from "@/lib/reactQuery";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ThemeProviderWrapper from "@/components/ui/ThemeProviderWrapper"; // client component
-import { CartSyncClient } from "@/components/CartSyncClient";
+import { CartSyncClient } from "@/components/ui/CartSyncClient";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({

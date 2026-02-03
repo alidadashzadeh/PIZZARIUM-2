@@ -1,3 +1,4 @@
+import { sortCartItems } from "@/lib/utils";
 import { CartItem } from "@/types/pizzaType";
 
 type Props = {
@@ -5,9 +6,10 @@ type Props = {
 };
 
 export default function ItemsSummaryList({ items }: Props) {
+	const sortedItems = sortCartItems(items);
 	return (
 		<div className="space-y-2">
-			{items?.map((item) => (
+			{sortedItems?.map((item) => (
 				<div key={item.cartItemId} className="flex justify-between text-sm">
 					<span>
 						{item.name} {item.size && `(${item.size})`} × {item.quantity}

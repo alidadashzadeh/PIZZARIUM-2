@@ -59,3 +59,29 @@ export async function fetchOrderBySession(sessionId: string, userId: string) {
 
 	return data;
 }
+
+export async function getOrdersByUser(userId: string) {
+	const { data, error } = await supabase
+		.from("orders")
+		.select("*")
+		.eq("user_id", userId)
+		.order("created_at", { ascending: false });
+
+	if (error) {
+		throw new Error(error.message);
+	}
+
+	return data;
+}
+
+export async function getOrderById(orderId: string) {
+	const { data, error } = await supabase
+		.from("orders")
+		.select("*") // includes items, address, etc
+		.eq("id", orderId)
+		.single();
+
+	if (error) throw new Error(error.message);
+
+	return data;
+}
