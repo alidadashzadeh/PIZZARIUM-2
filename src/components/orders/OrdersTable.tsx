@@ -132,6 +132,7 @@ import { Button } from "@/components/ui/button";
 import OrderDialog from "./OrderTableDetails";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useOrders } from "@/hooks/orders/useOrders";
+import { H2, Large } from "../ui/Typography";
 
 export default function OrdersTable() {
 	const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
@@ -172,7 +173,8 @@ export default function OrdersTable() {
 		);
 	}
 	return (
-		<>
+		<div>
+			<Large className="pb-4">Orders History</Large>
 			{/* Table */}
 			<div className="rounded-2xl border shadow-sm overflow-hidden">
 				<Table>
@@ -233,6 +235,6 @@ export default function OrdersTable() {
 			{selectedOrderId && (
 				<OrderDialog orderId={selectedOrderId} open={open} setOpen={setOpen} />
 			)}
-		</>
+		</div>
 	);
 }

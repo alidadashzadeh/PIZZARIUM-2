@@ -5,13 +5,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { H2, Muted, P } from "@/components/ui/Typography";
+import { H2, Large, Muted, P } from "@/components/ui/Typography";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useState } from "react";
 import { useUpdateProfile } from "@/hooks/profile/useUpdateProfile";
 import { useProfile } from "@/hooks/profile/useProfile";
 import { useUpdateAvatar } from "@/hooks/profile/useUpdateAvatar";
-import OrdersTable from "../orders/OrdersTable";
 
 export default function ProfileSettings() {
 	const user = useAuthStore((s) => s.user);
@@ -35,8 +34,10 @@ export default function ProfileSettings() {
 
 	return (
 		<div className="max-w-3xl mx-auto flex flex-col gap-6">
-			<H2>Profile</H2>
-			<Muted>Update your personal information</Muted>
+			<div>
+				<Large>Profile</Large>
+				<Muted>Update your personal information</Muted>
+			</div>
 
 			{/* Avatar */}
 			<Card>
@@ -131,8 +132,6 @@ export default function ProfileSettings() {
 					Save Changes
 				</Button>
 			</div>
-
-			<OrdersTable />
 		</div>
 	);
 }

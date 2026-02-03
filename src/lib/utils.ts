@@ -99,6 +99,7 @@ export function getCartItemImage(item: CartItem): string {
 }
 
 export function sortCartItems(items: CartItem[]) {
+	if (!items) return;
 	return [...items].sort((a, b) => {
 		if (a.type === "signature" && b.type !== "signature") return -1;
 		if (a.type === "custom" && b.type === "drink") return -1;
