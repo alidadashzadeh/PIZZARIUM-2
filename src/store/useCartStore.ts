@@ -3,13 +3,12 @@ import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
 import { CartItem } from "@/types/pizzaType";
 import { toast } from "sonner";
-import { sortCartItems } from "@/lib/utils";
+import { sortCartItems, updateCartState } from "@/lib/utils";
 
 interface CartState {
 	items: CartItem[];
-
 	pendingOrderId: string | null;
-
+	total: number;
 	// actions
 	setPendingOrderId: (id: string) => void;
 	clearPendingOrderId: () => void;
@@ -33,6 +32,7 @@ export const useCartStore = create<CartState>()(
 		(set, get) => ({
 			items: [],
 			pendingOrderId: null,
+			total: 0,
 
 			// actions
 			setPendingOrderId: (id) =>
@@ -79,89 +79,92 @@ export const useCartStore = create<CartState>()(
 					addedAt: Date.now(),
 				};
 
-				// set((state) => ({ items: [...state.items, newItem] }));
-				set((state) => ({
-					items: sortCartItems([...state.items, newItem]),
-				}));
-
 				toast.success(`${item.name} successfully added to cart.`);
+
+				set((state) => {
+					const updatedItems = sortCartItems([...state.items, newItem]);
+
+					return updateCartState(updatedItems);
+				});
 
 				return true;
 			},
 
 			removeItem: (cartItemId) =>
-				set((state) => ({
-					items: state.items.filter((item) => item.cartItemId !== cartItemId),
-				})),
+				set((state) => {
+					const updatedItems = state.items.filter(
+						(item) => item.cartItemId !== cartItemId,
+					);
+
+					return updateCartState(updatedItems);
+				}),
 
 			increaseCartItemQty: (cartItemId) =>
-				set((state) => ({
-					items: state.items.map((item) => {
+				set((state) => {
+					const updatedItems = state.items.map((item) => {
 						if (item.cartItemId !== cartItemId) return item;
 
-						const newQty = (item.quantity ?? 1) + 1;
+						const newQty = item.quantity + 1;
 
-						let newLineTotal;
-						if (item.size && typeof item.price === "object") {
-							// pizza
-							newLineTotal = item.price[item.size] * newQty;
-						} else {
-							// drink
-							newLineTotal = item.price * newQty;
-						}
+						const newLineTotal =
+							typeof item.price === "object"
+								? item.price[item.size!] * newQty
+								: item.price * newQty;
+
 						return {
 							...item,
 							quantity: newQty,
-							lineTotal: newLineTotal,
+							lineTotal: Number(newLineTotal.toFixed(2)),
 						};
-					}),
-				})),
+					});
+
+					return updateCartState(updatedItems);
+				}),
 
 			decreaseCartItemQty: (cartItemId) =>
-				set((state) => ({
-					items: state.items.map((item) => {
+				set((state) => {
+					const updatedItems = state.items.map((item) => {
 						if (item.cartItemId !== cartItemId) return item;
 
-						const newQty = Math.max(1, (item.quantity ?? 1) - 1);
-						let newLineTotal;
-						if (item.size && typeof item.price === "object") {
-							// pizza
-							newLineTotal = item.price[item.size] * newQty;
-						} else {
-							// drink
-							newLineTotal = item.price * newQty;
-						}
+						const newQty = Math.max(1, item.quantity - 1);
+
+						const newLineTotal =
+							typeof item.price === "object"
+								? item.price[item.size!] * newQty
+								: item.price * newQty;
+
 						return {
 							...item,
 							quantity: newQty,
-							lineTotal: newLineTotal,
-							// lineTotal: item.price * newQty,
+							lineTotal: Number(newLineTotal.toFixed(2)),
 						};
-					}),
-				})),
+					});
+
+					return updateCartState(updatedItems);
+				}),
 
 			changeSize: (cartItemId, newSize) =>
-				set((state) => ({
-					items: state.items.map((item) => {
+				set((state) => {
+					const updatedItems = state.items.map((item) => {
 						if (item.cartItemId !== cartItemId) return item;
 						if (item.type === "drink") return item;
-						if (item.size === newSize) return item;
 
-						let newLineTotal = item.lineTotal;
-						if (item.size && typeof item.price === "object") {
-							// pizza
-							newLineTotal = item.price[newSize] * item.quantity;
-						}
+						const newLineTotal =
+							typeof item.price === "object"
+								? item.price[newSize] * item.quantity
+								: item.lineTotal;
 
 						return {
 							...item,
 							size: newSize,
-							lineTotal: newLineTotal,
+							lineTotal: Number(newLineTotal.toFixed(2)),
 						};
-					}),
-				})),
+					});
 
-			clearCart: () => set({ items: [] }),
+					return updateCartState(updatedItems);
+				}),
+
+			clearCart: () => set(updateCartState([])),
 		}),
 		{
 			name: "cart-store",

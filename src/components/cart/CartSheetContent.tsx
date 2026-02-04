@@ -15,12 +15,11 @@ import CartItemList from "./CartItemList";
 
 import { useCartStore } from "@/store/useCartStore";
 
-import { totalPay } from "@/lib/utils";
 import Link from "next/link";
 
 export default function CartSheetContent() {
 	const items = useCartStore((s) => s.items);
-	const total = totalPay(items);
+	const total = useCartStore((s) => s.total);
 
 	return (
 		<SheetContent

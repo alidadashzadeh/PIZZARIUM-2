@@ -107,16 +107,6 @@ export function sortCartItems(items: CartItem[]) {
 	});
 }
 
-// export const totalPay = (cart: CartItem[]): number => {
-//   return cart.reduce((total, item) => total + item.lineTotal, 0);
-// };
-
-export const totalPay = (cart: CartItem[]): number => {
-	return Number(
-		cart.reduce((total, item) => total + item.lineTotal, 0).toFixed(2),
-	);
-};
-
 export function flyToCart(sourceEl: HTMLElement) {
 	const target = document.querySelector("[data-cart-target]");
 	if (!target) return;
@@ -161,3 +151,12 @@ export function flyToCart(sourceEl: HTMLElement) {
 		clone.remove();
 	});
 }
+
+export const calculateTotal = (items: CartItem[]) =>
+	Number(items.reduce((sum, item) => sum + item.lineTotal, 0).toFixed(2));
+
+// to reflect changes on total
+export const updateCartState = (items: CartItem[]) => ({
+	items,
+	total: calculateTotal(items),
+});

@@ -59,7 +59,10 @@ export async function POST(req: Request) {
 		const session = event.data.object as any;
 		const orderId = session.metadata?.orderId;
 
-		console.log("⚠️ Checkout expired, deleting pending order:", orderId);
+		console.log(
+			"⚠️ Checkout expired or cancelled, deleting pending order:",
+			orderId,
+		);
 
 		if (orderId) {
 			await deleteOrder(orderId);

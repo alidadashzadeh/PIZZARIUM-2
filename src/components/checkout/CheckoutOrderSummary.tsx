@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Card } from "../ui/card";
-import { totalPay } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 import { Button } from "../ui/button";
 import { useDeliveryStore } from "@/store/useDeliveryStore";
@@ -15,9 +14,8 @@ export default function CheckoutOrderSummary() {
 	const router = useRouter();
 
 	const cartItems = useCartStore((s) => s.items);
+	const total = useCartStore((s) => s.total);
 	const delivery = useDeliveryStore((s) => s.delivery);
-
-	const total = totalPay(cartItems);
 
 	const [loading, setLoading] = useState(false);
 

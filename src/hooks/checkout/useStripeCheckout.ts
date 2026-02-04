@@ -4,13 +4,13 @@ import { useState } from "react";
 import { useOrder } from "@/hooks/orders/useOrder";
 import { useAuthStore } from "@/store/useAuthStore";
 import { CartItem } from "@/types/pizzaType";
-import { totalPay } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 
 export function useStripeCheckout() {
 	const { createOrder } = useOrder();
 	const user = useAuthStore((s) => s.user);
 	const setPendingOrderId = useCartStore((s) => s.setPendingOrderId);
+	const total = useCartStore((s) => s.total);
 
 	const [stripeLoading, setStripeLoading] = useState(false);
 	const [stripeError, setStripeError] = useState<string | null>(null);
@@ -29,8 +29,6 @@ export function useStripeCheckout() {
 		try {
 			setStripeLoading(true);
 			setStripeError(null);
-
-			const total = totalPay(items);
 
 			// 1️⃣ Create order in Supabase
 			const order = await createOrder({
