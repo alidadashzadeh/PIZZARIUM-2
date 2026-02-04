@@ -65,6 +65,7 @@ export async function getOrdersByUser(userId: string) {
 		.from("orders")
 		.select("*")
 		.eq("user_id", userId)
+		.eq("paid", true)
 		.order("created_at", { ascending: false });
 
 	if (error) {

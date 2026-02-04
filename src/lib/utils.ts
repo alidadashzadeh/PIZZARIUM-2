@@ -10,7 +10,7 @@ import {
 	Category,
 	SortField,
 	SortOrder,
-} from "./../components/signature_pizzas/SignaturePizzasList";
+} from "../components/signaturePizzas/SignaturePizzasList";
 
 interface FiltersState {
 	category: Category;

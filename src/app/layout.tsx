@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header/Header";
+import Header from "@/components/header/Header";
 import { QueryProvider } from "@/lib/reactQuery";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ThemeProviderWrapper from "@/components/ui/ThemeProviderWrapper"; // client component

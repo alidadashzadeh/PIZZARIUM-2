@@ -1,5 +1,5 @@
 import { H2 } from "@/components/ui/Typography";
-import SignaturePizzasList from "@/components/signature_pizzas/SignaturePizzasList";
+import SignaturePizzasList from "@/components/signaturePizzas/SignaturePizzasList";
 import { fetchSignaturePizzas } from "@/lib/queries/signaturePizza";
 import { Suspense } from "react";
 
@@ -7,18 +7,18 @@ import { Suspense } from "react";
 export const revalidate = 3600;
 
 export default async function Page() {
-  // Server-side fetch
-  // Optimal because signature pizzas rarely change
-  const pizzas = await fetchSignaturePizzas();
+	// Server-side fetch
+	// Optimal because signature pizzas rarely change
+	const pizzas = await fetchSignaturePizzas();
 
-  return (
-    <div className="flex flex-col gap-4">
-      <H2>Discover Signature Pizzas</H2>
-      {/* Client component handles: - Sorting ,filtering, etc... - Instant UI
+	return (
+		<div className="flex flex-col gap-4">
+			<H2>Discover Signature Pizzas</H2>
+			{/* Client component handles: - Sorting ,filtering, etc... - Instant UI
 			updates without network requests */}
-      <Suspense fallback={<p>Loading filters...</p>}>
-        <SignaturePizzasList pizzas={pizzas} />
-      </Suspense>{" "}
-    </div>
-  );
+			<Suspense fallback={<p>Loading filters...</p>}>
+				<SignaturePizzasList pizzas={pizzas} />
+			</Suspense>{" "}
+		</div>
+	);
 }
