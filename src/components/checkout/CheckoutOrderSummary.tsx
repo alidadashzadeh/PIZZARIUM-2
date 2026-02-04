@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Card } from "../ui/card";
-import { sortCartItems, totalPay } from "@/lib/utils";
+import { totalPay } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 import { Button } from "../ui/button";
 import { useDeliveryStore } from "@/store/useDeliveryStore";
@@ -14,7 +14,7 @@ import ItemsSummaryList from "../ui/ItemsSummaryList";
 export default function CheckoutOrderSummary() {
 	const router = useRouter();
 
-	const cartItems = sortCartItems(useCartStore((s) => s.items));
+	const cartItems = useCartStore((s) => s.items);
 	const delivery = useDeliveryStore((s) => s.delivery);
 
 	const total = totalPay(cartItems);

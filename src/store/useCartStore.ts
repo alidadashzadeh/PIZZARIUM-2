@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
 import { CartItem } from "@/types/pizzaType";
 import { toast } from "sonner";
+import { sortCartItems } from "@/lib/utils";
 
 interface CartState {
 	items: CartItem[];
@@ -78,7 +79,11 @@ export const useCartStore = create<CartState>()(
 					addedAt: Date.now(),
 				};
 
-				set((state) => ({ items: [...state.items, newItem] }));
+				// set((state) => ({ items: [...state.items, newItem] }));
+				set((state) => ({
+					items: sortCartItems([...state.items, newItem]),
+				}));
+
 				toast.success(`${item.name} successfully added to cart.`);
 
 				return true;

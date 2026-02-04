@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useOrder } from "@/hooks/orders/useOrder";
 import { useAuthStore } from "@/store/useAuthStore";
 import { CartItem } from "@/types/pizzaType";
-import { sortCartItems, totalPay } from "@/lib/utils";
+import { totalPay } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 
 export function useStripeCheckout() {
@@ -48,10 +48,10 @@ export function useStripeCheckout() {
 			if (!order) throw new Error("Order creation failed");
 			// to clear cart after paid on reload
 			setPendingOrderId(order.id);
-			const sortedItems = sortCartItems(items);
 
 			// 2️⃣ Build Stripe line_items directly
-			const line_items = sortedItems.map((item) => {
+			// const line_items = sortedItems.map((item) => {
+			const line_items = items.map((item) => {
 				let finalPrice: number;
 
 				// Drinks already have numeric price

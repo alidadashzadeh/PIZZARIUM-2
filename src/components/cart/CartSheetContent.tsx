@@ -15,11 +15,11 @@ import CartItemList from "./CartItemList";
 
 import { useCartStore } from "@/store/useCartStore";
 
-import { sortCartItems, totalPay } from "@/lib/utils";
+import { totalPay } from "@/lib/utils";
 import Link from "next/link";
 
 export default function CartSheetContent() {
-	const items = sortCartItems(useCartStore((s) => s.items));
+	const items = useCartStore((s) => s.items);
 	const total = totalPay(items);
 
 	return (

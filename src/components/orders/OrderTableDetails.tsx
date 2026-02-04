@@ -10,7 +10,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useGetOrder } from "@/hooks/orders/useGetOrder";
-import { sortCartItems } from "@/lib/utils";
 
 export default function OrderDialog({
 	orderId,
@@ -22,7 +21,7 @@ export default function OrderDialog({
 	setOpen: (v: boolean) => void;
 }) {
 	const { data: order, isLoading, error } = useGetOrder(orderId || undefined);
-	const sortedItems = sortCartItems(order?.items);
+	const sortedItems = order?.items;
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogContent className="max-w-lg rounded-2xl">
