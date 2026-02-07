@@ -1,16 +1,16 @@
-import { CartItem } from "@/types/pizzaType";
+import { CartItem } from "@/types/CartType";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import {
-	CustomPizzaOption,
+	CustomPizzaOptionsType,
 	CustomPizzaType,
-	SignaturePizzaCard,
-} from "@/types/pizzaType";
+} from "@/types/customPizzaType";
 import {
 	Category,
 	SortField,
 	SortOrder,
 } from "../components/signaturePizzas/SignaturePizzasList";
+import { SignaturePizzaCard } from "@/types/siganaturPizzaType";
 
 interface FiltersState {
 	category: Category;
@@ -79,7 +79,7 @@ export const estimateCustomPizzaCost = (
 		}
 		// single options
 		else if (value && typeof value === "object" && "price" in value) {
-			total += (value as CustomPizzaOption).price;
+			total += (value as CustomPizzaOptionsType).price;
 		}
 	});
 

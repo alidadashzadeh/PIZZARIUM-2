@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useOrder } from "@/hooks/orders/useOrder";
 import { useAuthStore } from "@/store/useAuthStore";
-import { CartItem } from "@/types/pizzaType";
+import { CartItem } from "@/types/customPizzaType";
 import { useCartStore } from "@/store/useCartStore";
 
 export function useStripeCheckout() {

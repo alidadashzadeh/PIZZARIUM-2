@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
-import { CartItem } from "@/types/pizzaType";
+import { CartItem } from "@/types/CartType";
 import { toast } from "sonner";
 import { sortCartItems, updateCartState } from "@/lib/utils";
 
@@ -83,8 +83,7 @@ export const useCartStore = create<CartState>()(
 
 				set((state) => {
 					const updatedItems = sortCartItems([...state.items, newItem]);
-
-					return updateCartState(updatedItems);
+					return updateCartState(updatedItems as CartItem[]);
 				});
 
 				return true;

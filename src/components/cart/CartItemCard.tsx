@@ -1,4 +1,4 @@
-import { CartItem } from "@/types/pizzaType";
+import { CartItem } from "@/types/customPizzaType";
 
 import CartItemCardQuantity from "./CartItemCardQuantity";
 import CartItemCardImage from "./CartItemCardImage";
