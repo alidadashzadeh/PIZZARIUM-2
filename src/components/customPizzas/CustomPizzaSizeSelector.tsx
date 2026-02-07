@@ -8,6 +8,7 @@ export default function CustomPizzaSizeSelector() {
 	const price = usePizzaStore((s) => s.customPizza?.price);
 	const selectSize = usePizzaStore((state) => state.selectSize);
 
+	console.log(price);
 	return (
 		<>
 			<H4>Size</H4>

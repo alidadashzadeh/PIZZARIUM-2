@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
 import { Large } from "../ui/Typography";
 import { Button } from "../ui/button";
 import { usePizzaStore } from "@/store/usePizzaStore";
-import { estimateCustomPizzaCost } from "@/lib/utils";
 import { RefreshCw } from "lucide-react";
 import CustomPizzaImage from "./CustomPizzaImage";
 import CustomPizzaaRecipe from "./CustomPizzaaRecipe";
@@ -17,22 +15,7 @@ type Props = {
 
 export default function CustomPizzaSummary({ onAddToCart }: Props) {
 	const customPizza = usePizzaStore((state) => state.customPizza);
-	const setPrice = usePizzaStore((state) => state.setPrice);
 	const resetCustomPizza = usePizzaStore((state) => state.resetCustomPizza);
-
-	useEffect(() => {
-		const basePrice = estimateCustomPizzaCost(customPizza);
-		setPrice(basePrice);
-	}, [
-		customPizza.size,
-		customPizza.dough,
-		customPizza.crust,
-		customPizza.sauce,
-		customPizza.cheese,
-		customPizza.cook,
-		customPizza.toppings,
-		setPrice,
-	]);
 
 	return (
 		<div className="w-100 sticky top-4 self-start flex flex-col gap-2">
@@ -54,8 +37,6 @@ export default function CustomPizzaSummary({ onAddToCart }: Props) {
 			<CustomPizzaToppings />
 
 			<CustomPizzaSizeSelector />
-
-			{/* <CustomPizzaQuantity /> */}
 
 			<div>
 				<Button className="cursor-pointer w-full" onClick={onAddToCart}>

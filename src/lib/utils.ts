@@ -155,7 +155,54 @@ export function flyToCart(sourceEl: HTMLElement) {
 export const calculateTotal = (items: CartItem[]) =>
 	Number(items.reduce((sum, item) => sum + item.lineTotal, 0).toFixed(2));
 
-// to reflect changes on total
+const BASE_PRICES = {
+	small: 12.98,
+	medium: 15.58,
+	large: 16.87,
+} as const;
+
+const estimateCustomPizza = (pizza: CustomPizzaType) => {
+	let price = BASE_PRICES[pizza.size];
+
+	price += pizza.cheese.price;
+	price += pizza.sauce.price;
+	price += pizza.dough.price;
+	price += pizza.crust.price;
+	price += pizza.cook.price;
+
+	for (const topping of pizza.toppings) {
+		price += topping.price;
+	}
+
+	return Number(price.toFixed(2));
+};
+
+export const recalcPizza = (pizza: CustomPizzaType) => {
+	const base = estimateCustomPizza(pizza);
+
+	return {
+		...pizza,
+		price: {
+			small: base,
+			medium: Number((base * 1.2).toFixed(2)),
+			large: Number((base * 1.3).toFixed(2)),
+		},
+	};
+};
+
+// export const recalcPizza = (pizza: CustomPizzaType) => {
+// 	const base = estimateCustomPizzaCost(pizza);
+
+// 	return {
+// 		...pizza,
+// 		price: {
+// 			small: Number(base.toFixed(2)),
+// 			medium: Number((base * 1.2).toFixed(2)),
+// 			large: Number((base * 1.3).toFixed(2)),
+// 		},
+// 	};
+// };
+
 export const updateCartState = (items: CartItem[]) => ({
 	items,
 	total: calculateTotal(items),

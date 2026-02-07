@@ -1,3 +1,4 @@
+import { recalcPizza } from "@/lib/utils";
 import { CartItem } from "@/types/CartType";
 import {
 	CustomPizzaType,
@@ -22,9 +23,6 @@ type PizzaStore = {
 	manageSingle: (category: string, value: optionsType) => void;
 	manageMulti: (category: MultiSelectKeys, value: fullToppingsType) => void;
 	selectSize: (size: CustomPizzaType["size"]) => void;
-	setPrice: (price: number) => void;
-	// increaseQuantity: () => void;
-	// decreaseQuantity: () => void;
 };
 export const usePizzaStore = create<PizzaStore>()(
 	persist(
@@ -38,24 +36,32 @@ export const usePizzaStore = create<PizzaStore>()(
 				sauce: { name: "creamy garlic", id: 4, price: 0.99 },
 				cook: { name: "regular", id: 2, price: 0 },
 				toppings: [],
-				price: null,
-				quantity: 1,
+				price: {
+					small: 12.98,
+					medium: 15.58,
+					large: 16.87,
+				},
 			},
 
 			cartItems: [],
 
 			// ACTIONS
+
 			manageSingle: (category, value) =>
-				set((state) => ({
-					customPizza: {
+				set((state) => {
+					const updated = {
 						...state.customPizza,
 						[category]: {
 							id: value.id,
 							name: value.name,
 							price: value.price,
 						},
-					},
-				})),
+					};
+
+					return {
+						customPizza: recalcPizza(updated),
+					};
+				}),
 
 			manageMulti: (category, item) =>
 				set((state) => {
@@ -67,65 +73,32 @@ export const usePizzaStore = create<PizzaStore>()(
 						price: item.price,
 						image_raw: item.image_raw,
 					};
+
 					const exists = array.some((i) => i.id === item.id);
 
+					const updated = {
+						...state.customPizza,
+						[category]: exists
+							? array.filter((i) => i.id !== item.id)
+							: [...array, cleanItem],
+					};
+
 					return {
-						customPizza: {
-							...state.customPizza,
-							[category]: exists
-								? array.filter((i) => i.id !== item.id) // remove
-								: [...array, cleanItem], // add
-						},
+						customPizza: recalcPizza(updated),
 					};
 				}),
 
 			selectSize: (size) =>
-				set((state) => ({
-					customPizza: {
+				set((state) => {
+					const updated = {
 						...state.customPizza,
 						size,
-					},
-				})),
-
-			setPrice: (basePrice) =>
-				set((state) => {
-					const small = Number(basePrice.toFixed(2));
-					const medium = Number((basePrice * 1.2).toFixed(2));
-					const large = Number((basePrice * 1.3).toFixed(2));
+					};
 
 					return {
-						customPizza: {
-							...state.customPizza,
-							price: {
-								small,
-								medium,
-								large,
-							},
-						},
+						customPizza: recalcPizza(updated),
 					};
 				}),
-
-			// increaseQuantity: () => {
-			//   set((state) => ({
-			//     customPizza: {
-			//       ...state.customPizza,
-			//       quantity: state.customPizza.quantity + 1,
-			//     },
-			//   }));
-			// },
-
-			// decreaseQuantity: () => {
-			//   set((state) => {
-			//     if (state.customPizza.quantity <= 1) return state;
-
-			//     return {
-			//       customPizza: {
-			//         ...state.customPizza,
-			//         quantity: state.customPizza.quantity - 1,
-			//       },
-			//     };
-			//   });
-			// },
 
 			resetCustomPizza: () =>
 				set({
@@ -137,13 +110,12 @@ export const usePizzaStore = create<PizzaStore>()(
 						sauce: { name: "creamy garlic", id: 4, price: 0.99 },
 						cook: { name: "regular", id: 2, price: 0 },
 						toppings: [],
-						price: null,
-						// quantity: 1,
+						price: { small: 12.98, medium: 15.58, large: 16.87 },
 					},
 				}),
 		}),
 		{
-			name: "pizza-store", // localStorage key
+			name: "pizza-store",
 		},
 	),
 );
