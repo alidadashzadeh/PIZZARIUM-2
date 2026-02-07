@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useGetOrder } from "@/hooks/orders/useGetOrder";
+import { CartItem } from "@/types/CartType";
 
 export default function OrderDialog({
 	orderId,
@@ -22,6 +23,7 @@ export default function OrderDialog({
 }) {
 	const { data: order, isLoading, error } = useGetOrder(orderId || undefined);
 	const sortedItems = order?.items;
+
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogContent className="max-w-lg rounded-2xl">
@@ -60,7 +62,7 @@ export default function OrderDialog({
 							<h3 className="font-semibold mb-2">Items</h3>
 
 							<ul className="space-y-2 text-sm">
-								{sortedItems?.map((item: any, idx: number) => (
+								{sortedItems?.map((item: CartItem, idx: number) => (
 									<li key={idx} className="flex justify-between">
 										<span>
 											{item.name} × {item.quantity}
@@ -71,7 +73,7 @@ export default function OrderDialog({
 												typeof item.price === "number"
 													? item.price.toFixed(2) // drink
 													: item.size && item.price[item.size] // pizza
-														? item.price[item.size].toFixed(2)
+														? Number(item.price[item.size]).toFixed(2)
 														: "0.00" // fallback
 											}
 										</span>

@@ -4,19 +4,12 @@ import { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "../ui/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { LogOut, User as UserIcon } from "lucide-react";
+
+import { User as UserIcon } from "lucide-react";
 import { Small } from "../ui/Typography";
 import AuthModal from "../ui/AuthModal";
 import { useAuthStore } from "@/store/useAuthStore";
-import { signOut } from "@/lib/queries/auth";
 import { Toaster } from "../ui/sonner";
-import { toast } from "sonner";
 import Link from "next/link";
 import { useProfile } from "@/hooks/profile/useProfile";
 
@@ -40,7 +33,6 @@ function UserProfile() {
 				/>
 			</div>
 
-			{/* 🔑 AUTH STATE CONTROLS UI */}
 			{!user && (
 				<>
 					<Button onClick={() => setAuthOpen(true)}>Sign In / Sign Up</Button>
@@ -49,14 +41,12 @@ function UserProfile() {
 			)}
 
 			{user && (
-				// <DropdownMenu>
-				// 	<DropdownMenuTrigger className="w-[200px]">
 				<Link href="/profile" className="flex items-center gap-2">
 					<Avatar className="w-8 h-8">
 						{profile?.avatar ? (
 							<AvatarImage
 								src={profile.avatar}
-								alt={profile.username}
+								alt={profile?.username || "User Avatar"}
 								className="w-full h-full object-cover rounded-full"
 							/>
 						) : (
@@ -70,28 +60,6 @@ function UserProfile() {
 						{profile?.username ?? user.email?.split("@")[0]}
 					</Small>
 				</Link>
-				// 	</DropdownMenuTrigger>
-
-				// 	<DropdownMenuContent className="w-48 mt-2">
-				// 		<DropdownMenuItem asChild>
-				// 			<Link href="/profile" className="flex items-center gap-2">
-				// 				<UserIcon className="w-4 h-4" />
-				// 				Profile
-				// 			</Link>
-				// 		</DropdownMenuItem>
-
-				// 		<DropdownMenuItem
-				// 			onClick={async () => {
-				// 				await signOut();
-				// 				toast("Signed out successfully!");
-				// 			}}
-				// 			className="flex items-center gap-2 text-red-600"
-				// 		>
-				// 			<LogOut className="w-4 h-4" />
-				// 			Sign Out
-				// 		</DropdownMenuItem>
-				// 	</DropdownMenuContent>
-				// </DropdownMenu>
 			)}
 		</div>
 	);

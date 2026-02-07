@@ -39,3 +39,17 @@ export type SignaturePizzaCard = Pick<
 	| "category"
 	| "calorie"
 >;
+export type SignaturePizzaIngredientsType = {
+	background_color: string;
+	emoji: string;
+	id: string;
+	name: string;
+};
+
+export type signaturePizzaReviewType = {
+	created_at: string;
+	id: string;
+	rating: number;
+	text: string;
+	user: { avatar: string; username: string };
+};

@@ -1,5 +1,5 @@
 import DrinkCard from "./DrinkCard";
-import { Drink } from "@/types/customPizzaType";
+import { Drink } from "@/types/DrinkType";
 
 type DrinkListProps = {
 	drinks: Drink[];

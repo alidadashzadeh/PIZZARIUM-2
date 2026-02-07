@@ -1,4 +1,4 @@
-import { CartItem } from "@/types/customPizzaType";
+import { CartItem } from "@/types/CartType";
 
 type Props = {
 	items: CartItem[];

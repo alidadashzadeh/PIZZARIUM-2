@@ -6,7 +6,7 @@ import RatingStars from "../ui/RatingStars";
 import { Card, CardContent } from "@/components/ui/card";
 
 import { H3, Muted, P, Small } from "../ui/Typography";
-import { SignaturePizza } from "@/types/customPizzaType";
+import { SignaturePizza } from "@/types/siganaturPizzaType";
 import { useCartStore } from "@/store/useCartStore";
 import { flyToCart } from "@/lib/utils";
 

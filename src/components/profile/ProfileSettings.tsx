@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { H2, Large, Muted, P } from "@/components/ui/Typography";
+import { Large, Muted, P } from "@/components/ui/Typography";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useState } from "react";
 import { useUpdateProfile } from "@/hooks/profile/useUpdateProfile";
@@ -15,7 +15,7 @@ import { useUpdateAvatar } from "@/hooks/profile/useUpdateAvatar";
 export default function ProfileSettings() {
 	const user = useAuthStore((s) => s.user);
 	const { data: profile } = useProfile();
-	const userId = user.id;
+	const userId = user?.id;
 
 	const [form, setForm] = useState({
 		username: profile?.username ?? "",
@@ -24,7 +24,7 @@ export default function ProfileSettings() {
 	});
 
 	const { mutate: updateProfile, isPending } = useUpdateProfile();
-	const { mutate: mutateVatar } = useUpdateAvatar(user.id!);
+	const { mutate: mutateVatar } = useUpdateAvatar(user?.id);
 
 	const handleSave = () => {
 		updateProfile({

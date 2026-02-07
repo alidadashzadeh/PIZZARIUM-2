@@ -1,9 +1,9 @@
 "use client";
 
+import { SignaturePizzaCard } from "@/types/siganaturPizzaType";
 import SignaturePizzasCard from "./SignaturePizzaCard";
 import SignaturePizzaFilters from "./SignaturePizzaFilters";
 import { applyFiltersAndSort } from "@/lib/utils";
-import { SignaturePizzaCard } from "@/types/customPizzaType";
 import { useSearchParams } from "next/navigation";
 
 export type Category = "all" | "meat" | "veggie";
