@@ -18,7 +18,7 @@ export default async function Page() {
 			updates without network requests */}
 			<Suspense fallback={<p>Loading filters...</p>}>
 				<SignaturePizzasList pizzas={pizzas} />
-			</Suspense>{" "}
+			</Suspense>
 		</div>
 	);
 }

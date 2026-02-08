@@ -2,6 +2,7 @@ import { updateProfile } from "@/lib/queries/profile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
+import { Profile } from "@/types/profile";
 
 export function useUpdateProfile() {
 	const queryClient = useQueryClient();
@@ -21,7 +22,7 @@ export function useUpdateProfile() {
 
 			const previousProfile = queryClient.getQueryData(["profile", userId]);
 
-			queryClient.setQueryData(["profile", userId], (old: any) =>
+			queryClient.setQueryData(["profile", userId], (old: Profile) =>
 				old ? { ...old, ...variables } : old,
 			);
 

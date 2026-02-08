@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { insertOrder, OrderInsert } from "@/lib/queries/orders";
+import { insertOrder } from "@/lib/queries/orders";
+import { OrderInsert } from "@/types/order";
 
 export function useOrder() {
 	const [loading, setLoading] = useState(false);

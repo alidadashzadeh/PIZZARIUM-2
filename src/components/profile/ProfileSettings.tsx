@@ -17,6 +17,7 @@ export default function ProfileSettings() {
 	const { data: profile } = useProfile();
 	const userId = user?.id;
 
+	console.log(profile);
 	const [form, setForm] = useState({
 		username: profile?.username ?? "",
 		phone_number: profile?.phone_number ?? "",
@@ -24,7 +25,7 @@ export default function ProfileSettings() {
 	});
 
 	const { mutate: updateProfile, isPending } = useUpdateProfile();
-	const { mutate: mutateVatar } = useUpdateAvatar(user?.id);
+	const { mutate: mutateVatar } = useUpdateAvatar(userId ?? "");
 
 	const handleSave = () => {
 		updateProfile({
@@ -58,7 +59,7 @@ export default function ProfileSettings() {
 							onChange={(e) => {
 								const file = e.target.files?.[0];
 								if (!file) return;
-								mutateVatar({ userId, file });
+								mutateVatar({ userId: userId ?? "", file });
 							}}
 						/>
 					</div>
@@ -110,11 +111,15 @@ export default function ProfileSettings() {
 					<CardContent className="p-6 flex flex-col gap-2">
 						<Label>Loyal member since</Label>
 						<Input
-							value={new Date(user.created_at).toLocaleDateString(undefined, {
-								year: "numeric",
-								month: "long",
-								day: "numeric",
-							})}
+							value={
+								user
+									? new Date(user.created_at).toLocaleDateString(undefined, {
+											year: "numeric",
+											month: "long",
+											day: "numeric",
+										})
+									: ""
+							}
 							disabled
 						/>
 					</CardContent>

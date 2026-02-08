@@ -38,6 +38,14 @@ export type SignaturePizzaCard = Pick<
 	| "prep_time_minutes"
 	| "category"
 	| "calorie"
+	| "is_available"
+	| "is_featured"
+	| "slug"
+	| "sort_order"
+	| "dough"
+	| "crust"
+	| "sauce"
+	| "cheese"
 >;
 export type SignaturePizzaIngredientsType = {
 	background_color: string;
