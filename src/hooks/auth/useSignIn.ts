@@ -23,7 +23,7 @@ export function useSignin(onClose?: () => void) {
 			toast("Welcome Back!");
 
 			onClose?.();
-		} catch (err) {
+		} catch {
 			setErrorMsg("Invalid email or password");
 		}
 	};

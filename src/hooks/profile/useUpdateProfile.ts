@@ -4,48 +4,48 @@ import { toast } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export function useUpdateProfile() {
-  const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: updateProfile,
+	return useMutation({
+		mutationFn: updateProfile,
 
-    onMutate: async (variables) => {
-      const user = useAuthStore.getState().user;
-      if (!user?.id) return;
+		onMutate: async (variables) => {
+			const user = useAuthStore.getState().user;
+			if (!user?.id) return;
 
-      const userId = user.id;
+			const userId = user.id;
 
-      await queryClient.cancelQueries({
-        queryKey: ["profile", userId],
-      });
+			await queryClient.cancelQueries({
+				queryKey: ["profile", userId],
+			});
 
-      const previousProfile = queryClient.getQueryData(["profile", userId]);
+			const previousProfile = queryClient.getQueryData(["profile", userId]);
 
-      queryClient.setQueryData(["profile", userId], (old: any) =>
-        old ? { ...old, ...variables } : old
-      );
+			queryClient.setQueryData(["profile", userId], (old: any) =>
+				old ? { ...old, ...variables } : old,
+			);
 
-      return { previousProfile };
-    },
+			return { previousProfile };
+		},
 
-    onError: (_err, _vars, context) => {
-      const user = useAuthStore.getState().user;
-      if (!user?.id) return;
+		onError: (_err, _vars, context) => {
+			const user = useAuthStore.getState().user;
+			if (!user?.id) return;
 
-      if (context?.previousProfile) {
-        queryClient.setQueryData(["profile", user.id], context.previousProfile);
-      }
+			if (context?.previousProfile) {
+				queryClient.setQueryData(["profile", user.id], context.previousProfile);
+			}
 
-      toast.error("Update failed, reverted");
-    },
+			toast.error("Update failed, reverted");
+		},
 
-    onSuccess: (serverProfile) => {
-      const user = useAuthStore.getState().user;
-      if (!user?.id) return;
+		onSuccess: (serverProfile) => {
+			const user = useAuthStore.getState().user;
+			if (!user?.id) return;
 
-      queryClient.setQueryData(["profile", user.id], serverProfile);
+			queryClient.setQueryData(["profile", user.id], serverProfile);
 
-      toast.success("Profile updated");
-    },
-  });
+			toast.success("Profile updated");
+		},
+	});
 }
