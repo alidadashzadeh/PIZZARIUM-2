@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Spinner } from "../ui/spinner";
 import ItemsSummaryList from "../ui/ItemsSummaryList";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function CheckoutOrderSummary() {
 	const router = useRouter();
@@ -16,6 +17,7 @@ export default function CheckoutOrderSummary() {
 	const cartItems = useCartStore((s) => s.items);
 	const total = useCartStore((s) => s.total);
 	const delivery = useDeliveryStore((s) => s.delivery);
+	const user = useAuthStore((s) => s.user);
 
 	const [loading, setLoading] = useState(false);
 
@@ -28,6 +30,12 @@ export default function CheckoutOrderSummary() {
 			toast.error("Delivery Info required");
 			return;
 		}
+
+		if (!user) {
+			toast.error("You must be logged in to proceed");
+			return;
+		}
+
 		setLoading(true);
 		router.push("/checkout/pay");
 	};

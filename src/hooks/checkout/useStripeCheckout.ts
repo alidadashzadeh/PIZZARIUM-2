@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useOrder } from "@/hooks/orders/useOrder";
 import { useAuthStore } from "@/store/useAuthStore";
-import { CartItem } from "@/types/customPizzaType";
+import { CartItem } from "@/types/CartType";
 import { useCartStore } from "@/store/useCartStore";
 
 export function useStripeCheckout() {
@@ -25,6 +25,7 @@ export function useStripeCheckout() {
 		},
 	) => {
 		if (!items.length) return;
+		if (!user) return;
 
 		try {
 			setStripeLoading(true);
