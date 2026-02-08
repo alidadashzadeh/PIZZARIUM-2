@@ -66,7 +66,7 @@ export const useCartStore = create<CartState>()(
 				if (item.size && typeof item.price === "object") {
 					// pizza
 					lineTotal = item.price[item.size] * quantity;
-				} else {
+				} else if (typeof item.price === "number") {
 					// drink
 					lineTotal = item.price * quantity;
 				}

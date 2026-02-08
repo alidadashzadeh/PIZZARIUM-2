@@ -51,9 +51,14 @@ export default function SignaturePizzasCard({
 							onClick={(e) => {
 								e.preventDefault();
 								const added = addItem({
-									...pizza,
+									// ...pizza,
 									type: "signature",
 									size: "small",
+									quantity: 1,
+									price: pizza.price,
+									id: pizza.id,
+									name: pizza.name,
+									image: pizza.image,
 								});
 
 								if (!added) return;

@@ -3,6 +3,8 @@ import {
 	CustomPizzaToppingsType,
 } from "./customPizzaType";
 
+type priceType = { small: number; medium: number; large: number } | number;
+
 export interface CartItem {
 	cartItemId: string;
 	type: "signature" | "custom" | "drink";
@@ -20,7 +22,7 @@ export interface CartItem {
 	quantity: number;
 	name: string;
 	image?: string;
-	price: number;
+	price: priceType;
 	lineTotal: number;
 	addedAt: number;
 }

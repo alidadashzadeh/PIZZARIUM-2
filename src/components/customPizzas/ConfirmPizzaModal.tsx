@@ -57,6 +57,7 @@ export default function ConfirmPizzaModal({
 							name: "custom pizza",
 							type: "custom",
 							quantity: 1,
+							price: customPizza.price ?? 0,
 						});
 						onOpenChange(false);
 						resetCustomPizza();

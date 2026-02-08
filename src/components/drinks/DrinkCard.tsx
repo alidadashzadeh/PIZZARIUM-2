@@ -29,7 +29,7 @@ export default function DrinkCard({ drink }: DrinkCardProps) {
 						className="cursor-pointer"
 						onClick={(e) => {
 							e.preventDefault();
-							const added = addItem({ ...drink, type: "drink" });
+							const added = addItem({ ...drink, type: "drink", quantity: 1 });
 
 							if (!added) return;
 
