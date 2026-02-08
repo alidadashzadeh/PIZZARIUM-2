@@ -33,11 +33,10 @@ export function useSignUp(onClose?: () => void) {
 
 			onClose?.();
 		} catch (err: unknown) {
-			// fix error message handling to show actual error from backend like user already exists
-			let message = "An unexpected error occurred";
+			let message = "Something went wrong";
 
-			if (err instanceof Error) {
-				message = err.message;
+			if (err && typeof err === "object" && "message" in err) {
+				message = String(err.message);
 			}
 
 			setErrorMsg(message);
