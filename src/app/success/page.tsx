@@ -1,4 +1,4 @@
-import SuccessPage from "@/components/success/SuccessPage";
+import SuccessPage from "@/components/success/SuccessClient";
 import { Spinner } from "@/components/ui/spinner";
 import { Suspense } from "react";
 

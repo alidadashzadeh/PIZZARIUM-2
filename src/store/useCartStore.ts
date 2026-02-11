@@ -16,14 +16,12 @@ interface CartState {
 		item: Omit<CartItem, "cartItemId" | "lineTotal" | "addedAt">,
 	) => boolean;
 	removeItem: (cartItemId: string) => void;
-
 	increaseCartItemQty: (cartItemId: string) => void;
 	decreaseCartItemQty: (cartItemId: string) => void;
 	changeSize: (
 		cartItemId: string,
 		newSize: "small" | "medium" | "large",
 	) => void;
-
 	clearCart: () => void;
 }
 

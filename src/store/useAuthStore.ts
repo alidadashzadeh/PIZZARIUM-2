@@ -7,7 +7,7 @@ interface AuthState {
 	session: Session | null;
 	loading: boolean;
 
-	setSession: (session: Session | null) => Promise<void>;
+	setSession: (session: Session | null) => void;
 	signOut: () => Promise<void>;
 }
 
@@ -16,12 +16,14 @@ export const useAuthStore = create<AuthState>((set) => ({
 	session: null,
 	loading: true,
 
-	setSession: async (session) => {
+	setSession: (session) => {
 		if (!session) {
 			set({ session: null, user: null, loading: false });
 			return;
 		}
+
 		const user = session.user;
+
 		set({
 			session,
 			user,

@@ -24,16 +24,17 @@ export default function SuccessPage() {
 		error,
 	} = useOrderBySession(sessionId, user?.id);
 
-	if (!user)
-		return (
-			<div className="flex justify-center py-20 text-red-500">
-				Error: You must be logged in to view this page.
-			</div>
-		);
 	if (isLoading || !order)
 		return (
 			<div className="flex justify-center py-20 text-muted-foreground">
 				Loading your order...
+			</div>
+		);
+
+	if (!user)
+		return (
+			<div className="flex justify-center py-20 text-red-500">
+				Error: You must be logged in to view this page.
 			</div>
 		);
 

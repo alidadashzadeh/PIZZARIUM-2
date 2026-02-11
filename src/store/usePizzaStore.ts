@@ -1,5 +1,5 @@
 import { recalcPizza } from "@/lib/utils";
-import { CartItem } from "@/types/CartType";
+// import { CartItem } from "@/types/CartType";
 import {
 	CustomPizzaType,
 	fullToppingsType,
@@ -16,7 +16,7 @@ export type MultiSelectKeys = {
 
 type PizzaStore = {
 	customPizza: CustomPizzaType;
-	cartItems: CartItem[];
+	// cartItems: CartItem[];
 
 	// actions
 	resetCustomPizza: () => void;
@@ -42,8 +42,7 @@ export const usePizzaStore = create<PizzaStore>()(
 					large: 16.87,
 				},
 			},
-
-			cartItems: [],
+			// cartItems: [],
 
 			// ACTIONS
 
