@@ -5,12 +5,13 @@ import {
 	CustomPizzaOptionsType,
 	CustomPizzaType,
 } from "@/types/customPizzaType";
+
 import {
 	Category,
+	SignaturePizzaCard,
 	SortField,
 	SortOrder,
-} from "../components/signaturePizzas/SignaturePizzasList";
-import { SignaturePizzaCard } from "@/types/siganaturPizzaType";
+} from "@/types/siganaturPizzaType";
 
 interface FiltersState {
 	category: Category;

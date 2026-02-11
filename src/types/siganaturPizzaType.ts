@@ -25,7 +25,14 @@ export type SignaturePizza = {
 	crust: string;
 	sauce: string;
 	cheese: string;
+	ingredients: SignaturePizzaIngredientsType[];
+	reviews: signaturePizzaReviewType[];
 };
+
+export interface SignaturePizzaInfoProps {
+	pizza: SignaturePizza;
+}
+
 export type SignaturePizzaCard = Pick<
 	SignaturePizza,
 	| "id"
@@ -60,4 +67,26 @@ export type signaturePizzaReviewType = {
 	rating: number;
 	text: string;
 	user: { avatar: string; username: string };
+};
+
+export type Category = "all" | "meat" | "veggie";
+export type SortField = "" | "price" | "prep_time" | "popularity";
+export type SortOrder = "" | "asc" | "desc";
+export interface FiltersState {
+	category: Category;
+	sortBy: SortField;
+	sortOrder: SortOrder;
+}
+export type SignaturePizzasListProps = { pizzas: SignaturePizzaCard[] };
+export interface SignaturePizzaFiltersProps {
+	filters: FiltersState;
+}
+
+export type SignatureCartItem = SignaturePizza & {
+	size: "small" | "medium" | "large";
+	quantity: number;
+	type: "signature";
+	cartItemId?: string;
+	lineTotal?: number;
+	addedAt?: string;
 };

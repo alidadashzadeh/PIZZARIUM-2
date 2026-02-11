@@ -2,10 +2,7 @@
 import { supabase } from "../supabase";
 
 export const fetchSignaturePizzas = async () => {
-	const { data, error } = await supabase.from("signature_pizzas").select(
-		"*",
-		// "id,name,image,avg_rating,rating_count,description,price,prep_time_minutes,category,calorie,slug"
-	);
+	const { data, error } = await supabase.from("signature_pizzas").select("*");
 
 	if (error) throw error;
 
@@ -31,5 +28,5 @@ export async function fetchSignaturePizzaDetails(id: string) {
 
 	if (error) throw error;
 
-	return data;
+	return { data, error };
 }
