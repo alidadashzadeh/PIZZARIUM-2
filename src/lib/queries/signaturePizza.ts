@@ -1,4 +1,3 @@
-// lib/queries.ts
 import { supabase } from "../supabase";
 
 export const fetchSignaturePizzas = async () => {

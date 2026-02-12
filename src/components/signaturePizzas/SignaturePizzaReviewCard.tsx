@@ -17,14 +17,17 @@ export default function SignaturePizzaReviewCard({
 	created_at,
 	profiles: { avatar, username },
 }: ReviewProps) {
-	console.log(created_at, rating, text, avatar, username);
 	return (
 		<Card className="bg-muted/30 border-none ">
 			<CardHeader className="p-2 ">
 				<div className="flex justify-between items-start">
 					<div className="flex items-center gap-3">
 						<Avatar className="h-8 w-8 border">
-							<AvatarImage src={avatar} alt={username} />
+							<AvatarImage
+								src={avatar}
+								alt={username}
+								className="w-full h-full object-cover rounded-full"
+							/>
 							<AvatarFallback className="text-[10px]">
 								{username.substring(0, 2).toUpperCase()}
 							</AvatarFallback>

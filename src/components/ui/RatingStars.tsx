@@ -26,7 +26,7 @@ export default function RatingStars({
 					{Array.from({ length: whole }).map((_, i) => (
 						<Star
 							key={i}
-							className={`fill-primary stroke-primary drop-shadow-sm h-${size} w-${size}`}
+							className={`fill-yellow-500 stroke-yellow-500 drop-shadow-sm h-${size} w-${size}`}
 						/>
 					))}
 					{percent != 0 && (
@@ -36,14 +36,14 @@ export default function RatingStars({
 						>
 							<Star
 								style={{ width: size * 4, height: size * 4 }}
-								className={`absolute top-0 left-0 stroke-primary fill-none`}
+								className={`absolute top-0 left-0 stroke-yellow-500 fill-none`}
 							/>
 							<div
 								className={`absolute top-0 left-0 h-${size} w-${size} overflow-hidden`}
 								style={{ width: `${percent}%` }}
 							>
 								<Star
-									className={`h-${size} w-${size} fill-primary stroke-primary`}
+									className={`h-${size} w-${size} fill-yellow-500 stroke-yellow-500 drop-shadow-sm`}
 								/>
 							</div>
 						</div>
@@ -51,7 +51,7 @@ export default function RatingStars({
 					{Array.from({ length: greyStars }).map((_, i) => (
 						<Star
 							key={i}
-							className={`stroke-primary drop-shadow-sm h-${size} w-${size}`}
+							className={`stroke-yellow-500 drop-shadow-sm h-${size} w-${size}`}
 						/>
 					))}
 				</div>

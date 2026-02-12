@@ -14,7 +14,7 @@ export default function SignaturePizzaInfo({ pizza }: SignaturePizzaInfoProps) {
 	return (
 		<>
 			{/* Image */}
-			<div className="relative">
+			<div className="relative w-[500px] h-[500px] aspecst-square ">
 				<Image
 					src={pizza.image}
 					width={500}
@@ -79,7 +79,7 @@ export default function SignaturePizzaInfo({ pizza }: SignaturePizzaInfoProps) {
 						{pizza.calorie.small} – {pizza.calorie.large} Calories
 					</P>
 				</div>
-				<div>
+				<div className="flex flex-col gap-2">
 					<H4>Reviews</H4>
 					<SignaturePizzaReviews pizzaId={pizza.id} />
 				</div>

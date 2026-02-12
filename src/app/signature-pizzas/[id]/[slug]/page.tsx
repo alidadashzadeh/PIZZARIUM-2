@@ -20,7 +20,7 @@ export default async function Page({ params }: Props) {
 	if (error || !pizza) return <div>Pizza not found</div>;
 
 	return (
-		<div className="flex flex-col lg:flex-row gap-4">
+		<div className="grid  grid-cols-[500px_1fr_500px] gap-6 items-start">
 			<SignaturePizzaInfo pizza={pizza} />
 			<SignaturePizzaControls pizza={pizza} />
 		</div>

@@ -8,11 +8,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { useGetReviews } from "@/hooks/reviews/useGetReviews";
 import SignaturePizzaReviewCard from "./SignaturePizzaReviewCard";
+import ReviewCardLoader from "../ui/ReviewCardLoader";
 
 export function SignaturePizzaReviews({ pizzaId }: { pizzaId: string }) {
-	const { data: reviews } = useGetReviews(pizzaId);
+	const { data: reviews, isLoading } = useGetReviews(pizzaId);
 	const firstTwo = reviews?.slice(0, 2) || [];
 	const theRest = reviews?.slice(2) || [];
+
+	if (isLoading) {
+		return <ReviewCardLoader />;
+	}
 
 	return (
 		<div className="space-y-4">
