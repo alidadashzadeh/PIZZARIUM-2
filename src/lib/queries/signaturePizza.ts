@@ -1,36 +1,31 @@
-// lib/queries.ts
 import { supabase } from "../supabase";
 
 export const fetchSignaturePizzas = async () => {
-  const { data, error } = await supabase
-    .from("signature_pizzas")
-    .select(
-      "id,name,image,avg_rating,rating_count,description,price,prep_time_minutes,category,calorie,slug"
-    );
+	const { data, error } = await supabase.from("signature_pizzas").select("*");
 
-  if (error) throw error;
+	if (error) throw error;
 
-  return data;
+	return data;
 };
 
 export const fetchFeaturedPizzas = async () => {
-  const { data, error } = await supabase
-    .from("signature_pizzas")
-    .select("*")
-    .eq("is_featured", true);
+	const { data, error } = await supabase
+		.from("signature_pizzas")
+		.select("*")
+		.eq("is_featured", true);
 
-  if (error) throw error;
-  return data;
+	if (error) throw error;
+	return data;
 };
 
 export async function fetchSignaturePizzaDetails(id: string) {
-  const { data, error } = await supabase
-    .from("signature_pizza_details")
-    .select("*")
-    .eq("id", id)
-    .single();
+	const { data, error } = await supabase
+		.from("signature_pizza_details")
+		.select("*")
+		.eq("id", id)
+		.single();
 
-  if (error) throw error;
+	if (error) throw error;
 
-  return data;
+	return { data, error };
 }

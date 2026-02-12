@@ -1,188 +1,170 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
-import { CartItem } from "@/types/pizzaType";
+import { CartItem } from "@/types/CartType";
 import { toast } from "sonner";
+import { sortCartItems, updateCartState } from "@/lib/utils";
 
 interface CartState {
-  items: CartItem[];
-
-  // actions
-  addItem: (
-    item: Omit<CartItem, "cartItemId" | "lineTotal" | "addedAt">
-  ) => boolean;
-  removeItem: (cartItemId: string) => void;
-
-  increaseCartItemQty: (cartItemId: string) => void;
-  decreaseCartItemQty: (cartItemId: string) => void;
-  changeSize: (
-    cartItemId: string,
-    newSize: "small" | "medium" | "large"
-  ) => void;
-
-  clearCart: () => void;
+	items: CartItem[];
+	pendingOrderId: string | null;
+	total: number;
+	// actions
+	setPendingOrderId: (id: string) => void;
+	clearPendingOrderId: () => void;
+	addItem: (
+		item: Omit<CartItem, "cartItemId" | "lineTotal" | "addedAt">,
+	) => boolean;
+	removeItem: (cartItemId: string) => void;
+	increaseCartItemQty: (cartItemId: string) => void;
+	decreaseCartItemQty: (cartItemId: string) => void;
+	changeSize: (
+		cartItemId: string,
+		newSize: "small" | "medium" | "large",
+	) => void;
+	clearCart: () => void;
 }
 
 export const useCartStore = create<CartState>()(
-  persist(
-    (set, get) => ({
-      items: [],
+	persist(
+		(set, get) => ({
+			items: [],
+			pendingOrderId: null,
+			total: 0,
 
-      // actions
-      // addItem: (item) =>
-      //   set((state) => {
-      //     const quantity = item.quantity ?? 1;
+			// actions
+			setPendingOrderId: (id) =>
+				set(() => ({
+					pendingOrderId: id,
+				})),
 
-      //     const existingItem = state.items.some((i) => {
-      //       // custom items are always unique
-      //       if (item.type === "custom") return false;
+			clearPendingOrderId: () =>
+				set(() => ({
+					pendingOrderId: null,
+				})),
 
-      //       // drinks & signature pizzas have id
-      //       return i.id === item.id && i.type === item.type;
-      //     });
+			addItem: (item): boolean => {
+				const quantity = item.quantity ?? 1;
 
-      //     if (existingItem) {
-      //       toast.error(`${item.name} is already in the cart!`);
-      //       return state;
-      //     }
+				const existingItem = get().items.some((i) => {
+					// custom items are always unique
+					if (item.type === "custom") return false;
 
-      //     let lineTotal = 0;
+					// drinks & signature pizzas have id
+					return i.id === item.id && i.type === item.type;
+				});
 
-      //     if (item.size && typeof item.price === "object") {
-      //       // pizza
-      //       lineTotal = item.price[item.size] * quantity;
-      //     } else {
-      //       // drink
-      //       lineTotal = item.price * quantity;
-      //     }
-      //     const newItem: CartItem = {
-      //       ...item,
-      //       cartItemId: nanoid(),
-      //       quantity,
-      //       lineTotal,
-      //       addedAt: Date.now(),
-      //     };
+				if (existingItem) {
+					toast.error(`${item.name} is already in the cart!`);
+					return false;
+				}
 
-      //     toast.success(`${item.name} successfully added to cart.`);
-      //     return { items: [...state.items, newItem] };
-      //   }),
+				let lineTotal = 0;
 
-      addItem: (item): boolean => {
-        const quantity = item.quantity ?? 1;
+				if (item.size && typeof item.price === "object") {
+					// pizza
+					lineTotal = item.price[item.size] * quantity;
+				} else if (typeof item.price === "number") {
+					// drink
+					lineTotal = item.price * quantity;
+				}
 
-        const existingItem = get().items.some((i) => {
-          // custom items are always unique
-          if (item.type === "custom") return false;
+				const newItem: CartItem = {
+					...item,
+					cartItemId: nanoid(),
+					quantity,
+					lineTotal,
+					addedAt: Date.now(),
+				};
 
-          // drinks & signature pizzas have id
-          return i.id === item.id && i.type === item.type;
-        });
+				toast.success(`${item.name} successfully added to cart.`);
 
-        if (existingItem) {
-          toast.error(`${item.name} is already in the cart!`);
-          return false;
-        }
+				set((state) => {
+					const updatedItems = sortCartItems([...state.items, newItem]);
+					return updateCartState(updatedItems as CartItem[]);
+				});
 
-        let lineTotal = 0;
+				return true;
+			},
 
-        if (item.size && typeof item.price === "object") {
-          // pizza
-          lineTotal = item.price[item.size] * quantity;
-        } else {
-          // drink
-          lineTotal = item.price * quantity;
-        }
+			removeItem: (cartItemId) =>
+				set((state) => {
+					const updatedItems = state.items.filter(
+						(item) => item.cartItemId !== cartItemId,
+					);
 
-        const newItem: CartItem = {
-          ...item,
-          cartItemId: nanoid(),
-          quantity,
-          lineTotal,
-          addedAt: Date.now(),
-        };
+					return updateCartState(updatedItems);
+				}),
 
-        set((state) => ({ items: [...state.items, newItem] }));
-        toast.success(`${item.name} successfully added to cart.`);
+			increaseCartItemQty: (cartItemId) =>
+				set((state) => {
+					const updatedItems = state.items.map((item) => {
+						if (item.cartItemId !== cartItemId) return item;
 
-        return true;
-      },
+						const newQty = item.quantity + 1;
 
-      removeItem: (cartItemId) =>
-        set((state) => ({
-          items: state.items.filter((item) => item.cartItemId !== cartItemId),
-        })),
+						const newLineTotal =
+							typeof item.price === "object"
+								? item.price[item.size!] * newQty
+								: item.price * newQty;
 
-      increaseCartItemQty: (cartItemId) =>
-        set((state) => ({
-          items: state.items.map((item) => {
-            if (item.cartItemId !== cartItemId) return item;
+						return {
+							...item,
+							quantity: newQty,
+							lineTotal: Number(newLineTotal.toFixed(2)),
+						};
+					});
 
-            const newQty = (item.quantity ?? 1) + 1;
+					return updateCartState(updatedItems);
+				}),
 
-            let newLineTotal;
-            if (item.size && typeof item.price === "object") {
-              // pizza
-              newLineTotal = item.price[item.size] * newQty;
-            } else {
-              // drink
-              newLineTotal = item.price * newQty;
-            }
-            return {
-              ...item,
-              quantity: newQty,
-              lineTotal: newLineTotal,
-            };
-          }),
-        })),
+			decreaseCartItemQty: (cartItemId) =>
+				set((state) => {
+					const updatedItems = state.items.map((item) => {
+						if (item.cartItemId !== cartItemId) return item;
 
-      decreaseCartItemQty: (cartItemId) =>
-        set((state) => ({
-          items: state.items.map((item) => {
-            if (item.cartItemId !== cartItemId) return item;
+						const newQty = Math.max(1, item.quantity - 1);
 
-            const newQty = Math.max(1, (item.quantity ?? 1) - 1);
-            let newLineTotal;
-            if (item.size && typeof item.price === "object") {
-              // pizza
-              newLineTotal = item.price[item.size] * newQty;
-            } else {
-              // drink
-              newLineTotal = item.price * newQty;
-            }
-            return {
-              ...item,
-              quantity: newQty,
-              lineTotal: newLineTotal,
-              // lineTotal: item.price * newQty,
-            };
-          }),
-        })),
+						const newLineTotal =
+							typeof item.price === "object"
+								? item.price[item.size!] * newQty
+								: item.price * newQty;
 
-      changeSize: (cartItemId, newSize) =>
-        set((state) => ({
-          items: state.items.map((item) => {
-            if (item.cartItemId !== cartItemId) return item;
-            if (item.type === "drink") return item;
-            if (item.size === newSize) return item;
+						return {
+							...item,
+							quantity: newQty,
+							lineTotal: Number(newLineTotal.toFixed(2)),
+						};
+					});
 
-            let newLineTotal = item.lineTotal;
-            if (item.size && typeof item.price === "object") {
-              // pizza
-              newLineTotal = item.price[newSize] * item.quantity;
-            }
+					return updateCartState(updatedItems);
+				}),
 
-            return {
-              ...item,
-              size: newSize,
-              lineTotal: newLineTotal,
-            };
-          }),
-        })),
+			changeSize: (cartItemId, newSize) =>
+				set((state) => {
+					const updatedItems = state.items.map((item) => {
+						if (item.cartItemId !== cartItemId) return item;
+						if (item.type === "drink") return item;
 
-      clearCart: () => set({ items: [] }),
-    }),
-    {
-      name: "cart-store",
-    }
-  )
+						const newLineTotal =
+							typeof item.price === "object"
+								? item.price[newSize] * item.quantity
+								: item.lineTotal;
+
+						return {
+							...item,
+							size: newSize,
+							lineTotal: Number(newLineTotal.toFixed(2)),
+						};
+					});
+
+					return updateCartState(updatedItems);
+				}),
+
+			clearCart: () => set(updateCartState([])),
+		}),
+		{
+			name: "cart-store",
+		},
+	),
 );

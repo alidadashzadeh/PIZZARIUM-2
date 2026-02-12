@@ -2,7 +2,7 @@ import DrinkList from "@/components/drinks/DrinkList";
 import { H2 } from "@/components/ui/Typography";
 import { fetchDrinks } from "@/lib/queries/drinks";
 
-async function page() {
+export default async function page() {
   const drinks = await fetchDrinks();
 
   return (
@@ -14,5 +14,3 @@ async function page() {
     </div>
   );
 }
-
-export default page;

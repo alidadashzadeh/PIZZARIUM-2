@@ -1,50 +1,52 @@
 import { updateProfile } from "@/lib/queries/profile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useAuthStore } from "@/store/useAuthStore";
+import { Profile } from "@/types/profile";
 
-export function useUpdateProfile(userId: string) {
-  const queryClient = useQueryClient();
+export function useUpdateProfile() {
+	const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: updateProfile,
+	return useMutation({
+		mutationFn: updateProfile,
 
-    // OPTIMISTIC UPDATE
-    onMutate: async (variables) => {
-      await queryClient.cancelQueries({
-        queryKey: ["profile", userId],
-      });
+		onMutate: async (variables) => {
+			const user = useAuthStore.getState().user;
+			if (!user?.id) return;
 
-      const previousProfile = queryClient.getQueryData(["profile", userId]);
+			const userId = user.id;
 
-      // remove user_id so it doesn't pollute cache
-      const { user_id, ...optimisticFields } = variables as any;
+			await queryClient.cancelQueries({
+				queryKey: ["profile", userId],
+			});
 
-      queryClient.setQueryData(["profile", userId], (old: any) =>
-        old
-          ? {
-              ...old,
-              ...optimisticFields,
-            }
-          : old
-      );
+			const previousProfile = queryClient.getQueryData(["profile", userId]);
 
-      return { previousProfile };
-    },
+			queryClient.setQueryData(["profile", userId], (old: Profile) =>
+				old ? { ...old, ...variables } : old,
+			);
 
-    onError: (_error, _variables, context) => {
-      if (context?.previousProfile) {
-        queryClient.setQueryData(["profile", userId], context.previousProfile);
-      }
+			return { previousProfile };
+		},
 
-      toast.error("Update failed, changes reverted");
-    },
+		onError: (_err, _vars, context) => {
+			const user = useAuthStore.getState().user;
+			if (!user?.id) return;
 
-    // ✅ commit real server truth directly into cache
-    // ✅ remove invalidate and extra fetch
-    onSuccess: (serverProfile) => {
-      queryClient.setQueryData(["profile", userId], serverProfile);
+			if (context?.previousProfile) {
+				queryClient.setQueryData(["profile", user.id], context.previousProfile);
+			}
 
-      toast.success("Profile updated");
-    },
-  });
+			toast.error("Update failed, reverted");
+		},
+
+		onSuccess: (serverProfile) => {
+			const user = useAuthStore.getState().user;
+			if (!user?.id) return;
+
+			queryClient.setQueryData(["profile", user.id], serverProfile);
+
+			toast.success("Profile updated");
+		},
+	});
 }

@@ -1,0 +1,72 @@
+import { OrderInsert } from "@/types/order";
+import { supabase } from "../supabase";
+
+export async function insertOrder(order: OrderInsert) {
+	const { data, error } = await supabase
+		.from("orders")
+		.insert([order])
+		.select()
+		.single();
+
+	if (error) {
+		console.error("Supabase Insert Order Error:", error.message);
+		throw error;
+	}
+
+	return data;
+}
+
+export async function getOrderStatusClient(orderId: string) {
+	const { data, error } = await supabase
+		.from("orders")
+		.select("id, paid")
+		.eq("id", orderId)
+		.single();
+
+	if (error) {
+		console.error("Supabase getOrderStatusClient error:", error.message);
+		return null;
+	}
+
+	return data;
+}
+
+export async function fetchOrderBySession(sessionId: string, userId: string) {
+	const { data, error } = await supabase
+		.from("orders")
+		.select("*")
+		.eq("stripe_session_id", sessionId)
+		.eq("user_id", userId)
+		.single();
+
+	if (error) throw error;
+
+	return data;
+}
+
+export async function getOrdersByUser(userId: string) {
+	const { data, error } = await supabase
+		.from("orders")
+		.select("*")
+		.eq("user_id", userId)
+		.eq("paid", true)
+		.order("created_at", { ascending: false });
+
+	if (error) {
+		throw new Error(error.message);
+	}
+
+	return data;
+}
+
+export async function getOrderById(orderId: string) {
+	const { data, error } = await supabase
+		.from("orders")
+		.select("*") // includes items, address, etc
+		.eq("id", orderId)
+		.single();
+
+	if (error) throw new Error(error.message);
+
+	return data;
+}

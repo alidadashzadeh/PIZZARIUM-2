@@ -5,38 +5,43 @@ import { createProfile } from "@/lib/queries/profile";
 import { SignUpFormInputs } from "@/components/ui/SignUpForm";
 
 export function useSignUp(onClose?: () => void) {
-  const [errorMsg, setErrorMsg] = useState<string>("");
+	const [errorMsg, setErrorMsg] = useState<string>("");
 
-  const signUpUser = async (data: SignUpFormInputs) => {
-    setErrorMsg("");
+	const signUpUser = async (data: SignUpFormInputs) => {
+		setErrorMsg("");
 
-    if (data.password !== data.confirmPassword) {
-      setErrorMsg("Passwords do not match");
-      return;
-    }
+		if (data.password !== data.confirmPassword) {
+			setErrorMsg("Passwords do not match");
+			return;
+		}
 
-    try {
-      const { user, session } = await signUp(data.email, data.password);
+		try {
+			const { user } = await signUp(data.email, data.password);
 
-      if (!user) {
-        setErrorMsg("Failed to sign up. Please try again.");
-        return;
-      }
+			if (!user) {
+				setErrorMsg("Failed to sign up. Please try again.");
+				return;
+			}
 
-      await createProfile({
-        id: user.id,
-        username: user.email?.split("@")[0] || "username",
-        avatar: "",
-      });
+			await createProfile({
+				id: user.id,
+				username: user.email?.split("@")[0] || "username",
+				avatar: "",
+			});
 
-      toast("Check your Email for verification");
+			toast("Check your Email for verification");
 
-      onClose?.();
-    } catch (err: any) {
-      setErrorMsg(err?.message || "An unexpected error occurred");
-    } finally {
-    }
-  };
+			onClose?.();
+		} catch (err: unknown) {
+			let message = "Something went wrong";
 
-  return { signUpUser, errorMsg };
+			if (err && typeof err === "object" && "message" in err) {
+				message = String(err.message);
+			}
+
+			setErrorMsg(message);
+		}
+	};
+
+	return { signUpUser, errorMsg };
 }

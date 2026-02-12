@@ -13,7 +13,7 @@ interface SizeProps {
   setSize: React.Dispatch<React.SetStateAction<"small" | "medium" | "large">>;
 }
 
-export default function Size({ pizza, size, setSize }: SizeProps) {
+export default function Size({ size, setSize }: SizeProps) {
   return (
     <ToggleGroup
       type="single"
