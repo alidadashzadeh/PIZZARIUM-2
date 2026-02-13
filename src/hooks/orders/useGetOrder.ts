@@ -5,6 +5,6 @@ export function useGetOrder(orderId?: string) {
 	return useQuery({
 		queryKey: ["order", orderId],
 		queryFn: () => getOrderById(orderId!),
-		enabled: !!orderId, // only fetch when id exists
+		enabled: !!orderId,
 	});
 }

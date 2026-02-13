@@ -62,7 +62,7 @@ export async function getOrdersByUser(userId: string) {
 export async function getOrderById(orderId: string) {
 	const { data, error } = await supabase
 		.from("orders")
-		.select("*") // includes items, address, etc
+		.select("*")
 		.eq("id", orderId)
 		.single();
 

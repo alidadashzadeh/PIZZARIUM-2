@@ -67,7 +67,7 @@ export function applyFiltersAndSort(
 export const estimateCustomPizzaCost = (
 	customPizza: CustomPizzaType,
 ): number => {
-	let total = 11; // ✅ base cost
+	let total = 11; // base cost
 
 	(Object.keys(customPizza) as (keyof CustomPizzaType)[]).forEach((key) => {
 		if (key === "price" || key === "size") return;
@@ -190,19 +190,6 @@ export const recalcPizza = (pizza: CustomPizzaType) => {
 		},
 	};
 };
-
-// export const recalcPizza = (pizza: CustomPizzaType) => {
-// 	const base = estimateCustomPizzaCost(pizza);
-
-// 	return {
-// 		...pizza,
-// 		price: {
-// 			small: Number(base.toFixed(2)),
-// 			medium: Number((base * 1.2).toFixed(2)),
-// 			large: Number((base * 1.3).toFixed(2)),
-// 		},
-// 	};
-// };
 
 export const updateCartState = (items: CartItem[]) => ({
 	items,

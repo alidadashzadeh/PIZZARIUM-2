@@ -5,6 +5,6 @@ export function useOrders(userId?: string) {
 	return useQuery({
 		queryKey: ["orders", userId],
 		queryFn: () => getOrdersByUser(userId!),
-		enabled: !!userId, // only run when user exists
+		enabled: !!userId,
 	});
 }
