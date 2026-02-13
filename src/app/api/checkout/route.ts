@@ -19,7 +19,6 @@ export async function POST(req: Request) {
 			payment_method_types: ["card"],
 			line_items,
 
-			// success_url: `${siteUrl}/success`,
 			success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
 			cancel_url: `${siteUrl}/cancel`,
 
