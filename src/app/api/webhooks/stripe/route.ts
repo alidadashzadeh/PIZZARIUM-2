@@ -23,8 +23,6 @@ export async function POST(req: Request) {
 		);
 	}
 
-	console.log("Stripe Event Received:", event.type);
-
 	if (event.type === "checkout.session.completed") {
 		const session = event.data.object as Stripe.Checkout.Session;
 
@@ -64,9 +62,6 @@ export async function POST(req: Request) {
 				cardBrand = paymentMethod.card.brand;
 				cardLast4 = paymentMethod.card.last4;
 			}
-
-			console.log("Card Brand:", cardBrand);
-			console.log("Card Last4:", cardLast4);
 
 			if (cardBrand && cardLast4) {
 				await markOrderPaid(orderId, session.id, cardBrand, cardLast4);

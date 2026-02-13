@@ -26,3 +26,8 @@ export interface CartItem {
 	lineTotal: number;
 	addedAt: number;
 }
+
+export type ConfirmPizzaModalProps = {
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+};

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { Button } from "../ui/button";
 import {
 	SheetClose,
@@ -14,8 +16,6 @@ import { Large, Muted } from "../ui/Typography";
 import CartItemList from "./CartItemList";
 
 import { useCartStore } from "@/store/useCartStore";
-
-import Link from "next/link";
 
 export default function CartSheetContent() {
 	const items = useCartStore((s) => s.items);

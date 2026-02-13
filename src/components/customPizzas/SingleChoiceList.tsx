@@ -1,10 +1,13 @@
 "use client";
 
 import Image from "next/image";
+
 import { Button } from "../ui/button";
 import { CheckCheckIcon, Minus, Plus } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
+
 import { usePizzaStore } from "@/store/usePizzaStore";
+
 import { optionsType, SingleChoiceListProps } from "@/types/customPizzaType";
 
 export default function SingleChoiceList({

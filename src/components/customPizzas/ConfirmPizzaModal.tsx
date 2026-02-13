@@ -7,19 +7,17 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { usePizzaStore } from "@/store/usePizzaStore";
 import { Large } from "../ui/Typography";
 import CustomPizzaImage from "./CustomPizzaImage";
 import CustomPizzaaRecipe from "./CustomPizzaaRecipe";
 import CustomPizzaToppings from "./CustomPizzaToppings";
 import CustomPizzaSizeSelector from "./CustomPizzaSizeSelector";
-import { useCartStore } from "@/store/useCartStore";
 import { toast } from "sonner";
 
-type ConfirmPizzaModalProps = {
-	open: boolean;
-	onOpenChange: (open: boolean) => void;
-};
+import { useCartStore } from "@/store/useCartStore";
+import { usePizzaStore } from "@/store/usePizzaStore";
+
+import { ConfirmPizzaModalProps } from "@/types/CartType";
 
 export default function ConfirmPizzaModal({
 	open,

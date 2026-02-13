@@ -1,5 +1,11 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
+
+import SignaturePizzasCard from "./SignaturePizzaCard";
+import SignaturePizzaFilters from "./SignaturePizzaFilters";
+import { applyFiltersAndSort } from "@/lib/utils";
+
 import {
 	Category,
 	FiltersState,
@@ -7,11 +13,6 @@ import {
 	SortField,
 	SortOrder,
 } from "@/types/siganaturPizzaType";
-
-import SignaturePizzasCard from "./SignaturePizzaCard";
-import SignaturePizzaFilters from "./SignaturePizzaFilters";
-import { applyFiltersAndSort } from "@/lib/utils";
-import { useSearchParams } from "next/navigation";
 
 export default function SignaturePizzasList({
 	pizzas,

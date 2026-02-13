@@ -2,8 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useAuthStore } from "@/store/useAuthStore";
+
 import AccountDashboard from "./AccountDashboard";
+import { Spinner } from "../ui/spinner";
+
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function ProtectedProfilePage() {
 	const user = useAuthStore((s) => s.user);
@@ -18,9 +21,13 @@ export default function ProtectedProfilePage() {
 
 	// show loader while auth state is initializing
 	if (user === undefined)
-		return <div className="text-center mt-20">Loading...</div>;
+		return (
+			<div className="text-center mt-20">
+				<Spinner className="mx-auto mt-6" />
+			</div>
+		);
 
-	if (!user) return null; // redirecting
+	if (!user) return null;
 
 	return <AccountDashboard />;
 }

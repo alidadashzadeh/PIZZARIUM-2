@@ -2,12 +2,13 @@
 
 import { Large } from "../ui/Typography";
 import { Button } from "../ui/button";
-import { usePizzaStore } from "@/store/usePizzaStore";
 import { RefreshCw } from "lucide-react";
 import CustomPizzaImage from "./CustomPizzaImage";
 import CustomPizzaaRecipe from "./CustomPizzaaRecipe";
 import CustomPizzaToppings from "./CustomPizzaToppings";
 import CustomPizzaSizeSelector from "./CustomPizzaSizeSelector";
+
+import { usePizzaStore } from "@/store/usePizzaStore";
 
 type Props = {
 	onAddToCart: () => void;

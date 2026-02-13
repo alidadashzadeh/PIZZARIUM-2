@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+
 import { H1 } from "../ui/Typography";
 
 function Logo() {

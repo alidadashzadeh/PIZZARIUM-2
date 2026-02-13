@@ -1,8 +1,10 @@
+import { Suspense } from "react";
+
 import { H2 } from "@/components/ui/Typography";
 import SignaturePizzasList from "@/components/signaturePizzas/SignaturePizzasList";
-import { fetchSignaturePizzas } from "@/lib/queries/signaturePizza";
-import { Suspense } from "react";
 import SignatureListLoader from "@/components/ui/SignatureListLoader";
+
+import { fetchSignaturePizzas } from "@/lib/queries/signaturePizza";
 
 export const revalidate = 3600;
 

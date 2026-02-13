@@ -1,8 +1,8 @@
+import NavLink from "../ui/NavLink";
 import {
 	NavigationMenu,
 	NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import NavLink from "../ui/NavLink";
 
 function Nav() {
 	const links = [

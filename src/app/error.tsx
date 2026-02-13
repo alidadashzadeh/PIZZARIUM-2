@@ -9,7 +9,7 @@ export default function Error({
 }) {
 	return (
 		<div style={{ padding: 40 }}>
-			<h1>Something broke 😵</h1>
+			<h1>Something broke</h1>
 			<p>{error.message}</p>
 			<button onClick={() => reset()}>Try again</button>
 		</div>

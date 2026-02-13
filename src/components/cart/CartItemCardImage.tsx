@@ -1,11 +1,9 @@
 import Image from "next/image";
-import React from "react";
 import { CartItemCardProps } from "./CartItemCard";
 
 export default function CartItemCardImage({ item }: CartItemCardProps) {
 	return (
 		<div className="relative w-16 h-16 rounded-md overflow-hidden bg-muted">
-			{/* Custom pizza */}
 			{item?.type === "custom" &&
 				item?.toppings &&
 				item?.toppings?.length > 0 && (
@@ -32,7 +30,6 @@ export default function CartItemCardImage({ item }: CartItemCardProps) {
 					</div>
 				)}
 
-			{/* Regular pizza or drink */}
 			{item.type !== "custom" && item.image && (
 				<Image src={item.image} alt={item.name} fill className="object-cover" />
 			)}

@@ -1,18 +1,15 @@
-import { Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+import { Clock } from "lucide-react";
 import { Button } from "../ui/button";
 import RatingStars from "../ui/RatingStars";
 import { Card, CardContent } from "@/components/ui/card";
-
 import { H3, Muted, P, Small } from "../ui/Typography";
-import { SignaturePizzaCard } from "@/types/siganaturPizzaType";
-import { useCartStore } from "@/store/useCartStore";
+import { SignaturePizzaCardProps } from "@/types/siganaturPizzaType";
 import { flyToCart } from "@/lib/utils";
 
-type SignaturePizzaCardProps = {
-	pizza: SignaturePizzaCard;
-};
+import { useCartStore } from "@/store/useCartStore";
 
 export default function SignaturePizzasCard({
 	pizza,
@@ -51,7 +48,6 @@ export default function SignaturePizzasCard({
 							onClick={(e) => {
 								e.preventDefault();
 								const added = addItem({
-									// ...pizza,
 									type: "signature",
 									size: "small",
 									quantity: 1,

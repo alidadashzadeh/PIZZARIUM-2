@@ -1,13 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Large, Muted, P } from "@/components/ui/Typography";
+
 import { useAuthStore } from "@/store/useAuthStore";
-import { useState } from "react";
 import { useUpdateProfile } from "@/hooks/profile/useUpdateProfile";
 import { useProfile } from "@/hooks/profile/useProfile";
 import { useUpdateAvatar } from "@/hooks/profile/useUpdateAvatar";
@@ -17,7 +19,6 @@ export default function ProfileSettings() {
 	const { data: profile } = useProfile();
 	const userId = user?.id;
 
-	console.log(profile);
 	const [form, setForm] = useState({
 		username: profile?.username ?? "",
 		phone_number: profile?.phone_number ?? "",
@@ -40,7 +41,6 @@ export default function ProfileSettings() {
 				<Muted>Update your personal information</Muted>
 			</div>
 
-			{/* Avatar */}
 			<Card>
 				<CardContent className="flex items-center gap-4 p-6">
 					<Image
@@ -66,9 +66,7 @@ export default function ProfileSettings() {
 				</CardContent>
 			</Card>
 
-			{/* 2x2 Grid */}
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-				{/* Username */}
 				<Card>
 					<CardContent className="p-6 flex flex-col gap-2">
 						<Label>Username</Label>
@@ -80,7 +78,6 @@ export default function ProfileSettings() {
 					</CardContent>
 				</Card>
 
-				{/* Phone_number */}
 				<Card>
 					<CardContent className="p-6 flex flex-col gap-2">
 						<Label>Default Phone Number</Label>
@@ -94,7 +91,6 @@ export default function ProfileSettings() {
 					</CardContent>
 				</Card>
 
-				{/* Address */}
 				<Card>
 					<CardContent className="p-6 flex flex-col gap-2">
 						<Label>Default Address</Label>
@@ -106,7 +102,6 @@ export default function ProfileSettings() {
 					</CardContent>
 				</Card>
 
-				{/* member since */}
 				<Card>
 					<CardContent className="p-6 flex flex-col gap-2">
 						<Label>Loyal member since</Label>
@@ -126,7 +121,6 @@ export default function ProfileSettings() {
 				</Card>
 			</div>
 
-			{/* Submit button */}
 			<div className="flex justify-start">
 				<Button
 					size="lg"

@@ -1,12 +1,13 @@
 // layout.tsx — SERVER COMPONENT
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
 import Header from "@/components/header/Header";
 import { QueryProvider } from "@/lib/reactQuery";
+import { CartSyncClient } from "@/components/ui/CartSyncClient";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ThemeProviderWrapper from "@/components/ui/ThemeProviderWrapper"; // client component
-import { CartSyncClient } from "@/components/ui/CartSyncClient";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({

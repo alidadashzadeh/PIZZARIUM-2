@@ -1,9 +1,5 @@
 import DrinkCard from "./DrinkCard";
-import { Drink } from "@/types/DrinkType";
-
-type DrinkListProps = {
-	drinks: Drink[];
-};
+import { Drink, DrinkListProps } from "@/types/DrinkType";
 
 export default function DrinkList({ drinks }: DrinkListProps) {
 	return (

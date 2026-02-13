@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Card } from "../ui/card";
-import { useCartStore } from "@/store/useCartStore";
-import { Button } from "../ui/button";
-import { useDeliveryStore } from "@/store/useDeliveryStore";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { Spinner } from "../ui/spinner";
+import { Card } from "../ui/card";
 import ItemsSummaryList from "../ui/ItemsSummaryList";
+import { Spinner } from "../ui/spinner";
+import { Button } from "../ui/button";
+
+import { useDeliveryStore } from "@/store/useDeliveryStore";
+import { useCartStore } from "@/store/useCartStore";
+import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export default function CheckoutOrderSummary() {

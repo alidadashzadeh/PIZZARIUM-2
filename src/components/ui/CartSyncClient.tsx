@@ -19,7 +19,6 @@ export function CartSyncClient() {
 				if (order?.paid === true) {
 					clearCart();
 					clearPendingOrderId();
-					console.log("✅ Cart cleared for paid order:", pendingOrderId);
 				}
 			} catch (err) {
 				console.error("Failed to sync pending order", err);

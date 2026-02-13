@@ -6,11 +6,12 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { useGetOrder } from "@/hooks/orders/useGetOrder";
 import { CartItem } from "@/types/CartType";
+import { Spinner } from "../ui/spinner";
+
+import { useGetOrder } from "@/hooks/orders/useGetOrder";
 
 export default function OrderDialog({
 	orderId,
@@ -31,17 +32,15 @@ export default function OrderDialog({
 					<DialogTitle>Order Details</DialogTitle>
 				</DialogHeader>
 
-				{/* Loading */}
 				{isLoading && (
-					<p className="text-sm text-muted-foreground">
-						Loading order details...
-					</p>
+					<div className="flex items-center gap-2 text-sm text-muted-foreground">
+						<Spinner className="size-6" />
+						<div>Loading order details...</div>
+					</div>
 				)}
 
-				{/* Error */}
 				{error && <p className="text-sm text-red-500">Failed to load order.</p>}
 
-				{/* Data */}
 				{order && (
 					<div className="space-y-4">
 						{/* Order Info */}

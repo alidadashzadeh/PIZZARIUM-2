@@ -90,3 +90,7 @@ export type SignatureCartItem = SignaturePizza & {
 	lineTotal?: number;
 	addedAt?: string;
 };
+
+export type SignaturePizzaCardProps = {
+	pizza: SignaturePizzaCard;
+};

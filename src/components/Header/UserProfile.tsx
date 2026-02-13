@@ -1,18 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "../ui/button";
 import { User as UserIcon } from "lucide-react";
 import { Small } from "../ui/Typography";
 import AuthModal from "../ui/AuthModal";
-import { useAuthStore } from "@/store/useAuthStore";
 import { Toaster } from "../ui/sonner";
-import Link from "next/link";
-import { useProfile } from "@/hooks/profile/useProfile";
 import ProfileLoader from "../ui/ProfileLoader";
+
+import { useProfile } from "@/hooks/profile/useProfile";
 import { useClientMounted } from "@/hooks/profile/useClientMounted";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useAvatarLoaded } from "@/hooks/profile/useAvatarLoaded";
 
 function UserProfile() {

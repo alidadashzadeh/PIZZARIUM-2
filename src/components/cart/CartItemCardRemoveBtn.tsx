@@ -1,8 +1,9 @@
-import React from "react";
 import { Button } from "../ui/button";
-import { useCartStore } from "@/store/useCartStore";
-import { CartItemCardProps } from "./CartItemCard";
 import { Trash } from "lucide-react";
+
+import { useCartStore } from "@/store/useCartStore";
+
+import { CartItemCardProps } from "./CartItemCard";
 
 export default function CartItemCardRemoveBtn({ item }: CartItemCardProps) {
 	const removeItem = useCartStore((s) => s.removeItem);
