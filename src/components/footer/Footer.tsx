@@ -15,18 +15,18 @@ export default function Footer() {
 
 					<FooterColumn title="Product">
 						<Link
-							className="hover:text-white transition"
+							className="hover:text-primary transition"
 							href={"/signature-pizzas"}
 						>
 							Signature Pizza
 						</Link>
 						<Link
-							className="hover:text-white transition"
+							className="hover:text-primary transition"
 							href={"/custom-pizzas"}
 						>
 							Custom Pizza
 						</Link>
-						<Link className="hover:text-white transition" href={"/drinks"}>
+						<Link className="hover:text-primary transition" href={"/drinks"}>
 							Drinks
 						</Link>
 					</FooterColumn>
@@ -76,7 +76,7 @@ function FooterColumn({
 
 function LinkItem({ label }: { label: string }) {
 	return (
-		<a href="#" className="hover:text-white transition">
+		<a href="#" className="hover:text-primary transition">
 			{label}
 		</a>
 	);

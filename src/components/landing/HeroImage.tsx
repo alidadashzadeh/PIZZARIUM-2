@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import FloatingIngredients from "./FloatingIngredients";
 
 export default function HeroImage() {
 	return (
@@ -19,41 +20,41 @@ export default function HeroImage() {
 
 			{/* Tomato */}
 			<Piece
-				className="bottom-4 left-4 animate-piece-bl "
+				className="-bottom-20 -left-16 animate-piece-bl animate-float1"
 				src="/hero/tomato.png"
 			/>
 
 			{/* Mushroom */}
 			<Piece
-				className="top-4 left-4 animate-piece-tl "
+				className="-top-40	 -left-10 animate-piece-tl animate-float3"
 				src="/hero/mushroom.png"
 			/>
 
 			{/* Olive */}
 			<Piece
-				className="top-4 right-4 animate-piece-tr "
+				className="-top-40 -right-10 animate-piece-tr animate-float2"
 				src="/hero/olive.png"
 			/>
 
 			{/* Spinach */}
 			<Piece
-				className="bottom-4 right-4 animate-piece-br "
+				className="-bottom-4 -right-40 animate-piece-br animate-float2"
 				src="/hero/spinach.png"
 			/>
 
 			{/* Basil */}
 			<Piece
-				className="bottom-1/2 right-4 animate-piece-mr"
+				className="bottom-1/2 -right-40 animate-piece-mr animate-float3"
 				src="/hero/basil.png"
 			/>
 			{/* cheese */}
 			<Piece
-				className="bottom-1/2 left-4 animate-piece-ml"
+				className="bottom-1/2 -left-40 animate-piece-ml animate-float1"
 				src="/hero/cheese.png"
 			/>
 			{/* pineapple */}
 			<Piece
-				className="bottom-4 left-1/2 animate-piece-mb"
+				className="-bottom-40 left-1/2 animate-piece-mb animate-float2"
 				src="/hero/pineapple.png"
 			/>
 		</div>

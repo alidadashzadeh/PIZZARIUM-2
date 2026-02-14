@@ -1,11 +1,13 @@
 import { Button } from "../ui/button";
 import { Large, Muted } from "../ui/Typography";
+import FloatingIngredients from "./FloatingIngredients";
 import HeroImage from "./HeroImage";
 
 export default function Hero() {
 	return (
 		<section className="w-full min-h-screen flex pt-32 justify-between px-24">
 			{/* Left Content */}
+			<FloatingIngredients />
 			<div className="max-w-xl space-y-8">
 				<span className="inline-block text-primary px-4 py-1 rounded-full text-sm font-semibold">
 					Fresh & Fast Delivery
