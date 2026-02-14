@@ -12,29 +12,32 @@ export default function HeroImage() {
 					src="/hero/hero.png"
 					alt="Hero image"
 					fill
-					className="object-cover"
+					className="object-cover drop-shadow-2xl"
 					priority
 				/>
 			</div>
 
 			{/* Tomato */}
 			<Piece
-				className="bottom-4 left-4 animate-piece-bl"
+				className="bottom-4 left-4 animate-piece-bl "
 				src="/hero/tomato.png"
 			/>
 
 			{/* Mushroom */}
 			<Piece
-				className="top-4 left-4 animate-piece-tl"
+				className="top-4 left-4 animate-piece-tl "
 				src="/hero/mushroom.png"
 			/>
 
 			{/* Olive */}
-			<Piece className="top-4 right-4 animate-piece-tr" src="/hero/olive.png" />
+			<Piece
+				className="top-4 right-4 animate-piece-tr "
+				src="/hero/olive.png"
+			/>
 
 			{/* Spinach */}
 			<Piece
-				className="bottom-4 right-4 animate-piece-br"
+				className="bottom-4 right-4 animate-piece-br "
 				src="/hero/spinach.png"
 			/>
 
@@ -64,7 +67,9 @@ interface PieceProps {
 
 const Piece: React.FC<PieceProps> = ({ src, className }) => {
 	return (
-		<div className={`absolute w-[128px] aspect-square z-10 ${className ?? ""}`}>
+		<div
+			className={`absolute w-[128px] aspect-square z-10 drop-shadow-2xl ${className ?? ""}`}
+		>
 			<Image src={src} alt="" fill className="object-contain" priority />
 		</div>
 	);

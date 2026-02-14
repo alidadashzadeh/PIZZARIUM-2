@@ -8,6 +8,7 @@ import { QueryProvider } from "@/lib/reactQuery";
 import { CartSyncClient } from "@/components/ui/CartSyncClient";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ThemeProviderWrapper from "@/components/ui/ThemeProviderWrapper"; // client component
+import Footer from "@/components/footer/Footer";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -37,6 +38,7 @@ export default function RootLayout({
 							<div className="px-4">
 								<Header />
 								<div className="pt-8">{children}</div>
+								<Footer />
 								<CartSyncClient />
 							</div>
 						</TooltipProvider>
