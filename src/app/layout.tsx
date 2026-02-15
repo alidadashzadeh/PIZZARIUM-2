@@ -35,9 +35,9 @@ export default function RootLayout({
 				<ThemeProviderWrapper>
 					<QueryProvider>
 						<TooltipProvider>
-							<div className="px-4">
+							<div className="px-4 ">
 								<Header />
-								<div className="pt-8">{children}</div>
+								<div className="pt-8 min-h-screen">{children}</div>
 								<Footer />
 								<CartSyncClient />
 							</div>

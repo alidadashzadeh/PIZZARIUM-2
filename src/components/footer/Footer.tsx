@@ -1,11 +1,13 @@
 import Link from "next/link";
 import Logo from "../header/Logo";
+import { Separator } from "../ui/separator";
 
 export default function Footer() {
 	return (
 		<footer className="mt-32">
 			<div className="max-w-7xl mx-auto px-6 py-14">
-				<div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
+				<Separator />
+				<div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5 mt-8">
 					<div className="lg:col-span-2 space-y-4">
 						<Logo />
 						<p className="text-sm ">
