@@ -29,7 +29,7 @@ export default function FloatingIngredients() {
 				width={70}
 				height={70}
 				alt=""
-				className="absolute top-1/2 left-140 animate-float3"
+				className="absolute top-1/4 left-140 animate-float3 "
 			/>
 		</div>
 	);

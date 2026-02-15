@@ -37,8 +37,9 @@ function UserProfile() {
 					}}
 				/>
 			</div>
+
 			{/* before hydration */}
-			{!mounted || isLoading || !avatarLoaded ? <ProfileLoader /> : <div></div>}
+			{(!mounted || isLoading) && !avatarLoaded && <ProfileLoader />}
 
 			{/* after hydration if no user is logged in */}
 			{mounted && !isLoading && !profile && (

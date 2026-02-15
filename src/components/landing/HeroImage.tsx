@@ -1,11 +1,15 @@
 import Image from "next/image";
 import React from "react";
-import FloatingIngredients from "./FloatingIngredients";
 
 export default function HeroImage() {
 	return (
 		<div className="relative w-[500px] overflow-visible ">
-			<div className="absolute -top-24 -left-24 w-[650px] h-[650px] bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-full blur-[120px] opacity-70 z-0" />
+			<div
+				className="absolute -top-48 -left-64 w-[1000px] h-[1000px] bg-orange-400 opacity-80 shadow-[0_80px_140px_rgba(0,0,0,0.25)] z-0"
+				style={{
+					borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
+				}}
+			/>
 
 			{/* Main Image */}
 			<div className="relative w-[500px] aspect-square z-20">

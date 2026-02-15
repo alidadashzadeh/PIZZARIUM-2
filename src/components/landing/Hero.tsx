@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { Button } from "../ui/button";
 import { Large, Muted } from "../ui/Typography";
 import FloatingIngredients from "./FloatingIngredients";
 import HeroImage from "./HeroImage";
+import RollingWord from "./RollingWord";
 
 export default function Hero() {
 	return (
@@ -13,9 +15,9 @@ export default function Hero() {
 					Fresh & Fast Delivery
 				</span>
 
-				<Large className="text-6xl font-extrabold leading-tight tracking-tight">
+				<Large className="text-6xl font-extrabold leading-tight tracking-tight  ">
 					Delicious Pizza <br />
-					Made <span className="text-primary">Fresh Everyday</span>
+					Made <RollingWord />
 				</Large>
 
 				<Muted>
@@ -24,19 +26,23 @@ export default function Hero() {
 				</Muted>
 
 				<div className="flex items-center gap-6">
-					<Button
-						variant="default"
-						className="hover:bg-primary-hover transition text-white p-8  font-semibold text-lg shadow-lg shadow-orange-500/30"
-					>
-						Order Now
-					</Button>
+					<Link href="/signature-pizzas">
+						<Button
+							variant="default"
+							className="hover:bg-primary-hover transition text-white p-8  font-semibold text-lg shadow-lg shadow-orange-500/30"
+						>
+							View Menu
+						</Button>
+					</Link>
 
-					<Button
-						variant="ghost"
-						className="font-semibold hover:text-primary transition p-8"
-					>
-						Cook Your Pizza →
-					</Button>
+					<Link href="/custom-pizzas">
+						<Button
+							variant="ghost"
+							className="font-semibold hover:text-primary transition p-8"
+						>
+							Build Your Pizza →
+						</Button>
+					</Link>
 				</div>
 
 				{/* Social proof */}
