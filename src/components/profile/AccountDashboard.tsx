@@ -1,16 +1,16 @@
 "use client";
 
+import { LogOut } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-
 import ProfileSettings from "./ProfileSettings";
 import OrdersTable from "../orders/OrdersTable";
-import { signOut } from "@/lib/queries/auth";
-import { toast } from "sonner";
-import { LogOut } from "lucide-react";
+
+import { useSignOut } from "@/hooks/auth/useSignOut";
 
 export default function AccountDashboard() {
+	const { mutate: signOut } = useSignOut();
 	return (
 		<div className="max-w-6xl mx-auto">
 			<Tabs defaultValue="profile" className="flex gap-6 min-h-[650px]">
@@ -35,9 +35,8 @@ export default function AccountDashboard() {
 						<Button
 							variant="destructive"
 							className="w-full"
-							onClick={async () => {
-								await signOut();
-								toast("Signed out successfully!");
+							onClick={() => {
+								signOut();
 							}}
 						>
 							<LogOut className="w-4 h-4" />
