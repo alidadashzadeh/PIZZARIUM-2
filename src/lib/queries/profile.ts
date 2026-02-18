@@ -1,4 +1,4 @@
-import { supabase } from "../supabase";
+import { supabase } from "../supabase/client";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export interface Profile {
@@ -10,10 +10,6 @@ export interface Profile {
 	address: string;
 }
 
-/**
- * Fetch user profile by user ID
- * Throws if profile does not exist
- */
 export async function fetchProfile(userId: string): Promise<Profile> {
 	const { data, error } = await supabase
 		.from("profiles")
@@ -26,10 +22,6 @@ export async function fetchProfile(userId: string): Promise<Profile> {
 	return data;
 }
 
-/**
- * Create a new profile for a user
- * Typically called after sign-up
- */
 export async function createProfile(profile: {
 	id: string;
 	username?: string;
@@ -43,10 +35,6 @@ export async function createProfile(profile: {
 
 	if (error) throw error;
 }
-
-/**
- * Update current user's profile
- */
 
 export type UpdateProfileVars = {
 	user_id: string;
@@ -79,7 +67,6 @@ export async function updateProfile(updates: {
 	return data;
 }
 
-// lib/queries/profile.ts
 export async function uploadAvatar({
 	userId,
 	file,
@@ -89,7 +76,7 @@ export async function uploadAvatar({
 }) {
 	const filePath = `${userId}-${Date.now()}.jpg`;
 
-	// 1️⃣ upload / overwrite image
+	// upload / overwrite image
 	const { error: uploadError } = await supabase.storage
 		.from("avatars")
 		.upload(filePath, file, {
@@ -101,10 +88,10 @@ export async function uploadAvatar({
 		throw uploadError;
 	}
 
-	// 2️⃣ build public URL (known format)
+	// build public URL
 	const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${filePath}`;
 
-	// 3️⃣ update profile row
+	// update profile row
 	const { data, error } = await supabase
 		.from("profiles")
 		.update({ avatar: publicUrl })

@@ -1,7 +1,9 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { usePizzaStore } from "@/store/usePizzaStore";
-import { CustomPizzaType } from "@/types/customPizzaType";
 import { H4 } from "../ui/Typography";
+
+import { usePizzaStore } from "@/store/usePizzaStore";
+
+import { CustomPizzaType } from "@/types/customPizzaType";
 
 export default function CustomPizzaSizeSelector() {
 	const size = usePizzaStore((s) => s.customPizza?.size);

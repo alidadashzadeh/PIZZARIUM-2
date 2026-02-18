@@ -10,17 +10,9 @@ import { useState } from "react";
 import {
 	Category,
 	CustomPizzaClientProps,
-	fullToppingsType,
-	optionsType,
+	DataMap,
 } from "@/types/customPizzaType";
-type DataMap = {
-	dough: optionsType[];
-	crust: optionsType[];
-	sauce: optionsType[];
-	cook: optionsType[];
-	cheese: optionsType[];
-	toppings: fullToppingsType[];
-};
+
 const categories: Category[] = [
 	{ name: "Dough", value: "dough", type: "single" },
 	{ name: "Crust", value: "crust", type: "single" },

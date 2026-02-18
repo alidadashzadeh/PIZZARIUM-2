@@ -1,12 +1,15 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import Quantity from "../ui/Quantity";
 import Size from "../ui/Size";
 import { Large, P } from "../ui/Typography";
+
 import { useCartStore } from "@/store/useCartStore";
+
 import { SignaturePizzaInfoProps } from "@/types/siganaturPizzaType";
 
 type PizzaSize = "small" | "medium" | "large";

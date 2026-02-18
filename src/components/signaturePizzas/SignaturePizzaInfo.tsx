@@ -1,19 +1,20 @@
+import Link from "next/link";
 import Image from "next/image";
+
 import { H2, H4, Large, Muted, P, Small } from "@/components/ui/Typography";
+import RatingStars from "../ui/RatingStars";
+import { ArrowLeft, Clock } from "lucide-react";
+import { Button } from "../ui/button";
+import { SignaturePizzaReviews } from "./SignaturePizzaReviews";
+
 import {
 	SignaturePizzaInfoProps,
 	SignaturePizzaIngredientsType,
 } from "@/types/siganaturPizzaType";
-import RatingStars from "../ui/RatingStars";
-import { ArrowLeft, Clock } from "lucide-react";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { SignaturePizzaReviews } from "./SignaturePizzaReviews";
 
 export default function SignaturePizzaInfo({ pizza }: SignaturePizzaInfoProps) {
 	return (
 		<>
-			{/* Image */}
 			<div className="relative w-[500px] h-[500px] aspecst-square ">
 				<Image
 					src={pizza.image}
@@ -34,7 +35,6 @@ export default function SignaturePizzaInfo({ pizza }: SignaturePizzaInfoProps) {
 					</Link>
 				</Button>
 			</div>
-			{/* Info */}
 
 			<div className="flex flex-col gap-4">
 				<div className="flex justify-between items-start">

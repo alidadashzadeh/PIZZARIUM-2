@@ -1,23 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "../ui/button";
-
 import { User as UserIcon } from "lucide-react";
 import { Small } from "../ui/Typography";
 import AuthModal from "../ui/AuthModal";
-import { useAuthStore } from "@/store/useAuthStore";
 import { Toaster } from "../ui/sonner";
-import Link from "next/link";
+import ProfileLoader from "../ui/ProfileLoader";
+
 import { useProfile } from "@/hooks/profile/useProfile";
+import { useClientMounted } from "@/hooks/profile/useClientMounted";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useAvatarLoaded } from "@/hooks/profile/useAvatarLoaded";
 
 function UserProfile() {
 	const [authOpen, setAuthOpen] = useState(false);
-
+	const mounted = useClientMounted();
 	const user = useAuthStore((s) => s.user);
-	const { data: profile } = useProfile();
+	const { data: profile, isLoading } = useProfile();
+	const avatarLoaded = useAvatarLoaded(profile?.avatar ?? undefined);
 
 	return (
 		<div className="flex gap-4 w-[150px] justify-end">
@@ -33,14 +38,19 @@ function UserProfile() {
 				/>
 			</div>
 
-			{!user && (
+			{/* before hydration */}
+			{(!mounted || isLoading) && !avatarLoaded && <ProfileLoader />}
+
+			{/* after hydration if no user is logged in */}
+			{mounted && !isLoading && !profile && (
 				<>
 					<Button onClick={() => setAuthOpen(true)}>Sign In / Sign Up</Button>
 					<AuthModal open={authOpen} onOpenChange={setAuthOpen} />
 				</>
 			)}
 
-			{user && (
+			{/* after hydration when user is logged in */}
+			{mounted && profile && avatarLoaded && (
 				<Link href="/profile" className="flex items-center gap-2">
 					<Avatar className="w-8 h-8">
 						{profile?.avatar ? (
@@ -57,7 +67,7 @@ function UserProfile() {
 					</Avatar>
 
 					<Small className="line-clamp-1 max-w-[6ch]  py-2">
-						{profile?.username ?? user.email?.split("@")[0]}
+						{profile?.username ?? user?.email?.split("@")[0]}
 					</Small>
 				</Link>
 			)}

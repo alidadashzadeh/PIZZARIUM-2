@@ -6,9 +6,10 @@ import {
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { useGetReviews } from "@/hooks/reviews/useGetReviews";
 import SignaturePizzaReviewCard from "./SignaturePizzaReviewCard";
 import ReviewCardLoader from "../ui/ReviewCardLoader";
+
+import { useGetReviews } from "@/hooks/reviews/useGetReviews";
 
 export function SignaturePizzaReviews({ pizzaId }: { pizzaId: string }) {
 	const { data: reviews, isLoading } = useGetReviews(pizzaId);

@@ -31,7 +31,7 @@ export function useStripeCheckout() {
 			setStripeLoading(true);
 			setStripeError(null);
 
-			// 1️⃣ Create order in Supabase
+			// Create order in Supabase
 			const order = await createOrder({
 				user_id: user?.id,
 				items,
@@ -48,7 +48,7 @@ export function useStripeCheckout() {
 			// to clear cart after paid on reload
 			setPendingOrderId(order.id);
 
-			// 2️⃣ Build Stripe line_items directly
+			// Build Stripe line_items directly
 			// const line_items = sortedItems.map((item) => {
 			const line_items = items.map((item) => {
 				let finalPrice: number;
@@ -77,14 +77,14 @@ export function useStripeCheckout() {
 								: item.name || "Product",
 						},
 
-						// ✅ Stripe requires integer cents
+						// Stripe requires integer cents
 						unit_amount: Math.round(finalPrice * 100),
 					},
 					quantity: item.quantity || 1,
 				};
 			});
 
-			// 3️⃣ Send line_items to backend
+			// Send line_items to backend
 			const res = await fetch("/api/checkout", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -98,7 +98,7 @@ export function useStripeCheckout() {
 
 			if (!data.url) throw new Error("Stripe session URL missing");
 
-			// ✅ Redirect user to Stripe
+			// Redirect user to Stripe
 			window.location.href = data.url;
 		} catch (err: unknown) {
 			let message = "Stripe checkout failed";

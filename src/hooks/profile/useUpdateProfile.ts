@@ -1,7 +1,9 @@
+import { toast } from "sonner";
+
 import { updateProfile } from "@/lib/queries/profile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
+
 import { Profile } from "@/types/profile";
 
 export function useUpdateProfile() {

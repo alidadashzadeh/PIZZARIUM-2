@@ -1,5 +1,5 @@
 import { OrderInsert } from "@/types/order";
-import { supabase } from "../supabase";
+import { supabase } from "../supabase/client";
 
 export async function insertOrder(order: OrderInsert) {
 	const { data, error } = await supabase
@@ -62,7 +62,7 @@ export async function getOrdersByUser(userId: string) {
 export async function getOrderById(orderId: string) {
 	const { data, error } = await supabase
 		.from("orders")
-		.select("*") // includes items, address, etc
+		.select("*")
 		.eq("id", orderId)
 		.single();
 

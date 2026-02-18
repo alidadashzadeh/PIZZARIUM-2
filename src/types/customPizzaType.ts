@@ -70,3 +70,12 @@ export type SingleChoiceListProps = {
 	name: "dough" | "crust" | "sauce" | "cook" | "cheese";
 	options: optionsType[];
 };
+
+export type DataMap = {
+	dough: optionsType[];
+	crust: optionsType[];
+	sauce: optionsType[];
+	cook: optionsType[];
+	cheese: optionsType[];
+	toppings: fullToppingsType[];
+};

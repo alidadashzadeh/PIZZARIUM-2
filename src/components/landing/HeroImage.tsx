@@ -4,7 +4,12 @@ import React from "react";
 export default function HeroImage() {
 	return (
 		<div className="relative w-[500px] overflow-visible ">
-			<div className="absolute -top-24 -left-24 w-[650px] h-[650px] bg-gradient-to-br from-orange-400 via-orange-300 to-yellow-300 rounded-full blur-[120px] opacity-70 z-0" />
+			<div
+				className="absolute -top-48 -left-64 w-[1000px] h-[1000px] bg-orange-400 opacity-80 shadow-[0_80px_140px_rgba(0,0,0,0.25)] z-0"
+				style={{
+					borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%",
+				}}
+			/>
 
 			{/* Main Image */}
 			<div className="relative w-[500px] aspect-square z-20">
@@ -12,45 +17,48 @@ export default function HeroImage() {
 					src="/hero/hero.png"
 					alt="Hero image"
 					fill
-					className="object-cover"
+					className="object-cover drop-shadow-2xl"
 					priority
 				/>
 			</div>
 
 			{/* Tomato */}
 			<Piece
-				className="bottom-4 left-4 animate-piece-bl"
+				className="-bottom-20 -left-16 animate-piece-bl animate-float1"
 				src="/hero/tomato.png"
 			/>
 
 			{/* Mushroom */}
 			<Piece
-				className="top-4 left-4 animate-piece-tl"
+				className="-top-40	 -left-10 animate-piece-tl animate-float3"
 				src="/hero/mushroom.png"
 			/>
 
 			{/* Olive */}
-			<Piece className="top-4 right-4 animate-piece-tr" src="/hero/olive.png" />
+			<Piece
+				className="-top-40 -right-10 animate-piece-tr animate-float2"
+				src="/hero/olive.png"
+			/>
 
 			{/* Spinach */}
 			<Piece
-				className="bottom-4 right-4 animate-piece-br"
+				className="-bottom-4 -right-40 animate-piece-br animate-float2"
 				src="/hero/spinach.png"
 			/>
 
 			{/* Basil */}
 			<Piece
-				className="bottom-1/2 right-4 animate-piece-mr"
+				className="bottom-1/2 -right-40 animate-piece-mr animate-float3"
 				src="/hero/basil.png"
 			/>
 			{/* cheese */}
 			<Piece
-				className="bottom-1/2 left-4 animate-piece-ml"
+				className="bottom-1/2 -left-40 animate-piece-ml animate-float1"
 				src="/hero/cheese.png"
 			/>
 			{/* pineapple */}
 			<Piece
-				className="bottom-4 left-1/2 animate-piece-mb"
+				className="-bottom-40 left-1/2 animate-piece-mb animate-float2"
 				src="/hero/pineapple.png"
 			/>
 		</div>
@@ -64,7 +72,9 @@ interface PieceProps {
 
 const Piece: React.FC<PieceProps> = ({ src, className }) => {
 	return (
-		<div className={`absolute w-[128px] aspect-square z-10 ${className ?? ""}`}>
+		<div
+			className={`absolute w-[128px] aspect-square z-10 drop-shadow-2xl ${className ?? ""}`}
+		>
 			<Image src={src} alt="" fill className="object-contain" priority />
 		</div>
 	);

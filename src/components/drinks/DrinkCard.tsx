@@ -1,16 +1,15 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
+
+import { Card, CardContent } from "@/components/ui/card";
 import { H4, Large } from "../ui/Typography";
 import { Button } from "../ui/button";
-import { useCartStore } from "@/store/useCartStore";
 import { flyToCart } from "@/lib/utils";
-import { Drink } from "@/types/DrinkType";
 
-type DrinkCardProps = {
-	drink: Drink;
-};
+import { useCartStore } from "@/store/useCartStore";
+
+import { DrinkCardProps } from "@/types/DrinkType";
 
 export default function DrinkCard({ drink }: DrinkCardProps) {
 	const addItem = useCartStore((s) => s.addItem);

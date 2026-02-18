@@ -1,18 +1,10 @@
-"use client";
-
-import { usePathname } from "next/navigation";
+import NavLink from "../ui/NavLink";
 import {
 	NavigationMenu,
-	NavigationMenuItem,
-	NavigationMenuLink,
 	NavigationMenuList,
-	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import Link from "next/link";
 
 function Nav() {
-	const pathname = usePathname();
-
 	const links = [
 		{ href: "/signature-pizzas", label: "Signature Pizzas" },
 		{ href: "/custom-pizzas", label: "Custom Pizzas" },
@@ -22,24 +14,9 @@ function Nav() {
 	return (
 		<NavigationMenu>
 			<NavigationMenuList>
-				{links.map((link) => {
-					const isActive = pathname === link.href;
-
-					return (
-						<NavigationMenuItem key={link.href}>
-							<NavigationMenuLink
-								asChild
-								className={`
-                  ${navigationMenuTriggerStyle()},
-                  "text-lg font-medium tracking-tight focus:text-primary",
-                  ${isActive && "text-primary "}
-                `}
-							>
-								<Link href={link.href}>{link.label}</Link>
-							</NavigationMenuLink>
-						</NavigationMenuItem>
-					);
-				})}
+				{links.map((link) => (
+					<NavLink key={link.href} link={link} />
+				))}
 			</NavigationMenuList>
 		</NavigationMenu>
 	);
