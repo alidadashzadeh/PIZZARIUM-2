@@ -1,5 +1,5 @@
 import { OrderInsert } from "@/types/order";
-import { supabase } from "../supabase";
+import { supabase } from "../supabase/client";
 
 export async function insertOrder(order: OrderInsert) {
 	const { data, error } = await supabase

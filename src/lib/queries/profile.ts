@@ -1,4 +1,4 @@
-import { supabase } from "../supabase";
+import { supabase } from "../supabase/client";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export interface Profile {

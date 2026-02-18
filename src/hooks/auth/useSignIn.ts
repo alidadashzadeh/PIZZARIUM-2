@@ -11,7 +11,6 @@ export function useSignin(onClose?: () => void) {
 	const login = async (values: LoginFormInputs) => {
 		setErrorMsg(null);
 
-		console.log("sign in started");
 		try {
 			const { session, user } = await signIn(values.email, values.password);
 
@@ -19,7 +18,6 @@ export function useSignin(onClose?: () => void) {
 				throw new Error("Invalid credentials");
 			}
 
-			console.log("session from signin", session);
 			setSession(session);
 
 			toast("Welcome Back!");
