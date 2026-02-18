@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Logo from "../header/Logo";
 import { Separator } from "../ui/separator";
+import Logo from "../header/Logo";
 
 export default function Footer() {
 	return (

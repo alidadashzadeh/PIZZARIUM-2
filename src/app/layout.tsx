@@ -2,12 +2,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import "./globals.css";
 import Header from "@/components/header/Header";
+import "./globals.css";
 import { QueryProvider } from "@/lib/reactQuery";
 import { CartSyncClient } from "@/components/ui/CartSyncClient";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import ThemeProviderWrapper from "@/components/ui/ThemeProviderWrapper"; // client component
+import ThemeProviderWrapper from "@/components/ui/ThemeProviderWrapper";
 import Footer from "@/components/footer/Footer";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
