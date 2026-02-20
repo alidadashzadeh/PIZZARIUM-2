@@ -28,5 +28,5 @@ export function CartSyncClient() {
 		syncPendingOrder();
 	}, [pendingOrderId, clearCart, clearPendingOrderId]);
 
-	return null; // client-only, renders nothing
+	return null;
 }

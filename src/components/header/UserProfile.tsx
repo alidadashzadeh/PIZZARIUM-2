@@ -53,7 +53,7 @@ function UserProfile() {
 			{mounted && profile && (
 				<Link href="/profile" className="flex items-center gap-2">
 					<Avatar className="w-8 h-8">
-						{profile?.avatar ? (
+						{profile?.avatar && avatarLoaded ? (
 							<AvatarImage
 								src={profile.avatar}
 								alt={profile?.username || "User Avatar"}

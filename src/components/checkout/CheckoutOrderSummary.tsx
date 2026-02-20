@@ -50,7 +50,6 @@ export default function CheckoutOrderSummary() {
 				<span>${total}</span>
 			</div>
 
-			{/* Pay Button */}
 			<Button
 				size="lg"
 				className="w-full mt-auto"
