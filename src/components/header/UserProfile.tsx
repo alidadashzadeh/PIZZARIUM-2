@@ -50,7 +50,7 @@ function UserProfile() {
 			)}
 
 			{/* after hydration when user is logged in */}
-			{mounted && profile && avatarLoaded && (
+			{mounted && profile && (
 				<Link href="/profile" className="flex items-center gap-2">
 					<Avatar className="w-8 h-8">
 						{profile?.avatar ? (

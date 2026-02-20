@@ -34,6 +34,8 @@ export default function ProfileSettings() {
 		});
 	};
 
+	console.log("avatar", profile?.avatar);
+
 	return (
 		<div className="max-w-3xl mx-auto flex flex-col gap-6">
 			<div>
@@ -44,7 +46,7 @@ export default function ProfileSettings() {
 			<Card>
 				<CardContent className="flex items-center gap-4 p-6">
 					<Image
-						src={profile?.avatar ?? "/avatar-placeholder.png"}
+						src={profile?.avatar ? profile?.avatar : "/avatar_placeholder.avif"}
 						alt="Avatar"
 						width={80}
 						height={80}
