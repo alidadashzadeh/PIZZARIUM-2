@@ -26,7 +26,7 @@ export default function ProfileSettings() {
 	});
 
 	const { mutate: updateProfile, isPending } = useUpdateProfile();
-	const { mutate: mutateVatar } = useUpdateAvatar(userId ?? "");
+	const { mutate: mutateAvatar } = useUpdateAvatar(userId ?? "");
 
 	const handleSave = () => {
 		updateProfile({
@@ -61,7 +61,7 @@ export default function ProfileSettings() {
 							onChange={(e) => {
 								const file = e.target.files?.[0];
 								if (!file) return;
-								mutateVatar({ userId: userId ?? "", file });
+								mutateAvatar({ file });
 							}}
 						/>
 					</div>

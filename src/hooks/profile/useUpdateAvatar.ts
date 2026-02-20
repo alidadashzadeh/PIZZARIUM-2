@@ -2,11 +2,46 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Profile, uploadAvatar } from "@/lib/queries/profile";
 import { toast } from "sonner";
 
+async function resizeAndConvertToWebp(
+	file: File,
+	maxSize = 512,
+	quality = 0.75,
+): Promise<File> {
+	const bitmap = await createImageBitmap(file);
+
+	const scale = Math.min(maxSize / bitmap.width, maxSize / bitmap.height, 1);
+
+	const width = Math.round(bitmap.width * scale);
+	const height = Math.round(bitmap.height * scale);
+
+	const canvas = document.createElement("canvas");
+	canvas.width = width;
+	canvas.height = height;
+
+	const ctx = canvas.getContext("2d")!;
+	ctx.drawImage(bitmap, 0, 0, width, height);
+
+	const blob = await new Promise<Blob>((resolve, reject) => {
+		canvas.toBlob(
+			(b) => (b ? resolve(b) : reject(new Error("WebP conversion failed"))),
+			"image/webp",
+			quality,
+		);
+	});
+
+	const newName = file.name.replace(/\.\w+$/, ".webp");
+
+	return new File([blob], newName, { type: "image/webp" });
+}
+
 export function useUpdateAvatar(userId: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: uploadAvatar,
+		mutationFn: async ({ file }: { file: File }) => {
+			const optimized = await resizeAndConvertToWebp(file);
+			return uploadAvatar({ userId, file: optimized });
+		},
 
 		onMutate: async ({ file }) => {
 			await queryClient.cancelQueries({ queryKey: ["profile", userId] });
@@ -34,11 +69,9 @@ export function useUpdateAvatar(userId: string) {
 		onSuccess: async (serverProfile, _vars, context) => {
 			const realUrl = serverProfile.avatar;
 
-			// preload image first
 			const img = new window.Image();
 			img.src = realUrl;
 
-			// only swap after fully loaded - remove flickering avatar
 			img.onload = () => {
 				queryClient.setQueryData(["profile", userId], serverProfile);
 
@@ -47,7 +80,6 @@ export function useUpdateAvatar(userId: string) {
 				}
 			};
 
-			// fallback: still commit even if preload fails
 			img.onerror = () => {
 				queryClient.setQueryData(["profile", userId], serverProfile);
 
