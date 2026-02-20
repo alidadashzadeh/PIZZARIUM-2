@@ -87,18 +87,6 @@ export const estimateCustomPizzaCost = (
 	return Number(total.toFixed(2));
 };
 
-export function getCartItemImage(item: CartItem): string {
-	if (item?.image) return item?.image;
-
-	switch (item.type) {
-		case "custom":
-			return "/customPizzaImage.png";
-
-		default:
-			return "/placeholder.png";
-	}
-}
-
 export function sortCartItems(items: CartItem[]) {
 	if (!items) return;
 	return [...items].sort((a, b) => {
@@ -156,14 +144,8 @@ export function flyToCart(sourceEl: HTMLElement) {
 export const calculateTotal = (items: CartItem[]) =>
 	Number(items.reduce((sum, item) => sum + item.lineTotal, 0).toFixed(2));
 
-const BASE_PRICES = {
-	small: 12.98,
-	medium: 15.58,
-	large: 16.87,
-} as const;
-
 const estimateCustomPizza = (pizza: CustomPizzaType) => {
-	let price = BASE_PRICES[pizza.size];
+	let price = 10.31;
 
 	price += pizza.cheese.price;
 	price += pizza.sauce.price;

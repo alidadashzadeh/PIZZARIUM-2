@@ -4,6 +4,7 @@ import { getCustomPizzaData } from "@/lib/queries/customPizzas";
 
 import CustomPizzaList from "../../components/customPizzas/CustomPizzaList";
 
+export const revalidate = 300;
 export default async function Page() {
 	const customPizzaData = await getCustomPizzaData();
 

@@ -6,7 +6,7 @@ import SignatureListLoader from "@/components/ui/SignatureListLoader";
 
 import { fetchSignaturePizzas } from "@/lib/queries/signaturePizza";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export default async function Page() {
 	const pizzas = await fetchSignaturePizzas();

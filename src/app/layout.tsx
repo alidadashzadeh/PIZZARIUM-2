@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
 	title: "PIZZARIUM",
 	description: "Best pizza in town",
-	icons: { icon: "/logo.png" },
+	icons: { icon: "/logo.avif" },
 };
 
 export default function RootLayout({
