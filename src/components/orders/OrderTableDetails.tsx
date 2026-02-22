@@ -43,7 +43,6 @@ export default function OrderDialog({
 
 				{order && (
 					<div className="space-y-4">
-						{/* Order Info */}
 						<div className="flex justify-between items-center">
 							<p className="font-medium">Order #{order?.id.slice(0, 8)}</p>
 
@@ -56,7 +55,6 @@ export default function OrderDialog({
 
 						<Separator />
 
-						{/* Items */}
 						<div>
 							<h3 className="font-semibold mb-2">Items</h3>
 
@@ -68,13 +66,11 @@ export default function OrderDialog({
 										</span>
 										<span>
 											$
-											{
-												typeof item.price === "number"
-													? item.price.toFixed(2) // drink
-													: item.size && item.price[item.size] // pizza
-														? Number(item.price[item.size]).toFixed(2)
-														: "0.00" // fallback
-											}
+											{typeof item.price === "number"
+												? item.price.toFixed(2)
+												: item.size && item.price[item.size]
+													? Number(item.price[item.size]).toFixed(2)
+													: "0.00"}
 										</span>
 									</li>
 								))}
@@ -83,7 +79,6 @@ export default function OrderDialog({
 
 						<Separator />
 
-						{/* Delivery */}
 						<div className="text-sm space-y-1">
 							<h3 className="font-semibold">Delivery</h3>
 							<p>{order?.customer_name}</p>
@@ -93,7 +88,6 @@ export default function OrderDialog({
 
 						<Separator />
 
-						{/* Total */}
 						<p className="font-bold text-right">Total: ${order?.total}</p>
 					</div>
 				)}

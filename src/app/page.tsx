@@ -12,7 +12,7 @@ export default async function Home() {
 
 	return (
 		<div className="flex flex-col pt-8">
-			<div className="px-16">
+			<div className="sm:px-16">
 				<Hero />
 				<WhyUs />
 				<FeaturedPizzas pizzas={pizzas} />

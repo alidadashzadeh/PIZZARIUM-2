@@ -10,7 +10,7 @@ import ItemsSummaryList from "@/components/ui/ItemsSummaryList";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Muted } from "@/components/ui/Typography";
+import { Large, Muted } from "@/components/ui/Typography";
 import { Spinner } from "../ui/spinner";
 
 export default function SuccessPage() {
@@ -24,11 +24,18 @@ export default function SuccessPage() {
 		error,
 	} = useOrderBySession(sessionId, user?.id);
 
-	if (isLoading || !order)
+	if (isLoading)
 		return (
 			<div className="flex justify-center py-20 text-muted-foreground">
 				<Spinner className="size-8" />
 			</div>
+		);
+
+	if (!order)
+		return (
+			<Large className="flex justify-center py-20 text-red-500">
+				No order found.
+			</Large>
 		);
 
 	if (!user)

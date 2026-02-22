@@ -3,6 +3,7 @@ import DrinkList from "@/components/drinks/DrinkList";
 
 import { fetchDrinks } from "@/lib/queries/drinks";
 
+export const revalidate = 300;
 export default async function page() {
 	const drinks = await fetchDrinks();
 

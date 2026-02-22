@@ -17,8 +17,8 @@ export default function DrinkCard({ drink }: DrinkCardProps) {
 	return (
 		<Card className="relative items-center">
 			<CardContent>
-				<div className="relative w-44 aspect-square rounded-md overflow-hidden filter drop-shadow-[4px_4px_10px_rgba(0,0,0,0.5)]">
-					<Image src={drink?.image} alt="Pizza" width={196} height={196} />
+				<div className="relative w-32 sm:w-44 aspect-square rounded-md overflow-hidden filter drop-shadow-[4px_4px_10px_rgba(0,0,0,0.5)]">
+					<Image src={drink?.image} alt="Pizza" fill className="object-cover" />
 				</div>
 
 				<div className="flex flex-col gap-2 items-center">

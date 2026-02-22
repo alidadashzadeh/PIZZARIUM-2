@@ -4,10 +4,10 @@ import Image from "next/image";
 
 export default function FloatingIngredients() {
 	return (
-		<div className="pointer-events-none absolute inset-0 overflow-visible">
+		<div className="pointer-events-none absolute inset-0 overflow-visible hidden lg:block">
 			{/* Basil */}
 			<Image
-				src="/hero/basil.png"
+				src="/hero/basil.avif"
 				width={80}
 				height={80}
 				alt=""
@@ -16,7 +16,7 @@ export default function FloatingIngredients() {
 
 			{/* Tomato */}
 			<Image
-				src="/hero/tomato.png"
+				src="/hero/tomato.avif"
 				width={100}
 				height={100}
 				alt=""
@@ -25,7 +25,7 @@ export default function FloatingIngredients() {
 
 			{/* Mushroom */}
 			<Image
-				src="/hero/mushroom.png"
+				src="/hero/mushroom.avif"
 				width={70}
 				height={70}
 				alt=""

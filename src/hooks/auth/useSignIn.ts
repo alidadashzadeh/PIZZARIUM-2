@@ -20,7 +20,7 @@ export function useSignin(onClose?: () => void) {
 
 			setSession(session);
 
-			toast("Welcome Back!");
+			toast.success("Welcome Back!");
 
 			onClose?.();
 		} catch {

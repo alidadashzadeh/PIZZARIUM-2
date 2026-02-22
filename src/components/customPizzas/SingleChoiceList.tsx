@@ -21,7 +21,7 @@ export default function SingleChoiceList({
 		return customPizza[name]?.id === item.id;
 	};
 	return (
-		<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+		<div className="grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 			{options?.map((item) => (
 				<Card
 					key={item.id}
@@ -41,7 +41,7 @@ export default function SingleChoiceList({
 						<></>
 					)}
 					<CardContent className="flex flex-col items-center gap-2 p-3">
-						<div className="relative w-44 aspect-square rounded-md overflow-hidden filter drop-shadow-[4px_4px_10px_rgba(0,0,0,0.5)]">
+						<div className="relative w-32 md:w-36  xl:w-44 aspect-square rounded-md overflow-hidden filter drop-shadow-[4px_4px_10px_rgba(0,0,0,0.5)]">
 							<Image
 								src={item.image}
 								alt={item.name}

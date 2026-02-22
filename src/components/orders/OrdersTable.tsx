@@ -60,7 +60,7 @@ export default function OrdersTable() {
 	return (
 		<div>
 			<Large className="pb-4">Orders History</Large>
-			{/* Table */}
+
 			<div className="rounded-2xl border shadow-sm overflow-hidden">
 				<Table>
 					<TableHeader>
@@ -97,7 +97,6 @@ export default function OrdersTable() {
 										: "—"}
 								</TableCell>
 
-								{/* ✅ View Button */}
 								<TableCell className="text-right">
 									<Button
 										size="sm"
@@ -116,7 +115,6 @@ export default function OrdersTable() {
 				</Table>
 			</div>
 
-			{/* ✅ Dialog */}
 			{selectedOrderId && (
 				<OrderDialog orderId={selectedOrderId} open={open} setOpen={setOpen} />
 			)}

@@ -29,7 +29,7 @@ export default function ConfirmPizzaModal({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent>
+			<DialogContent className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto p-4 sm:p-6">
 				<DialogHeader>
 					<DialogTitle>Confirm your pizza</DialogTitle>
 					<div className="relative h-76 aspect-square mx-auto">

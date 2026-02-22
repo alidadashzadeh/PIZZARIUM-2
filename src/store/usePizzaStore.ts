@@ -35,7 +35,7 @@ export const usePizzaStore = create<PizzaStore>()(
 				cook: { name: "regular", id: 2, price: 0 },
 				toppings: [],
 				price: {
-					small: 12.98,
+					small: 12.29,
 					medium: 15.58,
 					large: 16.87,
 				},

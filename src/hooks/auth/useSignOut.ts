@@ -14,7 +14,7 @@ export function useSignOut() {
 
 		onSuccess: () => {
 			queryClient.clear();
-			toast("Signed out successfully!");
+			toast.success("Signed out successfully!");
 			router.replace("/");
 		},
 	});

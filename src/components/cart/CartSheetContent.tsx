@@ -24,7 +24,7 @@ export default function CartSheetContent() {
 	return (
 		<SheetContent
 			side="right"
-			className="w-[600px] sm:max-w-[600px] flex flex-col min-h-screen"
+			className="w-full sm:max-w-[600px] flex flex-col min-h-screen"
 		>
 			<SheetHeader>
 				<SheetTitle>Shopping Cart</SheetTitle>

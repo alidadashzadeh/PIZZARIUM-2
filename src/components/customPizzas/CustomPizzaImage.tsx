@@ -8,7 +8,7 @@ export default function CustomPizzaImage() {
 	return (
 		<>
 			<Image
-				src="/base-pizza.png"
+				src="/base-pizza.avif"
 				alt="pizza-base"
 				fill
 				className="object-contain"

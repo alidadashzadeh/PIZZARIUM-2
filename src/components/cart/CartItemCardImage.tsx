@@ -10,7 +10,7 @@ export default function CartItemCardImage({ item }: CartItemCardProps) {
 					<div className="relative w-full h-full">
 						{/* base pizza */}
 						<Image
-							src="/base-pizza.png"
+							src="/base-pizza.avif"
 							alt="Pizza base"
 							fill
 							className="object-contain"
