@@ -19,26 +19,21 @@ export default function CustomPizzaSummary({ onAddToCart }: Props) {
 	const resetCustomPizza = usePizzaStore((state) => state.resetCustomPizza);
 
 	return (
-		<div className="w-100 sticky top-4 self-start flex flex-col gap-2">
+		<div className="w-full lg:sticky lg:top-4 self-start flex flex-col gap-2 max-w-[400px]">
 			<Button
 				variant="outline"
-				className="absolute top-0 right-0 cursor-pointer z-100"
+				className="absolute top-0 right-0 cursor-pointer sm:z-100  z-0"
 				onClick={resetCustomPizza}
 			>
 				<div>Clear</div>
 				<RefreshCw />
 			</Button>
-
-			<div className="relative h-76 aspect-square mx-auto ">
+			<div className="relative w-full aspect-square  mx-auto ">
 				<CustomPizzaImage />
 			</div>
-
 			<CustomPizzaaRecipe />
-
 			<CustomPizzaToppings />
-
 			<CustomPizzaSizeSelector />
-
 			<div>
 				<Button className="cursor-pointer w-full" onClick={onAddToCart}>
 					<Large>

@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function FloatingIngredients() {
 	return (
-		<div className="pointer-events-none absolute inset-0 overflow-visible">
+		<div className="pointer-events-none absolute inset-0 overflow-visible hidden lg:block">
 			{/* Basil */}
 			<Image
 				src="/hero/basil.avif"

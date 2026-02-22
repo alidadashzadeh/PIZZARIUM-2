@@ -12,7 +12,7 @@ export default function SignatureListLoader() {
 				<Skeleton className="h-4 w-full" />
 				<Skeleton className="h-4 w-full" />
 			</div>
-			<div className="w-full grid grid-cols-4 gap-8 mx-auto">
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mx-auto w-full">
 				{list.map((_, index) => (
 					<CardLoader key={index} />
 				))}

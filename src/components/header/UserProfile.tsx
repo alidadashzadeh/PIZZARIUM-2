@@ -25,7 +25,7 @@ function UserProfile() {
 	const avatarLoaded = useAvatarLoaded(profile?.avatar ?? undefined);
 
 	return (
-		<div className="flex gap-4 w-[150px] justify-end">
+		<div className="flex gap-4  w-auto sm:w-[150px] justify-end">
 			<div className="fixed inset-x-0 z-[9999]">
 				<Toaster
 					position="top-center"
@@ -44,7 +44,9 @@ function UserProfile() {
 			{/* after hydration if no user is logged in */}
 			{mounted && !isLoading && !profile && (
 				<>
-					<Button onClick={() => setAuthOpen(true)}>Sign In / Sign Up</Button>
+					<Button size="sm" onClick={() => setAuthOpen(true)}>
+						Sign In / Sign Up
+					</Button>
 					<AuthModal open={authOpen} onOpenChange={setAuthOpen} />
 				</>
 			)}
@@ -66,7 +68,7 @@ function UserProfile() {
 						)}
 					</Avatar>
 
-					<Small className="line-clamp-1 max-w-[6ch]  py-2">
+					<Small className="line-clamp-1 max-w-[6ch] py-2 hidden sm:block whitespace-nowrap">
 						{profile?.username ?? user?.email?.split("@")[0]}
 					</Small>
 				</Link>

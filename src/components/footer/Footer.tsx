@@ -15,7 +15,7 @@ export default function Footer() {
 						</p>
 					</div>
 
-					<FooterColumn title="Product">
+					{/* <FooterColumn title="Product">
 						<Link
 							className="hover:text-primary transition"
 							href={"/signature-pizzas"}
@@ -45,7 +45,40 @@ export default function Footer() {
 						<LinkItem label="Privacy Policy" />
 						<LinkItem label="Terms" />
 						<LinkItem label="Status" />
-					</FooterColumn>
+					</FooterColumn> */}
+					<div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:col-span-3">
+						<FooterColumn title="Product">
+							<Link
+								className="hover:text-primary transition"
+								href={"/signature-pizzas"}
+							>
+								Signature Pizza
+							</Link>
+							<Link
+								className="hover:text-primary transition"
+								href={"/custom-pizzas"}
+							>
+								Custom Pizza
+							</Link>
+							<Link className="hover:text-primary transition" href={"/drinks"}>
+								Drinks
+							</Link>
+						</FooterColumn>
+
+						<FooterColumn title="Company">
+							<LinkItem label="About" />
+							<LinkItem label="Careers" />
+							<LinkItem label="Blog" />
+							<LinkItem label="Contact" />
+						</FooterColumn>
+
+						<FooterColumn title="Resources">
+							<LinkItem label="Help Center" />
+							<LinkItem label="Privacy Policy" />
+							<LinkItem label="Terms" />
+							<LinkItem label="Status" />
+						</FooterColumn>
+					</div>
 				</div>
 
 				<div className="border-t border-zinc-800 mt-10 pt-6 flex flex-col md:flex-row justify-between text-sm text-zinc-500">

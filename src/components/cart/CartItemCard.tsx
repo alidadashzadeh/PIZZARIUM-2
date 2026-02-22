@@ -14,14 +14,12 @@ export interface CartItemCardProps {
 export default function CartItemCard({ item }: CartItemCardProps) {
 	return (
 		<div className="flex relative group  items-start gap-4 p-4 border-b last:border-b-0 hover:bg-muted/40 transition">
-			{/* image */}
 			<CartItemCardImage item={item} />
 
 			<div className="flex flex-1 flex-col gap-2">
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex flex-col gap-2">
 						<Large>{item.name}</Large>
-						{/* custom pizza - recipe */}
 						{item.type === "custom" && (
 							<div>
 								<Small>Recipe</Small>
@@ -38,7 +36,6 @@ export default function CartItemCard({ item }: CartItemCardProps) {
 								</div>
 							</div>
 						)}
-						{/* custom pizza - toppings list */}
 						{item?.type === "custom" &&
 							item?.toppings &&
 							item?.toppings?.length > 0 && (
@@ -78,7 +75,7 @@ export default function CartItemCard({ item }: CartItemCardProps) {
 
 			<div
 				className="absolute bottom-4 right-4
-				opacity-0
+				opacity-100 xl:opacity-0 
 				group-hover:opacity-100
 				transition-opacity"
 			>

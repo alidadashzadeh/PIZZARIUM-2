@@ -45,13 +45,16 @@ export default function ProfileSettings() {
 
 			<Card>
 				<CardContent className="flex items-center gap-4 p-6">
-					<Image
-						src={profile?.avatar ? profile?.avatar : "/avatar_placeholder.avif"}
-						alt="Avatar"
-						width={80}
-						height={80}
-						className="h-20 w-20 rounded-full object-cover"
-					/>
+					<div className="w-16 md:w-32  aspect-square relative">
+						<Image
+							src={
+								profile?.avatar ? profile?.avatar : "/avatar_placeholder.avif"
+							}
+							alt="Avatar"
+							fill
+							className="rounded-full object-cover"
+						/>
+					</div>
 					<div className="flex flex-col gap-2">
 						<P>Profile Picture</P>
 						<Input
