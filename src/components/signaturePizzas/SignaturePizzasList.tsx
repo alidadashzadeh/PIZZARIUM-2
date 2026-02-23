@@ -13,6 +13,8 @@ import {
 	SortField,
 	SortOrder,
 } from "@/types/siganaturPizzaType";
+import { useEffect, useState } from "react";
+import SignatureListLoader from "../ui/SignatureListLoader";
 
 export default function SignaturePizzasList({
 	pizzas,
@@ -26,7 +28,22 @@ export default function SignaturePizzasList({
 	};
 
 	let list = [...pizzas];
+	const [loaded, setLoaded] = useState(false);
+
+	useEffect(() => {
+		let loadedCount = 0;
+		pizzas.forEach((pizza) => {
+			const img = new Image();
+			img.src = pizza.image;
+			img.onload = () => {
+				loadedCount++;
+				if (loadedCount === pizzas.length) setLoaded(true);
+			};
+		});
+	}, [pizzas]);
 	list = applyFiltersAndSort(list, filters);
+
+	if (!loaded) return <SignatureListLoader />;
 
 	return (
 		<div className="flex flex-col gap-2">
