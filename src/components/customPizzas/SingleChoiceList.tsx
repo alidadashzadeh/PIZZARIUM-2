@@ -55,7 +55,7 @@ export default function SingleChoiceList({
 						</p>
 						<p className="font-medium text-center">{item.name}</p>
 
-						<Button size="icon">
+						<Button size="icon" className="cursor-pointer">
 							{isSelected(item) ? (
 								<Minus className="w-6 h-6" />
 							) : (

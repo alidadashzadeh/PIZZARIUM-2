@@ -62,7 +62,7 @@ export default function SignaturePizzasCard({
 									className="flex-1 sm:flex-none"
 								>
 									<Button
-										className="w-full sm:w-auto"
+										className="w-full sm:w-auto cursor-pointer"
 										variant="outline"
 										size="sm"
 									>
@@ -72,7 +72,7 @@ export default function SignaturePizzasCard({
 							</div>
 							<div>
 								<Button
-									className="w-full sm:w-auto"
+									className="w-full sm:w-auto cursor-pointer"
 									onClick={(e) => {
 										e.preventDefault();
 										const added = addItem({

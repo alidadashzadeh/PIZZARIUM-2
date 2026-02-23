@@ -24,7 +24,7 @@ export default function CartSheetContent() {
 	return (
 		<SheetContent
 			side="right"
-			className="w-full sm:max-w-[600px] flex flex-col min-h-screen"
+			className="w-full sm:max-w-[600px] flex flex-col min-h-[100dvh]"
 		>
 			<SheetHeader>
 				<SheetTitle>Shopping Cart</SheetTitle>
@@ -54,7 +54,7 @@ export default function CartSheetContent() {
 							<Link href="/checkout">
 								<Button
 									size="lg"
-									className="px-16 flex items-center justify-center gap-2"
+									className="px-16 flex items-center justify-center gap-2 cursor-pointer"
 								>
 									Checkout
 								</Button>
@@ -62,7 +62,7 @@ export default function CartSheetContent() {
 						) : (
 							<Button
 								size="lg"
-								className="px-16 flex items-center justify-center gap-2"
+								className="px-16 flex items-center justify-center gap-2 cursor-pointer"
 								disabled
 							>
 								Checkout

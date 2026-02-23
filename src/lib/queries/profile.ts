@@ -48,7 +48,6 @@ export async function updateProfile(updates: {
 	phone_number?: string;
 	address?: string;
 }) {
-	// ✅ Always grab current user inside query
 	const user = useAuthStore.getState().user;
 
 	if (!user?.id) {

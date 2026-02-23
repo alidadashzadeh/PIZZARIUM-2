@@ -16,7 +16,9 @@ function Logo() {
 						priority
 					/>
 				</div>
-				<H1 className="text-primary hidden sm:block">PIZZARIUM</H1>
+				<H1 className="text-primary text-lg sm:text-xl lg:text-4xl ">
+					PIZZARIUM
+				</H1>
 			</div>
 		</Link>
 	);

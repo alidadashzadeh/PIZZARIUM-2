@@ -22,7 +22,7 @@ export default function CustomPizzaSummary({ onAddToCart }: Props) {
 		<div className="w-full lg:sticky lg:top-4 self-start flex flex-col gap-2 max-w-[400px]">
 			<Button
 				variant="outline"
-				className="absolute top-0 right-0 cursor-pointer sm:z-100  z-0"
+				className="absolute top-0 right-0 cursor-pointer z-1000  "
 				onClick={resetCustomPizza}
 			>
 				<div>Clear</div>

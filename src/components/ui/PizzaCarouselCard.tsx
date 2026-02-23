@@ -53,7 +53,11 @@ export default function PizzaCarouselCard({ pizza }: SignaturePizzaCardProps) {
 
 			<CardAction className="mx-auto">
 				<Link href={`/signature-pizzas/${pizza?.id}/${pizza?.slug}`}>
-					<Button variant="outline" size="sm" className="mt-auto">
+					<Button
+						variant="outline"
+						size="sm"
+						className="mt-auto cursor-pointer"
+					>
 						View Details
 					</Button>
 				</Link>

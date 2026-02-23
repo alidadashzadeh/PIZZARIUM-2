@@ -29,7 +29,7 @@ export default function Hero() {
 						<Link href="/signature-pizzas">
 							<Button
 								variant="default"
-								className="hover:bg-primary-hover transition text-white p-8  font-semibold text-lg shadow-lg shadow-orange-500/30"
+								className="hover:bg-primary-hover cursor-pointer transition text-white p-8  font-semibold text-lg shadow-lg shadow-orange-500/30"
 							>
 								View Menu
 							</Button>
@@ -38,7 +38,7 @@ export default function Hero() {
 						<Link href="/custom-pizzas">
 							<Button
 								variant="ghost"
-								className="font-semibold hover:text-primary transition p-8"
+								className="font-semibold hover:text-primary cursor-pointer transition p-8"
 							>
 								Build Your Pizza →
 							</Button>

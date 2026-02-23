@@ -14,12 +14,10 @@ export default function ProtectedProfilePage() {
 
 	useEffect(() => {
 		if (user === null) {
-			// redirect to home if user is logged out
 			router.replace("/");
 		}
 	}, [user, router]);
 
-	// show loader while auth state is initializing
 	if (user === undefined)
 		return (
 			<div className="text-center mt-20">

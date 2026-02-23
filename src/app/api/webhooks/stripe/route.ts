@@ -71,7 +71,6 @@ export async function POST(req: Request) {
 		}
 	}
 
-	// Checkout Session Expired
 	if (event.type === "checkout.session.expired") {
 		const session = event.data.object as Stripe.Checkout.Session;
 		const orderId = session.metadata?.orderId;
@@ -81,7 +80,6 @@ export async function POST(req: Request) {
 		}
 	}
 
-	// Payment Failed (Card Declined)
 	if (event.type === "payment_intent.payment_failed") {
 		const intent = event.data.object as Stripe.PaymentIntent;
 		const orderId = intent.metadata?.orderId;
