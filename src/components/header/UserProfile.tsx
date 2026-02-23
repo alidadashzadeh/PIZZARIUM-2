@@ -44,8 +44,14 @@ function UserProfile() {
 			{/* after hydration if no user is logged in */}
 			{mounted && !isLoading && !profile && (
 				<>
-					<Button size="sm" onClick={() => setAuthOpen(true)}>
-						Sign In / Sign Up
+					<Button
+						variant="outline"
+						size="sm"
+						className="cursor-pointer"
+						onClick={() => setAuthOpen(true)}
+					>
+						<span>Sign In</span>
+						<span className="hidden sm:inline-block">/ Sign Up</span>
 					</Button>
 					<AuthModal open={authOpen} onOpenChange={setAuthOpen} />
 				</>

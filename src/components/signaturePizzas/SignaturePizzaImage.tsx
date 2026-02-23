@@ -19,7 +19,7 @@ export default function SignaturePizzaImage({
 			/>
 			<Button
 				asChild
-				className="absolute top-2 left-2"
+				className="absolute top-2 left-2 cursor-pointer"
 				variant="outline"
 				size="sm"
 			>

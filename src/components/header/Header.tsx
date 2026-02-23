@@ -18,8 +18,12 @@ const Header = () => {
 			<div className="flex items-center gap-2 sm:gap-3 md:gap-4">
 				<UserProfile />
 				<CartSheet />
-				<DarkModeSwitch />
-				<MobileNav />
+				<div className="hidden md:flex items-center gap-4">
+					<DarkModeSwitch />
+				</div>
+				<div className="md:hidden">
+					<MobileNav />
+				</div>
 			</div>
 		</header>
 	);

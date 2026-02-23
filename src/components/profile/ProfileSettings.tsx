@@ -129,7 +129,7 @@ export default function ProfileSettings() {
 			<div className="flex justify-start">
 				<Button
 					size="lg"
-					className="w-auto"
+					className="w-auto cursor-pointer"
 					onClick={handleSave}
 					disabled={isPending}
 				>

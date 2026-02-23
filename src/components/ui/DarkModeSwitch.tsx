@@ -7,11 +7,10 @@ import { Button } from "./button";
 function Switch() {
 	const [theme, setTheme] = React.useState<"light" | "dark">("light");
 
-	// Initialize theme from localStorage or system preference
 	React.useEffect(() => {
 		const stored = localStorage.getItem("theme");
 		const prefersDark = window.matchMedia(
-			"(prefers-color-scheme: dark)"
+			"(prefers-color-scheme: dark)",
 		).matches;
 		const initialTheme =
 			stored === "dark" || (!stored && prefersDark) ? "dark" : "light";

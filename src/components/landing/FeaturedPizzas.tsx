@@ -30,7 +30,10 @@ export default function FeaturedPizzas({ pizzas }: PizzaListProps) {
 			</div>
 
 			<Link href={"/signature-pizzas"} className="mt-16">
-				<Button variant="default" className=" px-10 py-6 text-lg font-semibold">
+				<Button
+					variant="default"
+					className=" px-10 py-6 text-lg font-semibold cursor-pointer"
+				>
 					View Full Menu
 				</Button>
 			</Link>

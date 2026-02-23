@@ -35,7 +35,7 @@ export function SignaturePizzaReviews({ pizzaId }: { pizzaId: string }) {
 					</CollapsibleContent>
 
 					<CollapsibleTrigger asChild>
-						<Button variant="ghost" className="w-full mt-2">
+						<Button variant="ghost" className="w-full mt-2 cursor-pointer">
 							View {theRest?.length} more reviews
 						</Button>
 					</CollapsibleTrigger>

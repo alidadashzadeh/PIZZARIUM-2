@@ -101,6 +101,7 @@ export default function SignaturePizzaFilters({
 				</SelectContent>
 			</Select>
 			<Button
+				className="cursor-pointer"
 				onClick={() => {
 					router.replace("?", { scroll: false });
 				}}

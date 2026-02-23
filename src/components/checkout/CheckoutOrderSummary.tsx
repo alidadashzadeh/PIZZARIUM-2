@@ -52,7 +52,7 @@ export default function CheckoutOrderSummary() {
 
 			<Button
 				size="lg"
-				className="w-full mt-auto"
+				className="w-full mt-auto cursor-pointer"
 				disabled={loading || !cartItems.length}
 				onClick={handlePayNow}
 			>

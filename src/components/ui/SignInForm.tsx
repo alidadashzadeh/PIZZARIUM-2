@@ -71,7 +71,11 @@ export const SignInForm = ({ onClose }: SignUpFormProps) => {
 
 			{errorMsg && <div className="text-red-500 text-center">{errorMsg}</div>}
 
-			<Button type="submit" disabled={isSubmitting} className="w-full">
+			<Button
+				type="submit"
+				disabled={isSubmitting}
+				className="w-full cursor-pointer"
+			>
 				{isSubmitting ? "Logging in..." : "Login"}
 			</Button>
 		</form>

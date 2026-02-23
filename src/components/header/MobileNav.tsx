@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "../ui/button";
 
+import { Switch as DarkModeSwitch } from "@/components/ui/DarkModeSwitch";
+
 const links = [
 	{ href: "/signature-pizzas", label: "Signature Pizzas" },
 	{ href: "/custom-pizzas", label: "Custom Pizzas" },
@@ -27,31 +29,32 @@ const MobileNav = () => {
 			<div className="md:hidden">
 				<Button
 					size="icon"
-					variant="ghost"
+					variant="outline"
 					onClick={() => setOpen(true)}
 					aria-label="Open menu"
 				>
-					<Menu size={32} />
+					<Menu size={64} />
 				</Button>
 			</div>
 
 			{open && (
 				<div className="fixed inset-0 z-[100] bg-background">
-					{/* Top bar */}
 					<div className="flex items-center justify-between h-12 px-6 border-b">
 						<span className="font-semibold">Menu</span>
-						<Button
-							size="icon"
-							variant="ghost"
-							onClick={() => setOpen(false)}
-							aria-label="Close menu"
-						>
-							<X size={32} />
-						</Button>
+						<div className="flex gap-2">
+							<DarkModeSwitch />
+							<Button
+								size="icon"
+								variant="outline"
+								onClick={() => setOpen(false)}
+								aria-label="Close menu"
+							>
+								<X />
+							</Button>
+						</div>
 					</div>
 
-					{/* Links */}
-					<nav className="flex flex-col p-6 gap-4 text-lg">
+					<nav className="flex flex-col p-6 gap-4 text-lg ">
 						{links.map((link) => (
 							<Link
 								key={link.href}

@@ -59,7 +59,7 @@ export default function MultiChoiceList({
 						</p>
 						<p className="font-medium text-center">{item.name}</p>
 
-						<Button className="h-10 w-10">
+						<Button className="h-10 w-10 cursor-pointer">
 							{toppingExist(item) ? (
 								<Minus className="w-6 h-6" />
 							) : (

@@ -100,6 +100,7 @@ export default function OrdersTable() {
 								<TableCell className="text-right">
 									<Button
 										size="sm"
+										className="cursor-pointer"
 										variant="outline"
 										onClick={() => {
 											setSelectedOrderId(order.id);
