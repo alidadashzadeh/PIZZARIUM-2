@@ -23,6 +23,38 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
+export async function resizeAndConvertToWebp(
+	file: File,
+	maxSize = 512,
+	quality = 0.75,
+): Promise<File> {
+	const bitmap = await createImageBitmap(file);
+
+	const scale = Math.min(maxSize / bitmap.width, maxSize / bitmap.height, 1);
+
+	const width = Math.round(bitmap.width * scale);
+	const height = Math.round(bitmap.height * scale);
+
+	const canvas = document.createElement("canvas");
+	canvas.width = width;
+	canvas.height = height;
+
+	const ctx = canvas.getContext("2d")!;
+	ctx.drawImage(bitmap, 0, 0, width, height);
+
+	const blob = await new Promise<Blob>((resolve, reject) => {
+		canvas.toBlob(
+			(b) => (b ? resolve(b) : reject(new Error("WebP conversion failed"))),
+			"image/webp",
+			quality,
+		);
+	});
+
+	const newName = file.name.replace(/\.\w+$/, ".webp");
+
+	return new File([blob], newName, { type: "image/webp" });
+}
+
 export function applyFiltersAndSort(
 	list: SignaturePizzaCard[],
 	filters: FiltersState,

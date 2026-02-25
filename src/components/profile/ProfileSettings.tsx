@@ -34,8 +34,6 @@ export default function ProfileSettings() {
 		});
 	};
 
-	console.log("avatar", profile?.avatar);
-
 	return (
 		<div className="max-w-3xl mx-auto flex flex-col gap-6">
 			<div>

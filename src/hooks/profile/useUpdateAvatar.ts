@@ -1,38 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Profile, uploadAvatar } from "@/lib/queries/profile";
 import { toast } from "sonner";
-
-async function resizeAndConvertToWebp(
-	file: File,
-	maxSize = 512,
-	quality = 0.75,
-): Promise<File> {
-	const bitmap = await createImageBitmap(file);
-
-	const scale = Math.min(maxSize / bitmap.width, maxSize / bitmap.height, 1);
-
-	const width = Math.round(bitmap.width * scale);
-	const height = Math.round(bitmap.height * scale);
-
-	const canvas = document.createElement("canvas");
-	canvas.width = width;
-	canvas.height = height;
-
-	const ctx = canvas.getContext("2d")!;
-	ctx.drawImage(bitmap, 0, 0, width, height);
-
-	const blob = await new Promise<Blob>((resolve, reject) => {
-		canvas.toBlob(
-			(b) => (b ? resolve(b) : reject(new Error("WebP conversion failed"))),
-			"image/webp",
-			quality,
-		);
-	});
-
-	const newName = file.name.replace(/\.\w+$/, ".webp");
-
-	return new File([blob], newName, { type: "image/webp" });
-}
+import { resizeAndConvertToWebp } from "@/lib/utils";
 
 export function useUpdateAvatar(userId: string) {
 	const queryClient = useQueryClient();
@@ -40,7 +9,7 @@ export function useUpdateAvatar(userId: string) {
 	return useMutation({
 		mutationFn: async ({ file }: { file: File }) => {
 			const optimized = await resizeAndConvertToWebp(file);
-			return uploadAvatar({ userId, file: optimized });
+			return uploadAvatar({ file: optimized });
 		},
 
 		onMutate: async ({ file }) => {
@@ -64,6 +33,10 @@ export function useUpdateAvatar(userId: string) {
 			if (context?.previousProfile) {
 				queryClient.setQueryData(["profile", userId], context.previousProfile);
 			}
+
+			toast.error(
+				_err instanceof Error ? _err.message : "Avatar update failed",
+			);
 		},
 
 		onSuccess: async (serverProfile, _vars, context) => {

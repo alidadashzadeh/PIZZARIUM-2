@@ -66,41 +66,19 @@ export async function updateProfile(updates: {
 	return data;
 }
 
-export async function uploadAvatar({
-	userId,
-	file,
-}: {
-	userId: string;
-	file: File;
-}) {
-	const filePath = `${userId}-${Date.now()}.jpg`;
+export async function uploadAvatar({ file }: { file: File }) {
+	const formData = new FormData();
+	formData.append("file", file);
 
-	// upload / overwrite image
-	const { error: uploadError } = await supabase.storage
-		.from("avatars")
-		.upload(filePath, file, {
-			upsert: true,
-			contentType: file.type,
-		});
+	const res = await fetch("/api/avatar", {
+		method: "POST",
+		body: formData,
+	});
 
-	if (uploadError) {
-		throw uploadError;
+	if (!res.ok) {
+		const body = await res.json().catch(() => ({}));
+		throw new Error(body?.error ?? "Avatar upload failed");
 	}
 
-	// build public URL
-	const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${filePath}`;
-
-	// update profile row
-	const { data, error } = await supabase
-		.from("profiles")
-		.update({ avatar: publicUrl })
-		.eq("id", userId)
-		.select("*")
-		.single();
-
-	if (error) {
-		throw error;
-	}
-
-	return data;
+	return res.json();
 }
