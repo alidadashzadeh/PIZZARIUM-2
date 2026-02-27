@@ -58,3 +58,10 @@ export type SignatureLineItem = {
 	name: string;
 	price: PriceBySize;
 };
+
+export type MarkOrderPaidArgs = {
+	orderId: string;
+	stripeSessionId: string;
+	cardBrand: string | null;
+	cardLast4: string | null;
+};

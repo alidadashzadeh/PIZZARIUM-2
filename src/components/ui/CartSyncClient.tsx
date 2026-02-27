@@ -10,8 +10,16 @@ export function CartSyncClient() {
 	const clearPendingOrderId = useCartStore((s) => s.clearPendingOrderId);
 
 	useEffect(() => {
-		async function syncPendingOrder() {
-			if (!pendingOrderId) return;
+		if (!pendingOrderId) return;
+
+		let cancelled = false;
+		let attempts = 0;
+		const maxAttempts = 10; // 10 * 2s = 20 seconds
+
+		const interval = setInterval(async () => {
+			if (cancelled) return;
+
+			attempts++;
 
 			try {
 				const order = await getOrderStatusClient(pendingOrderId);
@@ -19,13 +27,22 @@ export function CartSyncClient() {
 				if (order?.paid === true) {
 					clearCart();
 					clearPendingOrderId();
+					clearInterval(interval);
+				}
+
+				if (attempts >= maxAttempts) {
+					clearInterval(interval);
 				}
 			} catch (err) {
 				console.error("Failed to sync pending order", err);
+				clearInterval(interval);
 			}
-		}
+		}, 2000);
 
-		syncPendingOrder();
+		return () => {
+			cancelled = true;
+			clearInterval(interval);
+		};
 	}, [pendingOrderId, clearCart, clearPendingOrderId]);
 
 	return null;

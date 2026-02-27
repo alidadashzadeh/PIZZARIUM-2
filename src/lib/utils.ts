@@ -177,7 +177,7 @@ export const calculateTotal = (items: CartItem[]) =>
 	Number(items.reduce((sum, item) => sum + item.lineTotal, 0).toFixed(2));
 
 const estimateCustomPizza = (pizza: CustomPizzaType) => {
-	let price = basePriceForSize(pizza.size);
+	let price = basePriceForSize("small");
 
 	price += pizza.cheese.price;
 	price += pizza.sauce.price;
@@ -199,8 +199,8 @@ export const recalcPizza = (pizza: CustomPizzaType) => {
 		...pizza,
 		price: {
 			small: base,
-			medium: Number((base * 1.2).toFixed(2)),
-			large: Number((base * 1.3).toFixed(2)),
+			medium: base + 2.0,
+			large: base + 3.0,
 		},
 	};
 };

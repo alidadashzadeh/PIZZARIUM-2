@@ -56,8 +56,8 @@ export const usePizzaStore = create<PizzaStore>()(
 				toppings: [],
 				price: {
 					small: 11.98,
-					medium: 12,
-					large: 13,
+					medium: 14.98,
+					large: 15.98,
 				},
 			},
 
@@ -147,8 +147,8 @@ export const usePizzaStore = create<PizzaStore>()(
 						toppings: [],
 						price: {
 							small: 11.98,
-							medium: 12,
-							large: 13,
+							medium: 14.98,
+							large: 15.98,
 						},
 					},
 				}),

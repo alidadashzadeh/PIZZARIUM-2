@@ -1,28 +1,6 @@
 import "server-only";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-
-export async function markOrderPaid(
-	orderId: string,
-	stripeSessionId: string,
-	cardBrand: string,
-	cardLast4: string,
-) {
-	const { error } = await supabaseAdmin
-		.from("orders")
-		.update({
-			paid: true,
-			status: "preparing",
-			stripe_session_id: stripeSessionId,
-			card_brand: cardBrand,
-			card_last4: cardLast4,
-		})
-		.eq("id", orderId);
-
-	if (error) {
-		console.error("Supabase order update failed:", error);
-		throw new Error("Failed to mark order as paid");
-	}
-}
+import { MarkOrderPaidArgs } from "@/types/CartType";
 
 export async function deleteOrder(orderId: string) {
 	const { error } = await supabaseAdmin
@@ -36,29 +14,52 @@ export async function deleteOrder(orderId: string) {
 	}
 }
 
-// export async function markOrderPaid(args: {
-// 	orderId: string;
-// 	stripeSessionId: string;
-// 	cardBrand: string | null;
-// 	cardLast4: string | null;
-// }) {
-// 	const { orderId, stripeSessionId, cardBrand, cardLast4 } = args;
+export async function markOrderPaid({
+	orderId,
+	stripeSessionId,
+	cardBrand,
+	cardLast4,
+}: MarkOrderPaidArgs) {
+	// 1️⃣ Attach session id if missing
+	const { error: claimError } = await supabaseAdmin
+		.from("orders")
+		.update({ stripe_session_id: stripeSessionId })
+		.eq("id", orderId)
+		.is("stripe_session_id", null);
 
-// 	// paid wins over any other status
-// 	const { error } = await supabaseAdmin
-// 		.from("orders")
-// 		.update({
-// 			status: "paid",
-// 			stripe_session_id: stripeSessionId,
-// 			paid_at: new Date().toISOString(),
-// 			card_brand: cardBrand,
-// 			card_last4: cardLast4,
-// 		})
-// 		.eq("id", orderId)
-// 		.neq("status", "paid"); // idempotent
+	if (claimError) throw claimError;
 
-// 	if (error) throw error;
-// }
+	// 2️⃣ Build strictly typed update object
+	const updateData: {
+		status: "preparing";
+		paid: true;
+		paid_at: string;
+		card_brand?: string;
+		card_last4?: string;
+	} = {
+		status: "preparing",
+		paid: true,
+		paid_at: new Date().toISOString(),
+	};
+
+	if (cardBrand !== null) {
+		updateData.card_brand = cardBrand;
+	}
+
+	if (cardLast4 !== null) {
+		updateData.card_last4 = cardLast4;
+	}
+
+	// 3️⃣ Mark paid only if unpaid and session matches
+	const { error: payError } = await supabaseAdmin
+		.from("orders")
+		.update(updateData)
+		.eq("id", orderId)
+		.eq("stripe_session_id", stripeSessionId)
+		.eq("paid", false);
+
+	if (payError) throw payError;
+}
 
 export async function markOrderExpired(orderId: string) {
 	// don't override paid
@@ -66,7 +67,7 @@ export async function markOrderExpired(orderId: string) {
 		.from("orders")
 		.update({ status: "expired" })
 		.eq("id", orderId)
-		.neq("status", "paid");
+		.neq("paid", true);
 
 	if (error) throw error;
 }

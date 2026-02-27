@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import Stripe from "stripe";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
@@ -182,13 +181,20 @@ export async function POST(req: Request) {
 				: Promise.resolve({ data: [], error: null }),
 		]);
 
-		// console.log("sigRes", sigRes);
-		// console.log("crustRes", crustRes);
-		// console.log("sauceRes", sauceRes);
-		// console.log("doughRes", doughRes);
-		// console.log("cheeseRes", cheeseRes);
-		// console.log("cookRes", cookRes);
-		// console.log("toppingRes", toppingRes);
+		// check for err on promise.all
+		const all = [
+			sigRes,
+			drinkRes,
+			doughRes,
+			crustRes,
+			cookRes,
+			sauceRes,
+			cheeseRes,
+			toppingRes,
+		];
+		for (const r of all) {
+			if (r.error) throw r.error;
+		}
 
 		// turn data into map for faster lookup
 		const signatureMap = new Map<string, SignatureLineItem>(
@@ -262,13 +268,12 @@ export async function POST(req: Request) {
 				if (!cook) throw new Error(`Cook not found: ${item.cook?.id}`);
 				if (!sauce) throw new Error(`Sauce not found: ${item.sauce?.id}`);
 				if (!cheese) throw new Error(`Cheese not found: ${item.cheese?.id}`);
-				if (!dough) throw new Error(`dough not found: ${item.cheese?.id}`);
+				if (!dough) throw new Error(`dough not found: ${item.dough?.id}`);
 
 				if (!item?.size) {
 					throw new Error("Pizza size is required");
 				}
-				const base = 10;
-				// const base = basePriceForSize(item.size);
+				const base = basePriceForSize(item.size);
 
 				const toppingsSum = (item.toppings ?? []).reduce((sum, topping) => {
 					const tid = String(topping?.id);
@@ -284,6 +289,7 @@ export async function POST(req: Request) {
 				unitPrice =
 					base +
 					crust.price +
+					dough.price +
 					cook.price +
 					sauce.price +
 					cheese.price +
@@ -304,117 +310,65 @@ export async function POST(req: Request) {
 			};
 		});
 
-		console.log(total.toFixed(2));
-		console.log("line items", line_items);
-
 		//  create order in DB (pending_payment)
 		// Store the exact items from request (or enrich them) — but do not trust price coming from client.
 
-		// const { data: order, error: orderErr } = await supabase
-		// 	.from("orders")
-		// 	.insert({
-		// 		user_id: user.id,
-		// 		status: "pending_payment",
-		// 		items, // jsonb
-		// 		total, // numeric
-		// 		customer_name: delivery.full_name,
-		// 		delivery_address: delivery.address,
-		// 		delivery_phone: delivery.phone_number,
-		// 		delivery_instructions: delivery.delivery_instructions ?? "",
-		// 	})
-		// 	.select("id")
-		// 	.single();
+		const { data: order, error: orderErr } = await supabase
+			.from("orders")
+			.insert({
+				user_id: user.id,
+				status: "pending_payment",
+				items,
+				total: total.toFixed(2),
+				customer_name: delivery.full_name,
+				delivery_address: delivery.address,
+				delivery_phone: delivery.phone_number,
+				delivery_instructions: delivery.delivery_instructions ?? "",
+			})
+			.select("id")
+			.single();
 
-		// if (orderErr || !order) {
-		// 	console.error("Order insert error:", orderErr);
-		// 	return NextResponse.json(
-		// 		{ error: "Order creation failed" },
-		// 		{ status: 500 },
-		// 	);
-		// }
+		if (orderErr || !order) {
+			console.error("Order insert error:", orderErr);
+			return NextResponse.json(
+				{ error: "Order creation failed" },
+				{ status: 500 },
+			);
+		}
 
-		// const orderId = order.id as string;
+		//  create stripe session
+		const orderId = order.id as string;
+		const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-		// 6) create stripe session
-		// const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+		const session = await stripe.checkout.sessions.create({
+			mode: "payment",
+			payment_method_types: ["card"],
+			line_items,
+			success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+			cancel_url: `${siteUrl}/cancel`,
+			client_reference_id: orderId,
+			metadata: { orderId },
+			// This makes payment_intent events also have orderId:
+			payment_intent_data: {
+				metadata: { orderId },
+			},
+			expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+		});
 
-		// const session = await stripe.checkout.sessions.create({
-		// 	mode: "payment",
-		// 	payment_method_types: ["card"],
-		// 	line_items,
-		// 	success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-		// 	cancel_url: `${siteUrl}/cancel`,
-		// 	client_reference_id: orderId,
+		//  store stripe session id on the order (useful for lookup/idempotency)
+		const { error: updErr } = await supabase
+			.from("orders")
+			.update({ stripe_session_id: session.id })
+			.eq("id", orderId);
 
-		// 	metadata: { orderId },
+		if (updErr) {
+			console.warn("Failed to store stripe_session_id:", updErr);
+		}
 
-		// 	// This makes payment_intent events also have orderId:
-		// 	payment_intent_data: {
-		// 		metadata: { orderId },
-		// 	},
-
-		// 	expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
-		// });
-
-		// 7) store stripe session id on the order (useful for lookup/idempotency)
-		// const { error: updErr } = await supabase
-		// 	.from("orders")
-		// 	.update({ stripe_session_id: session.id })
-		// 	.eq("id", orderId);
-
-		// if (updErr) {
-		// 	// not fatal, but log it
-		// 	console.warn("Failed to store stripe_session_id:", updErr);
-		// }
-
-		// return NextResponse.json({ url: session.url, orderId });
+		return NextResponse.json({ url: session.url, orderId });
 	} catch (err) {
 		const message = err instanceof Error ? err.message : "Something went wrong";
 		console.error("Checkout route error:", message);
 		return NextResponse.json({ error: message }, { status: 500 });
 	}
 }
-
-// import { NextResponse } from "next/server";
-// import { stripe } from "@/lib/stripe";
-
-// export async function POST(req: Request) {
-// 	try {
-// 		const { line_items, orderId } = await req.json();
-
-// 		if (!line_items?.length) {
-// 			return NextResponse.json(
-// 				{ error: "No line items provided" },
-// 				{ status: 400 },
-// 			);
-// 		}
-
-// 		const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-
-// 		const session = await stripe.checkout.sessions.create({
-// 			mode: "payment",
-// 			payment_method_types: ["card"],
-// 			line_items,
-
-// 			success_url: `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-// 			cancel_url: `${siteUrl}/cancel`,
-
-// 			metadata: {
-// 				orderId,
-// 			},
-// 			expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
-// 		});
-
-// 		return NextResponse.json({ url: session.url });
-// 	} catch (err: unknown) {
-// 		let message = "Something went wrong";
-
-// 		if (err instanceof Error) {
-// 			message = err.message;
-// 		}
-
-// 		console.error("Stripe Checkout Error:", message);
-
-// 		return NextResponse.json({ error: message }, { status: 500 });
-// 	}
-// }
