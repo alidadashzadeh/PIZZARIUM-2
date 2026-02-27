@@ -386,7 +386,6 @@ body::-webkit-scrollbar {
 .animate-float3 {
 	animation: float3 5s ease-in-out infinite;
 }
-
 ::view-transition-old(root),
 ::view-transition-new(root) {
 	animation: none;

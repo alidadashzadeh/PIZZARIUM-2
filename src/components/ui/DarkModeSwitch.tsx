@@ -29,22 +29,20 @@ function Switch() {
 	const handleToggleTheme = (e: React.MouseEvent) => {
 		const newTheme = theme === "dark" ? "light" : "dark";
 
-		// Click position (origin of the reveal)
 		const x = e.clientX;
 		const y = e.clientY;
 
-		// Radius big enough to cover the furthest corner
 		const maxX = Math.max(x, window.innerWidth - x);
 		const maxY = Math.max(y, window.innerHeight - y);
 		const r = Math.hypot(maxX, maxY);
 
-		// If View Transitions API is available, do the Telegram-correct reveal
 		const anyDoc = document;
+
 		if (typeof anyDoc.startViewTransition === "function") {
-			// Set variables read by CSS on ::view-transition-new(root)
 			document.documentElement.style.setProperty("--vt-x", `${x}px`);
 			document.documentElement.style.setProperty("--vt-y", `${y}px`);
-			document.documentElement.style.setProperty("--vt-r", `${r}px`);
+			document.documentElement.style.setProperty("--vt-from", `0px`);
+			document.documentElement.style.setProperty("--vt-to", `${r}px`);
 
 			anyDoc.startViewTransition(() => {
 				applyTheme(newTheme);
@@ -53,7 +51,6 @@ function Switch() {
 			return;
 		}
 
-		// Fallback (non-Telegram-perfect): immediate switch
 		applyTheme(newTheme);
 	};
 
