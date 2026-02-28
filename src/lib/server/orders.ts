@@ -1,28 +1,6 @@
 import "server-only";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-
-export async function markOrderPaid(
-	orderId: string,
-	stripeSessionId: string,
-	cardBrand: string,
-	cardLast4: string,
-) {
-	const { error } = await supabaseAdmin
-		.from("orders")
-		.update({
-			paid: true,
-			status: "preparing",
-			stripe_session_id: stripeSessionId,
-			card_brand: cardBrand,
-			card_last4: cardLast4,
-		})
-		.eq("id", orderId);
-
-	if (error) {
-		console.error("Supabase order update failed:", error);
-		throw new Error("Failed to mark order as paid");
-	}
-}
+import { MarkOrderPaidArgs } from "@/types/CartType";
 
 export async function deleteOrder(orderId: string) {
 	const { error } = await supabaseAdmin
@@ -34,4 +12,44 @@ export async function deleteOrder(orderId: string) {
 		console.error("Failed to delete order:", error);
 		throw error;
 	}
+}
+export async function markOrderPaid({
+	orderId,
+	stripeSessionId,
+	cardBrand,
+	cardLast4,
+}: MarkOrderPaidArgs) {
+	const { error: payError } = await supabaseAdmin
+		.from("orders")
+		.update({
+			status: "preparing",
+			paid: true,
+			card_brand: cardBrand,
+			card_last4: cardLast4,
+		})
+		.eq("id", orderId)
+		.eq("stripe_session_id", stripeSessionId);
+
+	if (payError) throw payError;
+}
+export async function markOrderExpired(orderId: string) {
+	// don't override paid
+	const { error } = await supabaseAdmin
+		.from("orders")
+		.update({ status: "expired" })
+		.eq("id", orderId)
+		.neq("paid", true);
+
+	if (error) throw error;
+}
+
+export async function markOrderFailed(orderId: string) {
+	// don't override paid
+	const { error } = await supabaseAdmin
+		.from("orders")
+		.update({ status: "failed" })
+		.eq("id", orderId)
+		.neq("paid", true);
+
+	if (error) throw error;
 }

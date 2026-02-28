@@ -1,10 +1,7 @@
 import { CartItem } from "@/types/CartType";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import {
-	CustomPizzaOptionsType,
-	CustomPizzaType,
-} from "@/types/customPizzaType";
+import { CustomPizzaType } from "@/types/customPizzaType";
 
 import {
 	Category,
@@ -21,6 +18,38 @@ interface FiltersState {
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
+}
+
+export async function resizeAndConvertToWebp(
+	file: File,
+	maxSize = 512,
+	quality = 0.75,
+): Promise<File> {
+	const bitmap = await createImageBitmap(file);
+
+	const scale = Math.min(maxSize / bitmap.width, maxSize / bitmap.height, 1);
+
+	const width = Math.round(bitmap.width * scale);
+	const height = Math.round(bitmap.height * scale);
+
+	const canvas = document.createElement("canvas");
+	canvas.width = width;
+	canvas.height = height;
+
+	const ctx = canvas.getContext("2d")!;
+	ctx.drawImage(bitmap, 0, 0, width, height);
+
+	const blob = await new Promise<Blob>((resolve, reject) => {
+		canvas.toBlob(
+			(b) => (b ? resolve(b) : reject(new Error("WebP conversion failed"))),
+			"image/webp",
+			quality,
+		);
+	});
+
+	const newName = file.name.replace(/\.\w+$/, ".webp");
+
+	return new File([blob], newName, { type: "image/webp" });
 }
 
 export function applyFiltersAndSort(
@@ -63,29 +92,6 @@ export function applyFiltersAndSort(
 
 	return result;
 }
-
-export const estimateCustomPizzaCost = (
-	customPizza: CustomPizzaType,
-): number => {
-	let total = 11; // base cost
-
-	(Object.keys(customPizza) as (keyof CustomPizzaType)[]).forEach((key) => {
-		if (key === "price" || key === "size") return;
-
-		const value = customPizza[key];
-
-		// toppings
-		if (Array.isArray(value)) {
-			total += value.reduce((sum, item) => sum + item.price, 0);
-		}
-		// single options
-		else if (value && typeof value === "object" && "price" in value) {
-			total += (value as CustomPizzaOptionsType).price;
-		}
-	});
-
-	return Number(total.toFixed(2));
-};
 
 export function sortCartItems(items: CartItem[]) {
 	if (!items) return;
@@ -145,7 +151,7 @@ export const calculateTotal = (items: CartItem[]) =>
 	Number(items.reduce((sum, item) => sum + item.lineTotal, 0).toFixed(2));
 
 const estimateCustomPizza = (pizza: CustomPizzaType) => {
-	let price = 10.31;
+	let price = basePriceForSize("small");
 
 	price += pizza.cheese.price;
 	price += pizza.sauce.price;
@@ -167,13 +173,23 @@ export const recalcPizza = (pizza: CustomPizzaType) => {
 		...pizza,
 		price: {
 			small: base,
-			medium: Number((base * 1.2).toFixed(2)),
-			large: Number((base * 1.3).toFixed(2)),
+			medium: base + 2.0,
+			large: base + 3.0,
 		},
 	};
 };
+
+export function basePriceForSize(size: "small" | "medium" | "large") {
+	if (size === "small") return 10;
+	if (size === "medium") return 12;
+	return 13;
+}
 
 export const updateCartState = (items: CartItem[]) => ({
 	items,
 	total: calculateTotal(items),
 });
+
+export function assertQty(qty: number) {
+	return Number.isFinite(qty) && qty >= 1 && qty <= 50;
+}

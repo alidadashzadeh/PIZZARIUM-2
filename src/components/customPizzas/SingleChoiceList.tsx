@@ -20,6 +20,7 @@ export default function SingleChoiceList({
 	const isSelected = (item: optionsType) => {
 		return customPizza[name]?.id === item.id;
 	};
+
 	return (
 		<div className="grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 			{options?.map((item) => (

@@ -386,3 +386,29 @@ body::-webkit-scrollbar {
 .animate-float3 {
 	animation: float3 5s ease-in-out infinite;
 }
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation: none;
+}
+
+::view-transition-old(root) {
+	z-index: 0;
+}
+
+::view-transition-new(root) {
+	z-index: 1;
+	animation: theme-reveal 700ms ease-in-out both;
+	clip-path: circle(var(--vt-from) at var(--vt-x) var(--vt-y));
+}
+
+@keyframes theme-reveal {
+	to {
+		clip-path: circle(var(--vt-to) at var(--vt-x) var(--vt-y));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-new(root) {
+		animation-duration: 1ms;
+	}
+}

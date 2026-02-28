@@ -1,29 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { useOrder } from "@/hooks/orders/useOrder";
 import { useAuthStore } from "@/store/useAuthStore";
-import { CartItem } from "@/types/CartType";
 import { useCartStore } from "@/store/useCartStore";
+import { CartItem, Delivery } from "@/types/CartType";
+import { useState } from "react";
 
 export function useStripeCheckout() {
-	const { createOrder } = useOrder();
 	const user = useAuthStore((s) => s.user);
 	const setPendingOrderId = useCartStore((s) => s.setPendingOrderId);
-	const total = useCartStore((s) => s.total);
-
 	const [stripeLoading, setStripeLoading] = useState(false);
 	const [stripeError, setStripeError] = useState<string | null>(null);
 
-	const checkout = async (
-		items: CartItem[],
-		delivery: {
-			full_name: string;
-			address: string;
-			phone_number: string;
-			delivery_instructions?: string;
-		},
-	) => {
+	const checkout = async (items: CartItem[], delivery: Delivery) => {
 		if (!items.length) return;
 		if (!user) return;
 
@@ -31,72 +19,18 @@ export function useStripeCheckout() {
 			setStripeLoading(true);
 			setStripeError(null);
 
-			// Create order in Supabase
-			const order = await createOrder({
-				user_id: user?.id,
-				items,
-				total,
-
-				// delivery info
-				customer_name: delivery.full_name,
-				delivery_address: delivery.address,
-				delivery_phone: delivery.phone_number,
-				delivery_instructions: delivery.delivery_instructions || "",
-			});
-
-			if (!order) throw new Error("Order creation failed");
-			// to clear cart after paid on reload
-			setPendingOrderId(order.id);
-
-			// Build Stripe line_items directly
-			// const line_items = sortedItems.map((item) => {
-			const line_items = items.map((item) => {
-				let finalPrice: number;
-
-				// Drinks already have numeric price
-				if (typeof item.price === "number") {
-					finalPrice = item.price;
-				}
-
-				// Pizzas have object prices by size
-				else if (typeof item.price === "object" && item.size) {
-					finalPrice = item.price[item.size];
-				}
-
-				// Invalid case
-				else {
-					throw new Error(`Invalid price for item: ${item.name}`);
-				}
-
-				return {
-					price_data: {
-						currency: "usd",
-						product_data: {
-							name: item.size
-								? `${item.name} (${item.size})`
-								: item.name || "Product",
-						},
-
-						// Stripe requires integer cents
-						unit_amount: Math.round(finalPrice * 100),
-					},
-					quantity: item.quantity || 1,
-				};
-			});
-
 			// Send line_items to backend
 			const res = await fetch("/api/checkout", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					line_items,
-					orderId: order.id,
-				}),
+				body: JSON.stringify({ items, delivery }),
 			});
 
 			const data = await res.json();
-
-			if (!data.url) throw new Error("Stripe session URL missing");
+			setPendingOrderId(data.orderId);
+			if (!res.ok) throw new Error(data?.error || "Checkout failed");
+			if (!data?.url || !data?.orderId)
+				throw new Error("Missing checkout data");
 
 			// Redirect user to Stripe
 			window.location.href = data.url;

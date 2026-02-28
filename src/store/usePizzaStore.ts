@@ -28,16 +28,36 @@ export const usePizzaStore = create<PizzaStore>()(
 			// STATE
 			customPizza: {
 				size: "small",
-				dough: { name: "regular", id: 2, price: 0 },
-				crust: { name: "regular", id: 1, price: 0 },
-				cheese: { name: "Dairy Free", id: 1, price: 0.99 },
-				sauce: { name: "creamy garlic", id: 4, price: 0.99 },
-				cook: { name: "regular", id: 2, price: 0 },
+				dough: {
+					name: "regular",
+					id: "01355aa0-6af7-4006-b402-a04d4fccddc0",
+					price: 0,
+				},
+				crust: {
+					name: "regular",
+					id: "3410bfd5-2fe5-4b27-8de7-02cf213d3f1c",
+					price: 0,
+				},
+				cheese: {
+					name: "Dairy Free",
+					id: "2953fc6f-a374-4efe-82de-5e2dabdbd57e",
+					price: 0.99,
+				},
+				sauce: {
+					name: "creamy garlic",
+					id: "0641315e-fa28-449a-9305-1a91f00c23c4",
+					price: 0.99,
+				},
+				cook: {
+					name: "regular",
+					id: "cf13f3cc-cda8-425b-b19d-486f95cef096",
+					price: 0,
+				},
 				toppings: [],
 				price: {
-					small: 12.29,
-					medium: 15.58,
-					large: 16.87,
+					small: 11.98,
+					medium: 14.98,
+					large: 15.98,
 				},
 			},
 
@@ -99,13 +119,37 @@ export const usePizzaStore = create<PizzaStore>()(
 				set({
 					customPizza: {
 						size: "small",
-						dough: { name: "regular", id: 2, price: 0 },
-						crust: { name: "regular", id: 1, price: 0 },
-						cheese: { name: "Dairy Free", id: 1, price: 0.99 },
-						sauce: { name: "creamy garlic", id: 4, price: 0.99 },
-						cook: { name: "regular", id: 2, price: 0 },
+						dough: {
+							name: "regular",
+							id: "01355aa0-6af7-4006-b402-a04d4fccddc0",
+							price: 0,
+						},
+						crust: {
+							name: "regular",
+							id: "3410bfd5-2fe5-4b27-8de7-02cf213d3f1c",
+							price: 0,
+						},
+						cheese: {
+							name: "Dairy Free",
+							id: "2953fc6f-a374-4efe-82de-5e2dabdbd57e",
+							price: 0.99,
+						},
+						sauce: {
+							name: "creamy garlic",
+							id: "0641315e-fa28-449a-9305-1a91f00c23c4",
+							price: 0.99,
+						},
+						cook: {
+							name: "regular",
+							id: "cf13f3cc-cda8-425b-b19d-486f95cef096",
+							price: 0,
+						},
 						toppings: [],
-						price: { small: 12.98, medium: 15.58, large: 16.87 },
+						price: {
+							small: 11.98,
+							medium: 14.98,
+							large: 15.98,
+						},
 					},
 				}),
 		}),

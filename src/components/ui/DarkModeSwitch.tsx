@@ -12,19 +12,46 @@ function Switch() {
 		const prefersDark = window.matchMedia(
 			"(prefers-color-scheme: dark)",
 		).matches;
+
 		const initialTheme =
 			stored === "dark" || (!stored && prefersDark) ? "dark" : "light";
-		setTheme(initialTheme);
 
+		setTheme(initialTheme);
 		document.documentElement.classList.toggle("dark", initialTheme === "dark");
 	}, []);
 
-	const handleToggleTheme = () => {
-		const newTheme = theme === "dark" ? "light" : "dark";
+	const applyTheme = (newTheme: "light" | "dark") => {
 		setTheme(newTheme);
 		localStorage.setItem("theme", newTheme);
-
 		document.documentElement.classList.toggle("dark", newTheme === "dark");
+	};
+
+	const handleToggleTheme = (e: React.MouseEvent) => {
+		const newTheme = theme === "dark" ? "light" : "dark";
+
+		const x = e.clientX;
+		const y = e.clientY;
+
+		const maxX = Math.max(x, window.innerWidth - x);
+		const maxY = Math.max(y, window.innerHeight - y);
+		const r = Math.hypot(maxX, maxY);
+
+		const anyDoc = document;
+
+		if (typeof anyDoc.startViewTransition === "function") {
+			document.documentElement.style.setProperty("--vt-x", `${x}px`);
+			document.documentElement.style.setProperty("--vt-y", `${y}px`);
+			document.documentElement.style.setProperty("--vt-from", `0px`);
+			document.documentElement.style.setProperty("--vt-to", `${r}px`);
+
+			anyDoc.startViewTransition(() => {
+				applyTheme(newTheme);
+			});
+
+			return;
+		}
+
+		applyTheme(newTheme);
 	};
 
 	return (

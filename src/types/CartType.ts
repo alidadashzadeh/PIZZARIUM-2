@@ -31,3 +31,37 @@ export type ConfirmPizzaModalProps = {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 };
+
+export type Delivery = {
+	full_name: string;
+	address: string;
+	phone_number: string;
+	delivery_instructions?: string;
+};
+
+export type IngredientsLineItem = {
+	id: string;
+	name: string;
+	price: number;
+};
+
+export type PizzaSize = "small" | "medium" | "large";
+
+export type PriceBySize = {
+	small: number;
+	medium: number;
+	large: number;
+};
+
+export type SignatureLineItem = {
+	id: string;
+	name: string;
+	price: PriceBySize;
+};
+
+export type MarkOrderPaidArgs = {
+	orderId: string;
+	stripeSessionId: string;
+	cardBrand: string | null;
+	cardLast4: string | null;
+};
