@@ -58,6 +58,11 @@ export type SignatureLineItem = {
 	name: string;
 	price: PriceBySize;
 };
+export type DrinkLineItem = {
+	id: string;
+	name: string;
+	price: number;
+};
 
 export type MarkOrderPaidArgs = {
 	orderId: string;

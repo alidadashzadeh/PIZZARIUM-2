@@ -26,6 +26,7 @@ export async function markOrderPaid({
 			paid: true,
 			card_brand: cardBrand,
 			card_last4: cardLast4,
+			paid_at: new Date().toISOString(),
 		})
 		.eq("id", orderId)
 		.eq("stripe_session_id", stripeSessionId);

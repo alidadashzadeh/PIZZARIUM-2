@@ -5,10 +5,12 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
 	CartItem,
 	Delivery,
+	DrinkLineItem,
 	IngredientsLineItem,
 	SignatureLineItem,
 } from "@/types/CartType";
-import { assertQty, basePriceForSize } from "@/lib/utils";
+import { assertQty, basePriceForSize, buildMap } from "@/lib/utils";
+import { fetchByIds } from "@/lib/queries/orders";
 
 export async function POST(req: Request) {
 	try {
@@ -130,55 +132,15 @@ export async function POST(req: Request) {
 			cheeseRes,
 			toppingRes,
 		] = await Promise.all([
-			signatureIds.size
-				? supabase
-						.from("signature_pizzas")
-						.select("id,name,price")
-						.in("id", [...signatureIds])
-				: Promise.resolve({ data: [], error: null }),
-			drinkIds.size
-				? supabase
-						.from("drinks")
-						.select("id,name,price")
-						.in("id", [...drinkIds])
-				: Promise.resolve({ data: [], error: null }),
+			fetchByIds<SignatureLineItem>("signature_pizzas", signatureIds),
 
-			doughIds.size
-				? supabase
-						.from("doughs")
-						.select("id,name,price")
-						.in("id", [...doughIds])
-				: Promise.resolve({ data: [], error: null }),
-			crustIds.size
-				? supabase
-						.from("crusts")
-						.select("id,name,price")
-						.in("id", [...crustIds])
-				: Promise.resolve({ data: [], error: null }),
-			cookIds.size
-				? supabase
-						.from("cooks")
-						.select("id,name,price")
-						.in("id", [...cookIds])
-				: Promise.resolve({ data: [], error: null }),
-			sauceIds.size
-				? supabase
-						.from("sauces")
-						.select("id,name,price")
-						.in("id", [...sauceIds])
-				: Promise.resolve({ data: [], error: null }),
-			cheeseIds.size
-				? supabase
-						.from("cheeses")
-						.select("id,name,price")
-						.in("id", [...cheeseIds])
-				: Promise.resolve({ data: [], error: null }),
-			toppingIds.size
-				? supabase
-						.from("toppings")
-						.select("id,name,price")
-						.in("id", [...toppingIds])
-				: Promise.resolve({ data: [], error: null }),
+			fetchByIds<DrinkLineItem>("drinks", drinkIds),
+			fetchByIds<IngredientsLineItem>("doughs", doughIds),
+			fetchByIds<IngredientsLineItem>("crusts", crustIds),
+			fetchByIds<IngredientsLineItem>("cooks", cookIds),
+			fetchByIds<IngredientsLineItem>("sauces", sauceIds),
+			fetchByIds<IngredientsLineItem>("cheeses", cheeseIds),
+			fetchByIds<IngredientsLineItem>("toppings", toppingIds),
 		]);
 
 		// check for err on promise.all
@@ -200,27 +162,15 @@ export async function POST(req: Request) {
 		const signatureMap = new Map<string, SignatureLineItem>(
 			(sigRes.data ?? []).map((x) => [x.id, x]),
 		);
-		const drinkMap = new Map<string, IngredientsLineItem>(
+		const drinkMap = new Map<string, DrinkLineItem>(
 			(drinkRes.data ?? []).map((x) => [x.id, x]),
 		);
-		const doughMap = new Map<string, IngredientsLineItem>(
-			(doughRes.data ?? []).map((x) => [x.id, x]),
-		);
-		const crustMap = new Map<string, IngredientsLineItem>(
-			(crustRes.data ?? []).map((x) => [x.id, x]),
-		);
-		const cookMap = new Map<string, IngredientsLineItem>(
-			(cookRes.data ?? []).map((x) => [x.id, x]),
-		);
-		const sauceMap = new Map<string, IngredientsLineItem>(
-			(sauceRes.data ?? []).map((x) => [x.id, x]),
-		);
-		const cheeseMap = new Map<string, IngredientsLineItem>(
-			(cheeseRes.data ?? []).map((x) => [x.id, x]),
-		);
-		const toppingMap = new Map<string, IngredientsLineItem>(
-			(toppingRes.data ?? []).map((x) => [x.id, x]),
-		);
+		const doughMap = buildMap(doughRes.data);
+		const crustMap = buildMap(crustRes.data);
+		const cookMap = buildMap(cookRes.data);
+		const sauceMap = buildMap(sauceRes.data);
+		const cheeseMap = buildMap(cheeseRes.data);
+		const toppingMap = buildMap(toppingRes.data);
 
 		//  build Stripe line_items + compute total server-side
 		let total = 0;

@@ -1,4 +1,4 @@
-import { CartItem } from "@/types/CartType";
+import { CartItem, IngredientsLineItem } from "@/types/CartType";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { CustomPizzaType } from "@/types/customPizzaType";
@@ -193,3 +193,6 @@ export const updateCartState = (items: CartItem[]) => ({
 export function assertQty(qty: number) {
 	return Number.isFinite(qty) && qty >= 1 && qty <= 50;
 }
+
+export const buildMap = (d?: IngredientsLineItem[] | null) =>
+	new Map((d ?? []).map((x) => [x.id, x]));

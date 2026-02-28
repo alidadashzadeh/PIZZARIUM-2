@@ -14,7 +14,7 @@ export function CartSyncClient() {
 
 		let cancelled = false;
 		let attempts = 0;
-		const maxAttempts = 10;
+		const maxAttempts = 100;
 
 		const interval = setInterval(async () => {
 			if (cancelled) return;
@@ -37,7 +37,7 @@ export function CartSyncClient() {
 				console.error("Failed to sync pending order", err);
 				clearInterval(interval);
 			}
-		}, 2000);
+		}, 500);
 
 		return () => {
 			cancelled = true;
