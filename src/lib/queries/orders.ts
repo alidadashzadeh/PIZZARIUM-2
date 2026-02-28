@@ -70,3 +70,20 @@ export async function getOrderById(orderId: string) {
 
 	return data;
 }
+
+export async function fetchByIds<T>(
+	table: string,
+	ids: Set<string>,
+	select = "id,name,price",
+): Promise<{ data: T[] | null; error: unknown }> {
+	if (!ids.size) {
+		return { data: [], error: null };
+	}
+
+	const { data, error } = await supabase
+		.from(table)
+		.select(select)
+		.in("id", [...ids]);
+
+	return { data: data as T[] | null, error };
+}

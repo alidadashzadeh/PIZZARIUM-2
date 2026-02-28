@@ -26,8 +26,6 @@ export default function SuccessPage() {
 		error,
 	} = useOrderBySession(sessionId, user?.id);
 
-	console.log("order paid:", order?.paid);
-
 	if (isLoading || !mounted)
 		return (
 			<div className="flex justify-center py-20 text-muted-foreground">
