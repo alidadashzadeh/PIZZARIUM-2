@@ -14,7 +14,7 @@ export function CartSyncClient() {
 
 		let cancelled = false;
 		let attempts = 0;
-		const maxAttempts = 10; // 10 * 2s = 20 seconds
+		const maxAttempts = 10;
 
 		const interval = setInterval(async () => {
 			if (cancelled) return;

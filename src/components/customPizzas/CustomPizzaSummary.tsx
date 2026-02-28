@@ -37,8 +37,13 @@ export default function CustomPizzaSummary({ onAddToCart }: Props) {
 			<div>
 				<Button className="cursor-pointer w-full" onClick={onAddToCart}>
 					<Large>
-						${(customPizza?.price?.[customPizza?.size] ?? 0).toFixed(2)} -
-						Confirm & Add to Cart
+						$
+						{Number(
+							customPizza?.price?.[
+								customPizza?.size as "small" | "medium" | "large"
+							] ?? 0,
+						).toFixed(2)}
+						- Confirm & Add to Cart
 					</Large>
 				</Button>
 			</div>

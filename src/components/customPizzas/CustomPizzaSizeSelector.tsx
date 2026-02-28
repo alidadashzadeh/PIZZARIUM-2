@@ -24,13 +24,13 @@ export default function CustomPizzaSizeSelector() {
 				}}
 			>
 				<ToggleGroupItem value="small" className="sm:p-4  cursor-pointer">
-					Small - ${price?.small}
+					Small - ${price?.small.toFixed(2)}
 				</ToggleGroupItem>
 				<ToggleGroupItem value="medium" className="sm:p-4 cursor-pointer">
-					Medium - ${price?.medium}
+					Medium - ${price?.medium.toFixed(2)}
 				</ToggleGroupItem>
 				<ToggleGroupItem value="large" className="sm:p-4 cursor-pointer">
-					Large - ${price?.large}
+					Large - ${price?.large.toFixed(2)}
 				</ToggleGroupItem>
 			</ToggleGroup>
 		</>

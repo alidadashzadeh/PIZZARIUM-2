@@ -37,7 +37,7 @@ export async function fetchOrderBySession(sessionId: string, userId: string) {
 		.select("*")
 		.eq("stripe_session_id", sessionId)
 		.eq("user_id", userId)
-		.single();
+		.maybeSingle();
 
 	if (error) throw error;
 

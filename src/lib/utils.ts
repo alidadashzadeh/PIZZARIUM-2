@@ -1,10 +1,7 @@
 import { CartItem } from "@/types/CartType";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import {
-	CustomPizzaOptionsType,
-	CustomPizzaType,
-} from "@/types/customPizzaType";
+import { CustomPizzaType } from "@/types/customPizzaType";
 
 import {
 	Category,
@@ -95,29 +92,6 @@ export function applyFiltersAndSort(
 
 	return result;
 }
-
-export const estimateCustomPizzaCost = (
-	customPizza: CustomPizzaType,
-): number => {
-	let total = 10; // base cost
-
-	(Object.keys(customPizza) as (keyof CustomPizzaType)[]).forEach((key) => {
-		if (key === "price" || key === "size") return;
-
-		const value = customPizza[key];
-
-		// toppings
-		if (Array.isArray(value)) {
-			total += value.reduce((sum, item) => sum + item.price, 0);
-		}
-		// single options
-		else if (value && typeof value === "object" && "price" in value) {
-			total += (value as CustomPizzaOptionsType).price;
-		}
-	});
-
-	return Number(total.toFixed(2));
-};
 
 export function sortCartItems(items: CartItem[]) {
 	if (!items) return;

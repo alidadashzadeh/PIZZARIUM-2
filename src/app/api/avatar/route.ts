@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createSupabaseServerClient } from "@/lib/supabase/server"; // adjust path
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function POST(req: Request) {
 	const supabase = await createSupabaseServerClient();
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
 		}
 	}
 
-	// 5️⃣ Upload new avatar
+	// 5 Upload new avatar
 	const filePath = `${userId}-${Date.now()}.webp`;
 
 	const { error: uploadError } = await supabase.storage
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 
 	const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${filePath}`;
 
-	// 6️⃣ Update profile
+	// 6 Update profile
 	const { data: updated, error: updateError } = await supabase
 		.from("profiles")
 		.update({ avatar: publicUrl })

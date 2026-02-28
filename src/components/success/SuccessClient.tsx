@@ -10,13 +10,15 @@ import ItemsSummaryList from "@/components/ui/ItemsSummaryList";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Large, Muted } from "@/components/ui/Typography";
+import { Muted } from "@/components/ui/Typography";
 import { Spinner } from "../ui/spinner";
+import { useClientMounted } from "@/hooks/profile/useClientMounted";
 
 export default function SuccessPage() {
 	const searchParams = useSearchParams();
 	const sessionId = searchParams.get("session_id");
 	const user = useAuthStore((s) => s.user);
+	const mounted = useClientMounted();
 
 	const {
 		data: order,
@@ -24,18 +26,23 @@ export default function SuccessPage() {
 		error,
 	} = useOrderBySession(sessionId, user?.id);
 
-	if (isLoading)
+	console.log("order paid:", order?.paid);
+
+	if (isLoading || !mounted)
 		return (
 			<div className="flex justify-center py-20 text-muted-foreground">
 				<Spinner className="size-8" />
 			</div>
 		);
 
-	if (!order)
+	if (!order || !order.paid)
 		return (
-			<Large className="flex justify-center py-20 text-red-500">
-				No order found.
-			</Large>
+			<div className="flex justify-center py-20 text-muted-foreground">
+				<div className="flex items-center gap-3">
+					<Spinner className="size-6" />
+					<span>Confirming your payment…</span>
+				</div>
+			</div>
 		);
 
 	if (!user)
