@@ -1,7 +1,7 @@
-import React from "react";
 import { H4 } from "../ui/Typography";
-import { usePizzaStore } from "@/store/usePizzaStore";
 import { Separator } from "../ui/separator";
+
+import { usePizzaStore } from "@/store/usePizzaStore";
 
 export default function CustomPizzaToppings() {
 	const toppings = usePizzaStore((s) => s.customPizza?.toppings);

@@ -1,7 +1,9 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { CartItemCardProps } from "./CartItemCard";
-import { useCartStore } from "@/store/useCartStore";
 import { Muted } from "../ui/Typography";
+
+import { useCartStore } from "@/store/useCartStore";
+
+import { CartItemCardProps } from "./CartItemCard";
 
 export default function CartItemCardSize({ item }: CartItemCardProps) {
 	const changeSize = useCartStore((s) => s.changeSize);

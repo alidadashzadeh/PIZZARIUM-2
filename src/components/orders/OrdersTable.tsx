@@ -10,13 +10,14 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import OrderDialog from "./OrderTableDetails";
-import { useAuthStore } from "@/store/useAuthStore";
-import { useOrders } from "@/hooks/orders/useOrders";
+import { Spinner } from "../ui/spinner";
 import { Large } from "../ui/Typography";
+
+import { useOrders } from "@/hooks/orders/useOrders";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function OrdersTable() {
 	const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
@@ -35,8 +36,8 @@ export default function OrdersTable() {
 
 	if (isLoading) {
 		return (
-			<div className="text-center py-20 text-muted-foreground">
-				Loading orders...
+			<div className="flex justify-center items-center  py-20">
+				<Spinner className="size-8" />
 			</div>
 		);
 	}
@@ -59,7 +60,7 @@ export default function OrdersTable() {
 	return (
 		<div>
 			<Large className="pb-4">Orders History</Large>
-			{/* Table */}
+
 			<div className="rounded-2xl border shadow-sm overflow-hidden">
 				<Table>
 					<TableHeader>
@@ -96,10 +97,10 @@ export default function OrdersTable() {
 										: "—"}
 								</TableCell>
 
-								{/* ✅ View Button */}
 								<TableCell className="text-right">
 									<Button
 										size="sm"
+										className="cursor-pointer"
 										variant="outline"
 										onClick={() => {
 											setSelectedOrderId(order.id);
@@ -115,7 +116,6 @@ export default function OrdersTable() {
 				</Table>
 			</div>
 
-			{/* ✅ Dialog */}
 			{selectedOrderId && (
 				<OrderDialog orderId={selectedOrderId} open={open} setOpen={setOpen} />
 			)}

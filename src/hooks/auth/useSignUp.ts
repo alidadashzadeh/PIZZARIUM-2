@@ -29,7 +29,7 @@ export function useSignUp(onClose?: () => void) {
 				avatar: "",
 			});
 
-			toast("Check your Email for verification");
+			toast.success("Account created, Please sign in");
 
 			onClose?.();
 		} catch (err: unknown) {

@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
+
 import {
 	Select,
 	SelectContent,
@@ -9,10 +11,9 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import { Button } from "../ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
+
 import { SignaturePizzaFiltersProps } from "@/types/siganaturPizzaType";
 
 export default function SignaturePizzaFilters({
@@ -34,7 +35,7 @@ export default function SignaturePizzaFilters({
 	}
 
 	return (
-		<div className="flex gap-2">
+		<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
 			<ToggleGroup
 				type="single"
 				variant="outline"
@@ -42,14 +43,24 @@ export default function SignaturePizzaFilters({
 				onValueChange={(val) => {
 					updateUrlParam("category", val);
 				}}
+				className="w-full sm:w-auto"
 			>
-				<ToggleGroupItem value="all" className="px-4">
+				<ToggleGroupItem
+					value="all"
+					className="flex-1 sm:flex-none px-3 sm:px-4"
+				>
 					All
 				</ToggleGroupItem>
-				<ToggleGroupItem value="meat" className="px-4">
+				<ToggleGroupItem
+					value="meat"
+					className="flex-1 sm:flex-none px-3 sm:px-4"
+				>
 					Meat
 				</ToggleGroupItem>
-				<ToggleGroupItem value="veggie" className="px-4">
+				<ToggleGroupItem
+					value="veggie"
+					className="flex-1 sm:flex-none px-3 sm:px-4"
+				>
 					Veggie
 				</ToggleGroupItem>
 			</ToggleGroup>
@@ -60,7 +71,7 @@ export default function SignaturePizzaFilters({
 					updateUrlParam("sortBy", val);
 				}}
 			>
-				<SelectTrigger className="w-[120px]">
+				<SelectTrigger className="w-full sm:w-[180px]">
 					<SelectValue placeholder="Sort By" />
 				</SelectTrigger>
 				<SelectContent>
@@ -78,7 +89,7 @@ export default function SignaturePizzaFilters({
 					updateUrlParam("sortOrder", val);
 				}}
 			>
-				<SelectTrigger className="w-[160px]">
+				<SelectTrigger className="w-full sm:w-[180px]">
 					<SelectValue placeholder="Order" />
 				</SelectTrigger>
 				<SelectContent>
@@ -90,6 +101,7 @@ export default function SignaturePizzaFilters({
 				</SelectContent>
 			</Select>
 			<Button
+				className="cursor-pointer"
 				onClick={() => {
 					router.replace("?", { scroll: false });
 				}}

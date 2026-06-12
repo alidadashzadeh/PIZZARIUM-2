@@ -1,16 +1,11 @@
-import React from "react";
+"use client";
+
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Star } from "lucide-react";
-interface ReviewProps {
-	text: string;
-	rating: number;
-	created_at: string;
-	profiles: {
-		avatar: string;
-		username: string;
-	};
-}
+
+import { ReviewProps } from "@/types/review";
+
 export default function SignaturePizzaReviewCard({
 	text,
 	rating,
@@ -47,7 +42,6 @@ export default function SignaturePizzaReviewCard({
 						</div>
 					</div>
 
-					{/* Star Rating */}
 					<div className="flex gap-0.5 text-yellow-500">
 						{Array.from({ length: 5 }).map((_, i) => (
 							<Star

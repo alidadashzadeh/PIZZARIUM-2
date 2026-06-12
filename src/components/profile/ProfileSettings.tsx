@@ -1,13 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Large, Muted, P } from "@/components/ui/Typography";
+
 import { useAuthStore } from "@/store/useAuthStore";
-import { useState } from "react";
 import { useUpdateProfile } from "@/hooks/profile/useUpdateProfile";
 import { useProfile } from "@/hooks/profile/useProfile";
 import { useUpdateAvatar } from "@/hooks/profile/useUpdateAvatar";
@@ -17,7 +19,6 @@ export default function ProfileSettings() {
 	const { data: profile } = useProfile();
 	const userId = user?.id;
 
-	console.log(profile);
 	const [form, setForm] = useState({
 		username: profile?.username ?? "",
 		phone_number: profile?.phone_number ?? "",
@@ -25,7 +26,7 @@ export default function ProfileSettings() {
 	});
 
 	const { mutate: updateProfile, isPending } = useUpdateProfile();
-	const { mutate: mutateVatar } = useUpdateAvatar(userId ?? "");
+	const { mutate: mutateAvatar } = useUpdateAvatar(userId ?? "");
 
 	const handleSave = () => {
 		updateProfile({
@@ -40,16 +41,18 @@ export default function ProfileSettings() {
 				<Muted>Update your personal information</Muted>
 			</div>
 
-			{/* Avatar */}
 			<Card>
 				<CardContent className="flex items-center gap-4 p-6">
-					<Image
-						src={profile?.avatar ?? "/avatar-placeholder.png"}
-						alt="Avatar"
-						width={80}
-						height={80}
-						className="h-20 w-20 rounded-full object-cover"
-					/>
+					<div className="w-16 md:w-32  aspect-square relative">
+						<Image
+							src={
+								profile?.avatar ? profile?.avatar : "/avatar_placeholder.avif"
+							}
+							alt="Avatar"
+							fill
+							className="rounded-full object-cover"
+						/>
+					</div>
 					<div className="flex flex-col gap-2">
 						<P>Profile Picture</P>
 						<Input
@@ -59,16 +62,14 @@ export default function ProfileSettings() {
 							onChange={(e) => {
 								const file = e.target.files?.[0];
 								if (!file) return;
-								mutateVatar({ userId: userId ?? "", file });
+								mutateAvatar({ file });
 							}}
 						/>
 					</div>
 				</CardContent>
 			</Card>
 
-			{/* 2x2 Grid */}
 			<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-				{/* Username */}
 				<Card>
 					<CardContent className="p-6 flex flex-col gap-2">
 						<Label>Username</Label>
@@ -80,7 +81,6 @@ export default function ProfileSettings() {
 					</CardContent>
 				</Card>
 
-				{/* Phone_number */}
 				<Card>
 					<CardContent className="p-6 flex flex-col gap-2">
 						<Label>Default Phone Number</Label>
@@ -94,7 +94,6 @@ export default function ProfileSettings() {
 					</CardContent>
 				</Card>
 
-				{/* Address */}
 				<Card>
 					<CardContent className="p-6 flex flex-col gap-2">
 						<Label>Default Address</Label>
@@ -106,7 +105,6 @@ export default function ProfileSettings() {
 					</CardContent>
 				</Card>
 
-				{/* member since */}
 				<Card>
 					<CardContent className="p-6 flex flex-col gap-2">
 						<Label>Loyal member since</Label>
@@ -126,11 +124,10 @@ export default function ProfileSettings() {
 				</Card>
 			</div>
 
-			{/* Submit button */}
 			<div className="flex justify-start">
 				<Button
 					size="lg"
-					className="w-auto"
+					className="w-auto cursor-pointer"
 					onClick={handleSave}
 					disabled={isPending}
 				>

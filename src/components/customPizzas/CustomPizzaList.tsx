@@ -10,17 +10,9 @@ import { useState } from "react";
 import {
 	Category,
 	CustomPizzaClientProps,
-	fullToppingsType,
-	optionsType,
+	DataMap,
 } from "@/types/customPizzaType";
-type DataMap = {
-	dough: optionsType[];
-	crust: optionsType[];
-	sauce: optionsType[];
-	cook: optionsType[];
-	cheese: optionsType[];
-	toppings: fullToppingsType[];
-};
+
 const categories: Category[] = [
 	{ name: "Dough", value: "dough", type: "single" },
 	{ name: "Crust", value: "crust", type: "single" },
@@ -50,10 +42,10 @@ export default function CustomPizzaList({
 	};
 
 	return (
-		<div className="flex justify-between gap-4 relative">
+		<div className="flex flex-col-reverse md:flex-row gap-4 relative">
 			<Tabs
 				defaultValue={categories?.at(-1)?.value}
-				className="flex flex-col gap-4 flex-1"
+				className="flex flex-col gap-4 flex-1 min-w-0"
 			>
 				<div className="pt-4">
 					<CustomPizzaTabsTriggers categories={categories} />
@@ -71,7 +63,9 @@ export default function CustomPizzaList({
 					</TabsContent>
 				))}
 			</Tabs>
-			<CustomPizzaSummary onAddToCart={() => setConfirmCustomOpen(true)} />
+			<div className="shrink-0">
+				<CustomPizzaSummary onAddToCart={() => setConfirmCustomOpen(true)} />
+			</div>
 			<ConfirmPizzaModal
 				open={confirmCustomOpen}
 				onOpenChange={setConfirmCustomOpen}

@@ -6,9 +6,10 @@ import {
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
-import { useGetReviews } from "@/hooks/reviews/useGetReviews";
 import SignaturePizzaReviewCard from "./SignaturePizzaReviewCard";
 import ReviewCardLoader from "../ui/ReviewCardLoader";
+
+import { useGetReviews } from "@/hooks/reviews/useGetReviews";
 
 export function SignaturePizzaReviews({ pizzaId }: { pizzaId: string }) {
 	const { data: reviews, isLoading } = useGetReviews(pizzaId);
@@ -34,7 +35,7 @@ export function SignaturePizzaReviews({ pizzaId }: { pizzaId: string }) {
 					</CollapsibleContent>
 
 					<CollapsibleTrigger asChild>
-						<Button variant="ghost" className="w-full mt-2">
+						<Button variant="ghost" className="w-full mt-2 cursor-pointer">
 							View {theRest?.length} more reviews
 						</Button>
 					</CollapsibleTrigger>

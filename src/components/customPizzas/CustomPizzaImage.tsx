@@ -1,5 +1,6 @@
-import { usePizzaStore } from "@/store/usePizzaStore";
 import Image from "next/image";
+
+import { usePizzaStore } from "@/store/usePizzaStore";
 
 export default function CustomPizzaImage() {
 	const toppings = usePizzaStore((s) => s.customPizza?.toppings);
@@ -7,7 +8,7 @@ export default function CustomPizzaImage() {
 	return (
 		<>
 			<Image
-				src="/base-pizza.png"
+				src="/base-pizza.avif"
 				alt="pizza-base"
 				fill
 				className="object-contain"

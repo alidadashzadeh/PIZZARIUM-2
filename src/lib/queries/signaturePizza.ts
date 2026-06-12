@@ -1,7 +1,10 @@
 import { supabase } from "../supabase";
 
 export const fetchSignaturePizzas = async () => {
-	const { data, error } = await supabase.from("signature_pizzas").select("*");
+	const { data, error } = await supabase
+		.from("signature_pizzas")
+		.select("*")
+		.order("sort_order", { ascending: true });
 
 	if (error) throw error;
 

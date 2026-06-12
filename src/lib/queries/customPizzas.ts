@@ -25,7 +25,10 @@ export const fetchDoughs = async () => {
 	return data;
 };
 export const fetchToppings = async () => {
-	const { data, error } = await supabase.from("toppings").select("*");
+	const { data, error } = await supabase
+		.from("toppings")
+		.select("*")
+		.order("sort_order", { ascending: true });
 
 	if (error) throw error;
 	return data;

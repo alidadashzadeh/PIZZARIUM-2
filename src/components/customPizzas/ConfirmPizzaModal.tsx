@@ -7,19 +7,17 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { usePizzaStore } from "@/store/usePizzaStore";
 import { Large } from "../ui/Typography";
 import CustomPizzaImage from "./CustomPizzaImage";
 import CustomPizzaaRecipe from "./CustomPizzaaRecipe";
 import CustomPizzaToppings from "./CustomPizzaToppings";
 import CustomPizzaSizeSelector from "./CustomPizzaSizeSelector";
-import { useCartStore } from "@/store/useCartStore";
 import { toast } from "sonner";
 
-type ConfirmPizzaModalProps = {
-	open: boolean;
-	onOpenChange: (open: boolean) => void;
-};
+import { useCartStore } from "@/store/useCartStore";
+import { usePizzaStore } from "@/store/usePizzaStore";
+
+import { ConfirmPizzaModalProps } from "@/types/CartType";
 
 export default function ConfirmPizzaModal({
 	open,
@@ -31,7 +29,7 @@ export default function ConfirmPizzaModal({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent>
+			<DialogContent className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto p-4 sm:p-6">
 				<DialogHeader>
 					<DialogTitle>Confirm your pizza</DialogTitle>
 					<div className="relative h-76 aspect-square mx-auto">

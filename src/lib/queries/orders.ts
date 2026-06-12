@@ -1,5 +1,5 @@
 import { OrderInsert } from "@/types/order";
-import { supabase } from "../supabase";
+import { supabase } from "../supabase/client";
 
 export async function insertOrder(order: OrderInsert) {
 	const { data, error } = await supabase
@@ -37,7 +37,7 @@ export async function fetchOrderBySession(sessionId: string, userId: string) {
 		.select("*")
 		.eq("stripe_session_id", sessionId)
 		.eq("user_id", userId)
-		.single();
+		.maybeSingle();
 
 	if (error) throw error;
 
@@ -62,11 +62,28 @@ export async function getOrdersByUser(userId: string) {
 export async function getOrderById(orderId: string) {
 	const { data, error } = await supabase
 		.from("orders")
-		.select("*") // includes items, address, etc
+		.select("*")
 		.eq("id", orderId)
 		.single();
 
 	if (error) throw new Error(error.message);
 
 	return data;
+}
+
+export async function fetchByIds<T>(
+	table: string,
+	ids: Set<string>,
+	select = "id,name,price",
+): Promise<{ data: T[] | null; error: unknown }> {
+	if (!ids.size) {
+		return { data: [], error: null };
+	}
+
+	const { data, error } = await supabase
+		.from(table)
+		.select(select)
+		.in("id", [...ids]);
+
+	return { data: data as T[] | null, error };
 }

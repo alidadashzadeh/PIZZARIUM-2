@@ -1,4 +1,4 @@
-import { supabase } from "../supabase";
+import { supabase } from "../supabase/client";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export interface Profile {
@@ -10,10 +10,6 @@ export interface Profile {
 	address: string;
 }
 
-/**
- * Fetch user profile by user ID
- * Throws if profile does not exist
- */
 export async function fetchProfile(userId: string): Promise<Profile> {
 	const { data, error } = await supabase
 		.from("profiles")
@@ -26,10 +22,6 @@ export async function fetchProfile(userId: string): Promise<Profile> {
 	return data;
 }
 
-/**
- * Create a new profile for a user
- * Typically called after sign-up
- */
 export async function createProfile(profile: {
 	id: string;
 	username?: string;
@@ -44,10 +36,6 @@ export async function createProfile(profile: {
 	if (error) throw error;
 }
 
-/**
- * Update current user's profile
- */
-
 export type UpdateProfileVars = {
 	user_id: string;
 	username?: string;
@@ -60,7 +48,6 @@ export async function updateProfile(updates: {
 	phone_number?: string;
 	address?: string;
 }) {
-	// ✅ Always grab current user inside query
 	const user = useAuthStore.getState().user;
 
 	if (!user?.id) {
@@ -79,42 +66,19 @@ export async function updateProfile(updates: {
 	return data;
 }
 
-// lib/queries/profile.ts
-export async function uploadAvatar({
-	userId,
-	file,
-}: {
-	userId: string;
-	file: File;
-}) {
-	const filePath = `${userId}-${Date.now()}.jpg`;
+export async function uploadAvatar({ file }: { file: File }) {
+	const formData = new FormData();
+	formData.append("file", file);
 
-	// 1️⃣ upload / overwrite image
-	const { error: uploadError } = await supabase.storage
-		.from("avatars")
-		.upload(filePath, file, {
-			upsert: true,
-			contentType: file.type,
-		});
+	const res = await fetch("/api/avatar", {
+		method: "POST",
+		body: formData,
+	});
 
-	if (uploadError) {
-		throw uploadError;
+	if (!res.ok) {
+		const body = await res.json().catch(() => ({}));
+		throw new Error(body?.error ?? "Avatar upload failed");
 	}
 
-	// 2️⃣ build public URL (known format)
-	const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${filePath}`;
-
-	// 3️⃣ update profile row
-	const { data, error } = await supabase
-		.from("profiles")
-		.update({ avatar: publicUrl })
-		.eq("id", userId)
-		.select("*")
-		.single();
-
-	if (error) {
-		throw error;
-	}
-
-	return data;
+	return res.json();
 }

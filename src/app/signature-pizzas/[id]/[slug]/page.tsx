@@ -4,6 +4,7 @@ import SignaturePizzaControls from "@/components/signaturePizzas/SignaturePizzaC
 import SignaturePizzaInfo from "@/components/signaturePizzas/SignaturePizzaInfo";
 
 import { fetchSignaturePizzaDetails } from "@/lib/queries/signaturePizza";
+import SignaturePizzaImage from "@/components/signaturePizzas/SignaturePizzaImage";
 
 type Props = {
 	params: Promise<{ id: string; slug: string }>;
@@ -20,7 +21,8 @@ export default async function Page({ params }: Props) {
 	if (error || !pizza) return <div>Pizza not found</div>;
 
 	return (
-		<div className="grid  grid-cols-[500px_1fr_500px] gap-6 items-start">
+		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[400px_minmax(0,1fr)_auto] gap-6 items-start">
+			<SignaturePizzaImage pizza={pizza} />
 			<SignaturePizzaInfo pizza={pizza} />
 			<SignaturePizzaControls pizza={pizza} />
 		</div>

@@ -1,5 +1,11 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
+
+import SignaturePizzasCard from "./SignaturePizzaCard";
+import SignaturePizzaFilters from "./SignaturePizzaFilters";
+import { applyFiltersAndSort } from "@/lib/utils";
+
 import {
 	Category,
 	FiltersState,
@@ -7,11 +13,6 @@ import {
 	SortField,
 	SortOrder,
 } from "@/types/siganaturPizzaType";
-
-import SignaturePizzasCard from "./SignaturePizzaCard";
-import SignaturePizzaFilters from "./SignaturePizzaFilters";
-import { applyFiltersAndSort } from "@/lib/utils";
-import { useSearchParams } from "next/navigation";
 
 export default function SignaturePizzasList({
 	pizzas,
@@ -25,12 +26,13 @@ export default function SignaturePizzasList({
 	};
 
 	let list = [...pizzas];
+
 	list = applyFiltersAndSort(list, filters);
 
 	return (
 		<div className="flex flex-col gap-2">
 			<SignaturePizzaFilters filters={filters} />
-			<div className="grid grid-cols-4 gap-8  mx-auto">
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mx-auto">
 				{list?.map((pizza) => (
 					<SignaturePizzasCard key={pizza.id} pizza={pizza} />
 				))}

@@ -5,3 +5,11 @@ export type Drink = {
 	price: number;
 	isAvailable: boolean;
 };
+
+export type DrinkCardProps = {
+	drink: Drink;
+};
+
+export type DrinkListProps = {
+	drinks: Drink[];
+};

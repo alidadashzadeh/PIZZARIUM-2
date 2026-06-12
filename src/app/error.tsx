@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+
 export default function Error({
 	error,
 	reset,
@@ -9,9 +11,15 @@ export default function Error({
 }) {
 	return (
 		<div style={{ padding: 40 }}>
-			<h1>Something broke 😵</h1>
+			<h1>Something broke</h1>
 			<p>{error.message}</p>
-			<button onClick={() => reset()}>Try again</button>
+			<Button
+				variant="default"
+				className="cursor-pointer"
+				onClick={() => reset()}
+			>
+				Try again
+			</Button>
 		</div>
 	);
 }

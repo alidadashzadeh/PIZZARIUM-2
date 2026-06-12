@@ -1,26 +1,31 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "../ui/button";
-
 import { User as UserIcon } from "lucide-react";
 import { Small } from "../ui/Typography";
 import AuthModal from "../ui/AuthModal";
-import { useAuthStore } from "@/store/useAuthStore";
 import { Toaster } from "../ui/sonner";
-import Link from "next/link";
+import ProfileLoader from "../ui/ProfileLoader";
+
 import { useProfile } from "@/hooks/profile/useProfile";
+import { useClientMounted } from "@/hooks/profile/useClientMounted";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useAvatarLoaded } from "@/hooks/profile/useAvatarLoaded";
 
 function UserProfile() {
 	const [authOpen, setAuthOpen] = useState(false);
-
+	const mounted = useClientMounted();
 	const user = useAuthStore((s) => s.user);
-	const { data: profile } = useProfile();
+	const { data: profile, isLoading } = useProfile();
+	const avatarLoaded = useAvatarLoaded(profile?.avatar ?? undefined);
 
 	return (
-		<div className="flex gap-4 w-[150px] justify-end">
+		<div className="flex gap-4  w-auto sm:w-[150px] justify-end">
 			<div className="fixed inset-x-0 z-[9999]">
 				<Toaster
 					position="top-center"
@@ -33,17 +38,30 @@ function UserProfile() {
 				/>
 			</div>
 
-			{!user && (
+			{/* before hydration */}
+			{(!mounted || isLoading) && !avatarLoaded && <ProfileLoader />}
+
+			{/* after hydration if no user is logged in */}
+			{mounted && !isLoading && !profile && (
 				<>
-					<Button onClick={() => setAuthOpen(true)}>Sign In / Sign Up</Button>
+					<Button
+						variant="outline"
+						size="sm"
+						className="cursor-pointer"
+						onClick={() => setAuthOpen(true)}
+					>
+						<span>Sign In</span>
+						<span className="hidden sm:inline-block">/ Sign Up</span>
+					</Button>
 					<AuthModal open={authOpen} onOpenChange={setAuthOpen} />
 				</>
 			)}
 
-			{user && (
+			{/* after hydration when user is logged in */}
+			{mounted && profile && (
 				<Link href="/profile" className="flex items-center gap-2">
 					<Avatar className="w-8 h-8">
-						{profile?.avatar ? (
+						{profile?.avatar && avatarLoaded ? (
 							<AvatarImage
 								src={profile.avatar}
 								alt={profile?.username || "User Avatar"}
@@ -56,8 +74,8 @@ function UserProfile() {
 						)}
 					</Avatar>
 
-					<Small className="line-clamp-1 max-w-[6ch]  py-2">
-						{profile?.username ?? user.email?.split("@")[0]}
+					<Small className="line-clamp-1 max-w-[6ch] py-2 hidden sm:block whitespace-nowrap">
+						{profile?.username ?? user?.email?.split("@")[0]}
 					</Small>
 				</Link>
 			)}
