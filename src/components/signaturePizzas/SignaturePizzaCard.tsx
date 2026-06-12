@@ -10,24 +10,34 @@ import { SignaturePizzaCardProps } from "@/types/siganaturPizzaType";
 import { flyToCart } from "@/lib/utils";
 
 import { useCartStore } from "@/store/useCartStore";
+import { useState } from "react";
 
 export default function SignaturePizzasCard({
 	pizza,
 }: SignaturePizzaCardProps) {
 	const addItem = useCartStore((s) => s.addItem);
-
+	const [loaded, setLoaded] = useState(false);
 	return (
 		<>
 			<Card>
 				<CardContent className="relative flex flex-col gap-2 sm:gap-3 p-3 sm:p-4">
 					<div className="relative w-full aspect-square">
+						{!loaded && (
+							<Image
+								src={pizza.image}
+								alt=""
+								fill
+								aria-hidden
+								className="object-cover blur-md animate-pulse"
+							/>
+						)}
 						<Image
-							src={pizza?.image}
+							src={pizza.image}
 							alt={pizza.name}
 							fill
-							sizes="(max-width: 500px) 100vw, (max-width: 500px) 50vw, 25vw"
-							className="object-cover rounded-md"
-							priority={false}
+							sizes="(max-width: 640px) 100vw,(max-width: 1024px) 50vw,25vw"
+							className={`object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+							onLoad={() => setLoaded(true)}
 						/>
 					</div>
 					<H3 className="text-base sm:text-lg line-clamp-1">{pizza.name}</H3>{" "}
