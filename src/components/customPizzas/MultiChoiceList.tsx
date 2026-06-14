@@ -7,6 +7,7 @@ import { CheckCheckIcon, Minus, Plus } from "lucide-react";
 import { MultiSelectKeys, usePizzaStore } from "@/store/usePizzaStore";
 
 import { fullToppingsType } from "@/types/customPizzaType";
+import { useState } from "react";
 
 type MultuChoiceListProps = {
 	name: string;
@@ -19,7 +20,14 @@ export default function MultiChoiceList({
 }: MultuChoiceListProps) {
 	const manageMulti = usePizzaStore((state) => state.manageMulti);
 	const customPizza = usePizzaStore((state) => state.customPizza);
+	const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
+	const markLoaded = (id: string) => {
+		setLoadedImages((prev) => ({
+			...prev,
+			[id]: true,
+		}));
+	};
 	const toppingExist = (item: fullToppingsType) => {
 		return customPizza?.toppings?.some((t) => t.id === item.id);
 	};
@@ -45,12 +53,15 @@ export default function MultiChoiceList({
 					)}
 
 					<CardContent className="flex flex-col items-center gap-2 p-3 relative">
-						<div className="relative w-32 lg:w-44 aspect-square rounded-md overflow-hidden filter drop-shadow-[4px_4px_10px_rgba(0,0,0,0.5)]">
+						<div className="relative w-32 md:w-36 xl:w-44 aspect-square rounded-md overflow-hidden filter drop-shadow-[4px_4px_10px_rgba(0,0,0,0.5)]">
 							<Image
 								src={item.image}
 								alt={item.name}
 								fill
-								className="object-cover"
+								placeholder="empty"
+								sizes="(max-width:768px) 128px, (max-width:1280px) 144px, 176px"
+								onLoad={() => markLoaded(item.id)}
+								className={`object-cover transition-all duration-250 ${loadedImages[item.id] ? "blur-0 " : "blur-xs"}`}
 							/>
 						</div>
 

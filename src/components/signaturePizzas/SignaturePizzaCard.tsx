@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,21 +24,13 @@ export default function SignaturePizzasCard({
 			<Card>
 				<CardContent className="relative flex flex-col gap-2 sm:gap-3 p-3 sm:p-4">
 					<div className="relative w-full aspect-square">
-						{!loaded && (
-							<Image
-								src={pizza.image}
-								alt=""
-								fill
-								aria-hidden
-								className="object-cover blur-md animate-pulse"
-							/>
-						)}
 						<Image
 							src={pizza.image}
 							alt={pizza.name}
 							fill
+							placeholder="empty"
 							sizes="(max-width: 640px) 100vw,(max-width: 1024px) 50vw,25vw"
-							className={`object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+							className={`object-cover transition-opacity duration-250 ${loaded ? "blur-0 " : "blur-xs"}`}
 							onLoad={() => setLoaded(true)}
 						/>
 					</div>

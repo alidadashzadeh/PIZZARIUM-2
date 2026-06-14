@@ -10,15 +10,28 @@ import { flyToCart } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
 
 import { DrinkCardProps } from "@/types/DrinkType";
+import { useState } from "react";
 
 export default function DrinkCard({ drink }: DrinkCardProps) {
 	const addItem = useCartStore((s) => s.addItem);
-
+	const [loaded, setLoaded] = useState(false);
 	return (
 		<Card className="relative items-center">
 			<CardContent>
 				<div className="relative w-32 sm:w-44 aspect-square rounded-md overflow-hidden filter drop-shadow-[4px_4px_10px_rgba(0,0,0,0.5)]">
-					<Image src={drink?.image} alt="Pizza" fill className="object-cover" />
+					<Image
+						src={drink.image}
+						alt={drink.name}
+						fill
+						sizes="(max-width:640px) 128px, 176px"
+						onLoad={() => setLoaded(true)}
+						className={`
+			object-cover
+			transition-[filter]
+			duration-500
+			${loaded ? "blur-0" : "blur-xs"}
+		`}
+					/>
 				</div>
 
 				<div className="flex flex-col gap-2 items-center">

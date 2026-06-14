@@ -2,20 +2,25 @@ import { H2 } from "@/components/ui/Typography";
 import SignaturePizzasList from "@/components/signaturePizzas/SignaturePizzasList";
 
 import { fetchSignaturePizzas } from "@/lib/queries/signaturePizza";
-import { Suspense } from "react";
-import SignatureListLoader from "@/components/ui/SignatureListLoader";
 
 export const revalidate = 300;
 
-export default async function Page() {
+export default async function Page({
+	searchParams,
+}: {
+	searchParams: Promise<{
+		category?: string;
+		sortBy?: string;
+		sortOrder?: string;
+	}>;
+}) {
 	const pizzas = await fetchSignaturePizzas();
+	const params = await searchParams;
 
 	return (
 		<div className="flex flex-col gap-4">
 			<H2>Discover Signature Pizzas</H2>
-			<Suspense fallback={<SignatureListLoader />}>
-				<SignaturePizzasList pizzas={pizzas} />
-			</Suspense>
+			<SignaturePizzasList pizzas={pizzas} searchParams={params} />
 		</div>
 	);
 }

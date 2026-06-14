@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { CheckCheckIcon, Minus, Plus } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
@@ -16,9 +16,16 @@ export default function SingleChoiceList({
 }: SingleChoiceListProps) {
 	const manageSingle = usePizzaStore((state) => state.manageSingle);
 	const customPizza = usePizzaStore((state) => state.customPizza);
-
+	const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 	const isSelected = (item: optionsType) => {
 		return customPizza[name]?.id === item.id;
+	};
+
+	const markLoaded = (id: string) => {
+		setLoadedImages((prev) => ({
+			...prev,
+			[id]: true,
+		}));
 	};
 
 	return (
@@ -33,21 +40,22 @@ export default function SingleChoiceList({
 						manageSingle(name, item);
 					}}
 				>
-					{isSelected(item) ? (
+					{isSelected(item) && (
 						<CheckCheckIcon
 							className="absolute top-4 right-4 text-primary"
 							size={36}
 						/>
-					) : (
-						<></>
 					)}
 					<CardContent className="flex flex-col items-center gap-2 p-3">
-						<div className="relative w-32 md:w-36  xl:w-44 aspect-square rounded-md overflow-hidden filter drop-shadow-[4px_4px_10px_rgba(0,0,0,0.5)]">
+						<div className="relative w-32 md:w-36 xl:w-44 aspect-square rounded-md overflow-hidden filter drop-shadow-[4px_4px_10px_rgba(0,0,0,0.5)]">
 							<Image
 								src={item.image}
 								alt={item.name}
 								fill
-								className="object-cover"
+								placeholder="empty"
+								sizes="(max-width:768px) 128px, (max-width:1280px) 144px, 176px"
+								onLoad={() => markLoaded(item.id)}
+								className={`object-cover transition-all duration-250 ${loadedImages[item.id] ? "blur-0 " : "blur-xs"}`}
 							/>
 						</div>
 

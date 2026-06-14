@@ -77,7 +77,14 @@ export interface FiltersState {
 	sortBy: SortField;
 	sortOrder: SortOrder;
 }
-export type SignaturePizzasListProps = { pizzas: SignaturePizzaCard[] };
+export type SignaturePizzasListProps = {
+	pizzas: SignaturePizzaCard[];
+	searchParams?: {
+		category?: string;
+		sortBy?: string;
+		sortOrder?: string;
+	};
+};
 export interface SignaturePizzaFiltersProps {
 	filters: FiltersState;
 }
